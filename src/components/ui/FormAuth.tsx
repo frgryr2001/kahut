@@ -2,139 +2,246 @@ import React from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {ButtonIconSignIn} from './ButtonIconSignIn';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {TextInputCustom} from './TextInputCustom';
+import {ScreenName} from '../../navigator/Navigator';
+import Input from './Input';
 
 interface Props {
   formType: 'login' | 'register' | 'forgot' | 'otp';
-  gotoForm: () => void;
+  gotoForm: (screen: ScreenName) => void;
+  textBtn?: string;
+  activeBtn?: boolean;
 }
 
-export const FormAuth = ({formType = 'login', gotoForm}: Props) => {
-  const [isShowPassword, setIsShowPassword] = React.useState<boolean>(false);
+export const FormAuth = ({
+  formType = 'login',
+  gotoForm,
+  textBtn,
+  activeBtn,
+}: Props) => {
+  const [isShowPassword, setIsShowPassword] = React.useState<{
+    password: boolean;
+    confirmPassword: boolean;
+  }>({
+    password: false,
+    confirmPassword: false,
+  });
+  // check formType
+  const isFormSignInOrUp = formType === 'login' || formType === 'register';
 
-  const handleShowPassword = () => {
-    setIsShowPassword(!isShowPassword);
+  const handleShowPassword = <T extends keyof typeof isShowPassword>(
+    key: T,
+  ) => {
+    setIsShowPassword({
+      ...isShowPassword,
+      [key]: !isShowPassword[key],
+    });
   };
+
   return (
     <View style={styles.container}>
       <View
         style={{
           marginHorizontal: 10,
         }}>
-        <Text style={styles.label}>Email:</Text>
-        <TextInputCustom
-          style={styles.input}
-          autoCorrect={false}
+        {/* Sign up  */}
+        {formType === 'register' && (
+          <Input
+            keyboardType="default"
+            placeholder="Enter your username ..."
+            label="Username"
+          />
+        )}
+        <Input
           keyboardType="email-address"
           placeholder="Enter your email ..."
+          label="Email"
         />
-        <Text style={styles.label}>Password:</Text>
-        <View
-          style={{
-            position: 'relative',
-          }}>
-          <TextInputCustom
-            style={styles.input}
-            autoCorrect={false}
-            placeholder="Enter your password ..."
-            secureTextEntry={!isShowPassword}
-            keyboardType="default"
-          />
-          <TouchableOpacity
-            onPress={handleShowPassword}
-            style={{
-              position: 'absolute',
-              right: 10,
-              top: 25,
-            }}>
-            <Icon
-              name={isShowPassword ? 'eye-outline' : 'eye-off-outline'}
-              size={24}
-              color="black"
-            />
-          </TouchableOpacity>
-        </View>
-        <TouchableOpacity
-          style={{
-            marginBottom: 10,
-          }}>
-          <Text
-            style={[
-              styles.textTitle,
-              {
-                color: '#7C4DFF',
-              },
-            ]}>
-            Forgot password?
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.buttonLogin}
-          activeOpacity={0.9}
-          disabled>
-          <Text style={styles.buttonTextLogin}>Login</Text>
-        </TouchableOpacity>
 
-        {/* Button Login */}
-        <View
-          style={{
-            flexDirection: 'column',
-            rowGap: 15,
-          }}>
+        {/* Sign up and Sign in */}
+        {isFormSignInOrUp && (
           <View
             style={{
-              flexDirection: 'column',
-              justifyContent: 'center',
-              alignItems: 'center',
-              rowGap: 25,
+              position: 'relative',
+              height: 55,
             }}>
-            <View
+            <Input
+              keyboardType="default"
+              placeholder="Enter your password ..."
+              label="Password"
+              secureTextEntry={!isShowPassword.password}
+              autoCorrect={false}
+            />
+            {/* Icon show password */}
+            <TouchableOpacity
+              onPress={() => handleShowPassword('password')}
               style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-
-                columnGap: 20,
+                position: 'absolute',
+                right: 15,
+                top: '50%',
               }}>
-              <View style={{flex: 1, height: 1, backgroundColor: '#BDBDBD'}} />
-              <Text
-                style={{
-                  ...styles.textTitle,
-                }}>
-                Or login with
-              </Text>
-              <View style={{flex: 1, height: 1, backgroundColor: '#BDBDBD'}} />
-            </View>
-            {/* OR Login others */}
-            <View style={styles.btnSignInOther}>
-              <ButtonIconSignIn
-                nameIcon="logo-google"
-                sizeIcon={25}
-                textIcon="Google"
-                colorIcon={'#DB4437'}
+              <Icon
+                name={
+                  isShowPassword.password ? 'eye-outline' : 'eye-off-outline'
+                }
+                size={24}
+                color="black"
               />
-
-              <ButtonIconSignIn
-                nameIcon="logo-facebook"
-                sizeIcon={25}
-                textIcon="Facebook"
-                colorIcon={'#4267B2'}
-              />
-            </View>
-          </View>
-          {/* Sign up */}
-          <View style={styles.signUpBtn}>
-            <Text style={styles.textTitle}>Don't you have an account ?</Text>
-            <TouchableOpacity onPress={gotoForm}>
-              {/* 290498 */}
-              <Text
-                style={{
-                  ...styles.textTitle,
-                  color: '#7C4DFF',
-                }}>
-                Sign up
-              </Text>
             </TouchableOpacity>
           </View>
+        )}
+
+        {/* Sign up  */}
+        {formType === 'register' && (
+          <View
+            style={{
+              position: 'relative',
+              height: 55,
+              marginVertical: 25,
+            }}>
+            <Input
+              keyboardType="default"
+              placeholder="Enter your confirm password ..."
+              label="Confirm password"
+              secureTextEntry={!isShowPassword.confirmPassword}
+              autoCorrect={false}
+            />
+            {/* Icon show password */}
+            <TouchableOpacity
+              onPress={() => handleShowPassword('confirmPassword')}
+              style={{
+                position: 'absolute',
+                right: 15,
+                top: '50%',
+              }}>
+              <Icon
+                name={
+                  isShowPassword.confirmPassword
+                    ? 'eye-outline'
+                    : 'eye-off-outline'
+                }
+                size={24}
+                color="black"
+              />
+            </TouchableOpacity>
+          </View>
+        )}
+
+        {/* Sign in */}
+        {formType === 'login' && (
+          <TouchableOpacity
+            style={{
+              marginBottom: 10,
+              marginTop: 20,
+            }}
+            activeOpacity={0.9}
+            onPress={() => gotoForm('OtpScreen')}>
+            <Text
+              style={[
+                styles.textTitle,
+                {
+                  color: '#7C4DFF',
+                },
+              ]}>
+              Forgot password?
+            </Text>
+          </TouchableOpacity>
+        )}
+        <TouchableOpacity
+          style={[
+            styles.buttonLogin,
+            {
+              backgroundColor: activeBtn ? '#7C4DFF' : '#BDBDBD',
+            },
+          ]}
+          activeOpacity={0.9}
+          disabled={activeBtn}>
+          <Text style={styles.buttonTextLogin}>{textBtn}</Text>
+        </TouchableOpacity>
+
+        <View
+          style={{
+            rowGap: 15,
+          }}>
+          {isFormSignInOrUp && (
+            <View
+              style={{
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                rowGap: 25,
+              }}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+
+                  columnGap: 20,
+                }}>
+                <View
+                  style={{flex: 1, height: 1, backgroundColor: '#BDBDBD'}}
+                />
+                <Text
+                  style={{
+                    ...styles.textTitle,
+                  }}>
+                  Or login with
+                </Text>
+                <View
+                  style={{flex: 1, height: 1, backgroundColor: '#BDBDBD'}}
+                />
+              </View>
+              {/* OR Login others */}
+              <View style={styles.btnSignInOther}>
+                <ButtonIconSignIn
+                  nameIcon="logo-google"
+                  sizeIcon={25}
+                  textIcon="Google"
+                  colorIcon={'#DB4437'}
+                  activeOpacity={0.7}
+                />
+
+                <ButtonIconSignIn
+                  activeOpacity={0.7}
+                  nameIcon="logo-facebook"
+                  sizeIcon={25}
+                  textIcon="Facebook"
+                  colorIcon={'#4267B2'}
+                />
+              </View>
+            </View>
+          )}
+          {/* Sign up */}
+          {formType === 'login' && (
+            <View style={styles.signUpBtn}>
+              <Text style={styles.textTitle}>Don't you have an account ?</Text>
+              <TouchableOpacity onPress={() => gotoForm('RegisterScreen')}>
+                {/* 290498 */}
+                <Text
+                  style={{
+                    ...styles.textTitle,
+                    color: '#7C4DFF',
+                  }}>
+                  Sign up
+                </Text>
+              </TouchableOpacity>
+            </View>
+          )}
+          {/* Sign up */}
+          {formType === 'register' && (
+            <View style={styles.signUpBtn}>
+              <Text style={styles.textTitle}>Have an account ?</Text>
+              <TouchableOpacity onPress={() => gotoForm('LoginScreen')}>
+                {/* 290498 */}
+                <Text
+                  style={{
+                    ...styles.textTitle,
+                    color: '#7C4DFF',
+                  }}>
+                  Sign in
+                </Text>
+              </TouchableOpacity>
+            </View>
+          )}
         </View>
       </View>
     </View>
@@ -142,39 +249,15 @@ export const FormAuth = ({formType = 'login', gotoForm}: Props) => {
 };
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'white',
     flex: 1,
-    width: '100%',
-    borderRadius: 5,
     paddingVertical: 20,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
   },
   titleLogin: {
     fontFamily: 'Poppins-Bold',
-
     fontSize: 26,
     textAlign: 'center',
   },
-  label: {
-    fontFamily: 'Poppins-Regular',
-    fontSize: 16,
-  },
-  input: {
-    height: 50,
-    marginTop: 12,
-    marginBottom: 12,
-    borderWidth: 1,
-    padding: 10,
-    borderColor: '#e0e0e0',
-    borderRadius: 5,
-  },
+
   buttonLogin: {
     width: '100%',
     height: 50,
@@ -187,7 +270,7 @@ const styles = StyleSheet.create({
   },
   buttonTextLogin: {
     fontFamily: 'Poppins-Bold',
-    fontSize: 18,
+    fontSize: 16,
     color: 'white',
   },
   textTitle: {
