@@ -2,14 +2,111 @@ import React from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {ButtonIconSignIn} from './ButtonIconSignIn';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {ScreenName} from '../../navigator/Navigator';
+import {ScreenName} from '../../navigation/Navigation';
 import Input from './Input';
-
-interface Props {
+import {useForm} from 'react-hook-form';
+interface FormAuthProps {
   formType: 'login' | 'register' | 'forgot' | 'otp';
   gotoForm: (screen: ScreenName) => void;
   textBtn?: string;
   activeBtn?: boolean;
+  signIn?: () => Promise<void>;
+}
+
+type SocialSignInProps = Omit<FormAuthProps, 'activeBtn' | 'textBtn'> & {
+  isFormSignInOrUp: boolean;
+};
+
+function SocialSignIn({
+  formType,
+  gotoForm,
+  isFormSignInOrUp,
+  signIn,
+}: SocialSignInProps) {
+  return (
+    <View
+      style={{
+        rowGap: 15,
+      }}>
+      {isFormSignInOrUp && (
+        <View
+          style={{
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            rowGap: 25,
+          }}>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+
+              columnGap: 20,
+            }}>
+            <View style={{flex: 1, height: 1, backgroundColor: '#BDBDBD'}} />
+            <Text
+              style={{
+                ...styles.textTitle,
+              }}>
+              Or login with
+            </Text>
+            <View style={{flex: 1, height: 1, backgroundColor: '#BDBDBD'}} />
+          </View>
+          {/* OR Login others */}
+          <View style={styles.btnSignInOther}>
+            <ButtonIconSignIn
+              nameIcon="logo-google"
+              sizeIcon={25}
+              textIcon="Google"
+              colorIcon={'#DB4437'}
+              activeOpacity={0.7}
+              onPress={signIn}
+            />
+
+            <ButtonIconSignIn
+              activeOpacity={0.7}
+              nameIcon="logo-facebook"
+              sizeIcon={25}
+              textIcon="Facebook"
+              colorIcon={'#4267B2'}
+            />
+          </View>
+        </View>
+      )}
+      {/* Sign up */}
+      {formType === 'login' && (
+        <View style={styles.signUpBtn}>
+          <Text style={styles.textTitle}>Don't you have an account ?</Text>
+          <TouchableOpacity onPress={() => gotoForm('RegisterScreen')}>
+            {/* 290498 */}
+            <Text
+              style={{
+                ...styles.textTitle,
+                color: '#7C4DFF',
+              }}>
+              Sign up
+            </Text>
+          </TouchableOpacity>
+        </View>
+      )}
+      {/* Sign up */}
+      {formType === 'register' && (
+        <View style={styles.signUpBtn}>
+          <Text style={styles.textTitle}>Have an account ?</Text>
+          <TouchableOpacity onPress={() => gotoForm('LoginScreen')}>
+            {/* 290498 */}
+            <Text
+              style={{
+                ...styles.textTitle,
+                color: '#7C4DFF',
+              }}>
+              Sign in
+            </Text>
+          </TouchableOpacity>
+        </View>
+      )}
+    </View>
+  );
 }
 
 export const FormAuth = ({
@@ -17,7 +114,8 @@ export const FormAuth = ({
   gotoForm,
   textBtn,
   activeBtn,
-}: Props) => {
+  signIn,
+}: FormAuthProps) => {
   const [isShowPassword, setIsShowPassword] = React.useState<{
     password: boolean;
     confirmPassword: boolean;
@@ -25,6 +123,17 @@ export const FormAuth = ({
     password: false,
     confirmPassword: false,
   });
+
+  const {
+    control,
+    handleSubmit,
+    formState: {errors},
+  } = useForm();
+
+  const onSubmit = (data: any) => {
+    console.log(data);
+  };
+
   // check formType
   const isFormSignInOrUp = formType === 'login' || formType === 'register';
 
@@ -46,30 +155,41 @@ export const FormAuth = ({
         {/* Sign up  */}
         {formType === 'register' && (
           <Input
+            rules={{
+              required: 'Username is required',
+            }}
+            control={control}
             keyboardType="default"
             placeholder="Enter your username ..."
             label="Username"
+            name="username"
           />
         )}
         <Input
+          rules={{
+            required: 'Email is required',
+          }}
+          control={control}
           keyboardType="email-address"
           placeholder="Enter your email ..."
           label="Email"
+          name="email"
         />
 
         {/* Sign up and Sign in */}
         {isFormSignInOrUp && (
-          <View
-            style={{
-              position: 'relative',
-              height: 55,
-            }}>
+          <View>
             <Input
+              rules={{
+                required: 'Password is required',
+              }}
+              control={control}
               keyboardType="default"
               placeholder="Enter your password ..."
               label="Password"
               secureTextEntry={!isShowPassword.password}
               autoCorrect={false}
+              name="password"
             />
             {/* Icon show password */}
             <TouchableOpacity
@@ -77,7 +197,7 @@ export const FormAuth = ({
               style={{
                 position: 'absolute',
                 right: 15,
-                top: '50%',
+                top: 27.5,
               }}>
               <Icon
                 name={
@@ -92,13 +212,13 @@ export const FormAuth = ({
 
         {/* Sign up  */}
         {formType === 'register' && (
-          <View
-            style={{
-              position: 'relative',
-              height: 55,
-              marginVertical: 25,
-            }}>
+          <View>
             <Input
+              rules={{
+                required: 'Confirm password is required',
+              }}
+              control={control}
+              name="confirmPassword"
               keyboardType="default"
               placeholder="Enter your confirm password ..."
               label="Confirm password"
@@ -111,7 +231,7 @@ export const FormAuth = ({
               style={{
                 position: 'absolute',
                 right: 15,
-                top: '50%',
+                top: 27.5,
               }}>
               <Icon
                 name={
@@ -131,10 +251,9 @@ export const FormAuth = ({
           <TouchableOpacity
             style={{
               marginBottom: 10,
-              marginTop: 20,
             }}
             activeOpacity={0.9}
-            onPress={() => gotoForm('OtpScreen')}>
+            onPress={() => gotoForm('ForgotPasswordScreen')}>
             <Text
               style={[
                 styles.textTitle,
@@ -146,6 +265,8 @@ export const FormAuth = ({
             </Text>
           </TouchableOpacity>
         )}
+
+        {/* Button Submit */}
         <TouchableOpacity
           style={[
             styles.buttonLogin,
@@ -154,95 +275,17 @@ export const FormAuth = ({
             },
           ]}
           activeOpacity={0.9}
-          disabled={activeBtn}>
+          onPress={handleSubmit(onSubmit)}>
           <Text style={styles.buttonTextLogin}>{textBtn}</Text>
         </TouchableOpacity>
 
-        <View
-          style={{
-            rowGap: 15,
-          }}>
-          {isFormSignInOrUp && (
-            <View
-              style={{
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',
-                rowGap: 25,
-              }}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-
-                  columnGap: 20,
-                }}>
-                <View
-                  style={{flex: 1, height: 1, backgroundColor: '#BDBDBD'}}
-                />
-                <Text
-                  style={{
-                    ...styles.textTitle,
-                  }}>
-                  Or login with
-                </Text>
-                <View
-                  style={{flex: 1, height: 1, backgroundColor: '#BDBDBD'}}
-                />
-              </View>
-              {/* OR Login others */}
-              <View style={styles.btnSignInOther}>
-                <ButtonIconSignIn
-                  nameIcon="logo-google"
-                  sizeIcon={25}
-                  textIcon="Google"
-                  colorIcon={'#DB4437'}
-                  activeOpacity={0.7}
-                />
-
-                <ButtonIconSignIn
-                  activeOpacity={0.7}
-                  nameIcon="logo-facebook"
-                  sizeIcon={25}
-                  textIcon="Facebook"
-                  colorIcon={'#4267B2'}
-                />
-              </View>
-            </View>
-          )}
-          {/* Sign up */}
-          {formType === 'login' && (
-            <View style={styles.signUpBtn}>
-              <Text style={styles.textTitle}>Don't you have an account ?</Text>
-              <TouchableOpacity onPress={() => gotoForm('RegisterScreen')}>
-                {/* 290498 */}
-                <Text
-                  style={{
-                    ...styles.textTitle,
-                    color: '#7C4DFF',
-                  }}>
-                  Sign up
-                </Text>
-              </TouchableOpacity>
-            </View>
-          )}
-          {/* Sign up */}
-          {formType === 'register' && (
-            <View style={styles.signUpBtn}>
-              <Text style={styles.textTitle}>Have an account ?</Text>
-              <TouchableOpacity onPress={() => gotoForm('LoginScreen')}>
-                {/* 290498 */}
-                <Text
-                  style={{
-                    ...styles.textTitle,
-                    color: '#7C4DFF',
-                  }}>
-                  Sign in
-                </Text>
-              </TouchableOpacity>
-            </View>
-          )}
-        </View>
+        {/* Social SignIn */}
+        <SocialSignIn
+          isFormSignInOrUp={isFormSignInOrUp}
+          formType={formType}
+          gotoForm={gotoForm}
+          signIn={signIn}
+        />
       </View>
     </View>
   );
@@ -257,7 +300,6 @@ const styles = StyleSheet.create({
     fontSize: 26,
     textAlign: 'center',
   },
-
   buttonLogin: {
     width: '100%',
     height: 50,
@@ -266,7 +308,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 10,
-    marginBottom: 30,
+    marginBottom: 10,
   },
   buttonTextLogin: {
     fontFamily: 'Poppins-Bold',

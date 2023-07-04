@@ -1,17 +1,28 @@
 import {View, Text, StyleSheet, TextInput, TextInputProps} from 'react-native';
 import React from 'react';
+import {Control, Controller, FieldValues} from 'react-hook-form';
 
 interface TextInputCustomProps extends TextInputProps {
   label: string;
+  name: string;
+  control: Control<FieldValues, any>;
+  rules: {};
 }
-const Input = ({label, ...props}: TextInputCustomProps) => {
+const Input = ({
+  control,
+  label,
+  name,
+  rules = {},
+  ...props
+}: TextInputCustomProps) => {
   const [isFocused, setIsFocused] = React.useState(false);
-  const onFocus = () => {
+  const onFocusOutline = () => {
     setIsFocused(true);
   };
-  const onBlur = () => {
+  const onBlurOutline = () => {
     setIsFocused(false);
   };
+
   return (
     <View>
       <View style={styles.labelContainer}>
@@ -25,16 +36,43 @@ const Input = ({label, ...props}: TextInputCustomProps) => {
         </Text>
       </View>
       <View>
-        <TextInput
-          {...props}
-          style={[
-            styles.inputContainer,
-            {
-              borderColor: isFocused ? '#7950f2' : '#BDBDBD',
-            },
-          ]}
-          onFocus={onFocus}
-          onBlur={onBlur}
+        <Controller
+          control={control}
+          rules={rules}
+          render={({field: {onChange, onBlur, value}, fieldState: {error}}) => {
+            return (
+              <>
+                <TextInput
+                  style={[
+                    styles.inputContainer,
+                    isFocused && {borderColor: '#7C4DFF'},
+                    error && {borderColor: 'red'},
+                  ]}
+                  onBlur={() => {
+                    onBlur();
+                    onBlurOutline();
+                  }}
+                  onFocus={onFocusOutline}
+                  onChangeText={onChange}
+                  value={value}
+                  {...props}
+                />
+                {error && (
+                  <Text
+                    style={{
+                      color: 'red',
+                      fontSize: 12,
+                      fontFamily: 'Poppins-Regular',
+                      alignSelf: 'stretch',
+                    }}>
+                    {error?.message}
+                  </Text>
+                )}
+              </>
+            );
+          }}
+          name={name}
+          defaultValue=""
         />
       </View>
     </View>

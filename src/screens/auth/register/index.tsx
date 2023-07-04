@@ -1,18 +1,17 @@
 import React from 'react';
 import {StackScreenProps} from '@react-navigation/stack';
 import {
-  View,
-  SafeAreaView,
   KeyboardAvoidingView,
+  SafeAreaView,
   ScrollView,
+  View,
 } from 'react-native';
-import {LinearGradientBG} from '../../components/layouts/LinearGradientBG';
-import {RootStackParams, ScreenName} from '../../navigator/Navigator';
-import {FormAuth} from '../../components/ui';
+import {LinearGradientBG} from '../../../components/layouts/LinearGradientBG';
+import {RootStackParams, ScreenName} from '../../../navigation/Navigation';
+import {FormAuth} from '../../../components/ui';
 
-interface Props extends StackScreenProps<RootStackParams, 'LoginScreen'> {}
-
-export const LoginScreen = ({navigation}: Props) => {
+interface Props extends StackScreenProps<RootStackParams, 'RegisterScreen'> {}
+export const RegisterScreen = ({navigation}: Props) => {
   const gotoScreen = (screen: ScreenName) => {
     navigation.navigate(screen);
   };
@@ -21,7 +20,6 @@ export const LoginScreen = ({navigation}: Props) => {
     <SafeAreaView
       style={{
         flex: 1,
-        // paddingTop: StatusBar.currentHeight, IOS
       }}>
       <ScrollView>
         <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={-350}>
@@ -30,14 +28,16 @@ export const LoginScreen = ({navigation}: Props) => {
               flex: 1,
             }}>
             <LinearGradientBG
-              title="Sign in to your Account"
-              subTitle="Sign in to your Account"
+              title="Register"
+              subTitle="Create your account"
+              isBtnBack
+              goBack={() => navigation.goBack()}
             />
             <FormAuth
-              formType="login"
+              formType="register"
               gotoForm={gotoScreen}
-              textBtn="Login"
-              activeBtn
+              textBtn="Sign up"
+              activeBtn={true}
             />
           </View>
         </KeyboardAvoidingView>

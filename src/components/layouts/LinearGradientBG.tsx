@@ -35,7 +35,7 @@ export const LinearGradientBG = ({
         )}
         <View
           style={{
-            marginTop: 40,
+            marginTop: 20,
           }}>
           <Text style={styles.title}>{title}</Text>
           <Text style={styles.subTitle}>{subTitle}</Text>
@@ -46,7 +46,7 @@ export const LinearGradientBG = ({
 };
 const styles = StyleSheet.create({
   linearGradientBg: {
-    height: 200,
+    height: 150,
     justifyContent: 'center',
     alignItems: 'flex-start',
   },
