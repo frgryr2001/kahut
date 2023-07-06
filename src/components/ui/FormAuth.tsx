@@ -10,18 +10,21 @@ interface FormAuthProps {
   gotoForm: (screen: ScreenName) => void;
   textBtn?: string;
   activeBtn?: boolean;
-  signIn?: () => Promise<void>;
+  signInSocialGoogle?: () => Promise<void>;
 }
 
 type SocialSignInProps = Omit<FormAuthProps, 'activeBtn' | 'textBtn'> & {
   isFormSignInOrUp: boolean;
 };
 
+const EMAIL_REGEX =
+  /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
 function SocialSignIn({
   formType,
   gotoForm,
   isFormSignInOrUp,
-  signIn,
+  signInSocialGoogle,
 }: SocialSignInProps) {
   return (
     <View
@@ -60,7 +63,7 @@ function SocialSignIn({
               textIcon="Google"
               colorIcon={'#DB4437'}
               activeOpacity={0.7}
-              onPress={signIn}
+              onPress={signInSocialGoogle}
             />
 
             <ButtonIconSignIn
@@ -114,7 +117,7 @@ export const FormAuth = ({
   gotoForm,
   textBtn,
   activeBtn,
-  signIn,
+  signInSocialGoogle,
 }: FormAuthProps) => {
   const [isShowPassword, setIsShowPassword] = React.useState<{
     password: boolean;
@@ -127,11 +130,20 @@ export const FormAuth = ({
   const {
     control,
     handleSubmit,
-    formState: {errors},
+    // formState: {errors},
   } = useForm();
 
   const onSubmit = (data: any) => {
-    console.log(data);
+    switch (formType) {
+      case 'login':
+        console.log('login', data);
+        break;
+      case 'register':
+        console.log('register', data);
+        break;
+      default:
+        break;
+    }
   };
 
   // check formType
@@ -157,6 +169,14 @@ export const FormAuth = ({
           <Input
             rules={{
               required: 'Username is required',
+              minLength: {
+                value: 3,
+                message: 'Username should be at least 3 characters long',
+              },
+              maxLength: {
+                value: 24,
+                message: 'Username should be max 24 characters long',
+              },
             }}
             control={control}
             keyboardType="default"
@@ -168,12 +188,13 @@ export const FormAuth = ({
         <Input
           rules={{
             required: 'Email is required',
+            pattern: {value: EMAIL_REGEX, message: 'Email is invalid'},
           }}
           control={control}
-          keyboardType="email-address"
           placeholder="Enter your email ..."
           label="Email"
           name="email"
+          selectTextOnFocus
         />
 
         {/* Sign up and Sign in */}
@@ -182,6 +203,10 @@ export const FormAuth = ({
             <Input
               rules={{
                 required: 'Password is required',
+                minLength: {
+                  value: 6,
+                  message: 'Password should be at least 6 characters long',
+                },
               }}
               control={control}
               keyboardType="default"
@@ -216,6 +241,10 @@ export const FormAuth = ({
             <Input
               rules={{
                 required: 'Confirm password is required',
+                minLength: {
+                  value: 6,
+                  message: 'Password should be at least 6 characters long',
+                },
               }}
               control={control}
               name="confirmPassword"
@@ -284,7 +313,7 @@ export const FormAuth = ({
           isFormSignInOrUp={isFormSignInOrUp}
           formType={formType}
           gotoForm={gotoForm}
-          signIn={signIn}
+          signInSocialGoogle={signInSocialGoogle}
         />
       </View>
     </View>
