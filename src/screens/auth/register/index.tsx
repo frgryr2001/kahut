@@ -6,14 +6,38 @@ import {
   ScrollView,
   View,
 } from 'react-native';
+import Snackbar from 'react-native-snackbar';
 import {LinearGradientBG} from '../../../components/layouts/LinearGradientBG';
 import {RootStackParams, ScreenName} from '../../../navigation/Navigation';
 import {FormAuth} from '../../../components/ui';
+import {useAppDispatch} from '../../../redux/store';
+import {signUp} from '../../../redux/slices/authSlice/actions';
 
 interface Props extends StackScreenProps<RootStackParams, 'RegisterScreen'> {}
 export const RegisterScreen = ({navigation}: Props) => {
+  const dispatch = useAppDispatch();
   const gotoScreen = (screen: ScreenName) => {
     navigation.navigate(screen);
+  };
+
+  const signUpWithEmail = (data: any, callback: () => void) => {
+    if (data.password !== data.confirmPassword) {
+      return Snackbar.show({
+        text: 'Password and confirm password do not match',
+        duration: Snackbar.LENGTH_LONG,
+        backgroundColor: '#ED4337',
+        fontFamily: 'Poppins-Regular',
+      });
+    }
+    dispatch(
+      signUp({
+        username: data.username,
+        email: data.email,
+      }),
+    ).then(() => {
+      callback();
+      navigation.navigate('OtpScreen');
+    });
   };
 
   return (
@@ -38,6 +62,7 @@ export const RegisterScreen = ({navigation}: Props) => {
               gotoForm={gotoScreen}
               textBtn="Sign up"
               activeBtn={true}
+              signUpWithEmail={signUpWithEmail}
             />
           </View>
         </KeyboardAvoidingView>

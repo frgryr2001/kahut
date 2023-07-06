@@ -11,11 +11,16 @@ export const signUp = createAsyncThunk(
         data,
         {
           signal: thunkAPI.signal,
+          headers: {
+            'ngrok-skip-browser-warning': 'true',
+          },
         },
       );
       return response.data;
     } catch (error: any) {
-      return thunkAPI.rejectWithValue(error.response.data);
+      console.log(error);
+
+      //   return thunkAPI.rejectWithValue(error);
     }
   },
 );

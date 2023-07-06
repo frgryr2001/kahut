@@ -1,24 +1,32 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {useForm} from 'react-hook-form';
 import {ButtonIconSignIn} from './ButtonIconSignIn';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  ActivityIndicator,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {ScreenName} from '../../navigation/Navigation';
 import Input from './Input';
-import {useForm} from 'react-hook-form';
+import {EMAIL_REGEX} from '../../helpers/emailValidation';
+import {useSelector} from 'react-redux';
+import {selectLoading} from '../../redux/slices/authSlice/selector';
+
 interface FormAuthProps {
   formType: 'login' | 'register' | 'forgot' | 'otp';
   gotoForm: (screen: ScreenName) => void;
   textBtn?: string;
   activeBtn?: boolean;
   signInSocialGoogle?: () => Promise<void>;
+  signUpWithEmail?: (data: any, callback: () => void) => void;
 }
 
 type SocialSignInProps = Omit<FormAuthProps, 'activeBtn' | 'textBtn'> & {
   isFormSignInOrUp: boolean;
 };
-
-const EMAIL_REGEX =
-  /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 function SocialSignIn({
   formType,
@@ -118,7 +126,11 @@ export const FormAuth = ({
   textBtn,
   activeBtn,
   signInSocialGoogle,
+  signUpWithEmail,
 }: FormAuthProps) => {
+  const loading = useSelector(selectLoading);
+  // check formType
+  const isFormSignInOrUp = formType === 'login' || formType === 'register';
   const [isShowPassword, setIsShowPassword] = React.useState<{
     password: boolean;
     confirmPassword: boolean;
@@ -130,6 +142,7 @@ export const FormAuth = ({
   const {
     control,
     handleSubmit,
+    reset,
     // formState: {errors},
   } = useForm();
 
@@ -139,15 +152,14 @@ export const FormAuth = ({
         console.log('login', data);
         break;
       case 'register':
-        console.log('register', data);
+        if (signUpWithEmail) {
+          signUpWithEmail(data, () => reset());
+        }
         break;
       default:
         break;
     }
   };
-
-  // check formType
-  const isFormSignInOrUp = formType === 'login' || formType === 'register';
 
   const handleShowPassword = <T extends keyof typeof isShowPassword>(
     key: T,
@@ -170,8 +182,8 @@ export const FormAuth = ({
             rules={{
               required: 'Username is required',
               minLength: {
-                value: 3,
-                message: 'Username should be at least 3 characters long',
+                value: 6,
+                message: 'Username should be at least 6 characters long',
               },
               maxLength: {
                 value: 24,
@@ -207,6 +219,7 @@ export const FormAuth = ({
                   value: 6,
                   message: 'Password should be at least 6 characters long',
                 },
+                trapSpacesForRequiredFields: true,
               }}
               control={control}
               keyboardType="default"
@@ -245,6 +258,7 @@ export const FormAuth = ({
                   value: 6,
                   message: 'Password should be at least 6 characters long',
                 },
+                trapSpacesForRequiredFields: true,
               }}
               control={control}
               name="confirmPassword"
@@ -303,9 +317,14 @@ export const FormAuth = ({
               backgroundColor: activeBtn ? '#7C4DFF' : '#BDBDBD',
             },
           ]}
+          disabled={loading}
           activeOpacity={0.9}
           onPress={handleSubmit(onSubmit)}>
-          <Text style={styles.buttonTextLogin}>{textBtn}</Text>
+          {loading ? (
+            <ActivityIndicator size="small" color="#fff" />
+          ) : (
+            <Text style={styles.buttonTextLogin}>{textBtn}</Text>
+          )}
         </TouchableOpacity>
 
         {/* Social SignIn */}
