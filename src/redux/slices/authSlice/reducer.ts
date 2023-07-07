@@ -1,6 +1,6 @@
 import {AnyAction, AsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {User} from '../../../types/user';
-import {signUp} from './actions';
+import {signUp, verifyOtpSignUp} from './actions';
 
 type GenericAsyncThunk = AsyncThunk<unknown, unknown, any>;
 
@@ -10,18 +10,16 @@ type FulfilledAction = ReturnType<GenericAsyncThunk['fulfilled']>;
 
 interface AuthState {
   user: User | null;
-  token: string;
-  refreshToken: string;
   loading: boolean;
   error: string;
+  status: 'checking' | 'authenticated' | 'not-authenticated';
   currentRequestId: undefined | string;
 }
 
 const initialState: AuthState = {
   user: null,
-  token: '',
-  refreshToken: '',
   loading: false,
+  status: 'checking',
   error: '',
   currentRequestId: undefined,
 };
@@ -33,6 +31,11 @@ const authSlice = createSlice({
     builder
       .addCase(signUp.fulfilled, state => {
         state.loading = false;
+      })
+      .addCase(verifyOtpSignUp.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload;
+        state.status = 'authenticated';
       })
       .addMatcher<PendingAction>(
         (action: AnyAction): action is PendingAction =>

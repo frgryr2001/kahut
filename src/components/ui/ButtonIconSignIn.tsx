@@ -1,6 +1,7 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {
+  Image,
   StyleSheet,
   TouchableOpacity,
   TouchableOpacityProps,
@@ -22,9 +23,29 @@ export const ButtonIconSignIn = ({
   textIcon,
   ...props
 }: ButtonIconSignInProps) => {
+  const getIcon = useCallback(() => {
+    switch (nameIcon) {
+      case 'logo-google':
+        return (
+          <Image
+            source={require('../../assets/images/googleIcon.png')}
+            style={{
+              width: 20,
+              height: 20,
+            }}
+          />
+        );
+      case 'logo-facebook':
+        return <Icon name={nameIcon!} size={sizeIcon} color={colorIcon} />;
+      default:
+        return <Icon name={nameIcon!} size={sizeIcon} color={colorIcon} />;
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <TouchableOpacity style={styles.btn} {...props}>
-      <Icon name={nameIcon!} size={sizeIcon} color={colorIcon} />
+      {getIcon()}
       <Text style={styles.textBtn}>{textIcon}</Text>
     </TouchableOpacity>
   );

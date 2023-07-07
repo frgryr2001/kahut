@@ -8,17 +8,17 @@ class HttpClient {
     this.axiosInstance = axios.create({
       baseURL: API_URL,
     });
-    // // Add a request interceptor
-    // this.axiosInstance.interceptors.request.use(
-    //   function (config) {
-    //     // Do something before request is sent
-    //     return config;
-    //   },
-    //   function (error) {
-    //     // Do something with request error
-    //     return Promise.reject(error);
-    //   },
-    // );
+    // Add a request interceptor
+    this.axiosInstance.interceptors.request.use(
+      function (config) {
+        // Do something before request is sent
+        return config;
+      },
+      function (error) {
+        // Do something with request error
+        return Promise.reject(error);
+      },
+    );
   }
 
   public static getInstance(): HttpClient {
@@ -45,21 +45,21 @@ class HttpClient {
     }
   }
 
-  public async post<T>(
-    url: string,
-    data: any,
-    config?: AxiosRequestConfig,
-  ): Promise<T> {
-    try {
-      const response: AxiosResponse<T> = await this.axiosInstance.post(
-        url,
-        data,
-        config,
-      );
-      return response.data;
-    } catch (error) {
-      throw this.handleRequestError(error as AxiosError);
-    }
+  public async post<T>({
+    url,
+    data,
+    config,
+  }: {
+    url: string;
+    data: any;
+    config?: AxiosRequestConfig;
+  }): Promise<T> {
+    const response: AxiosResponse<T> = await this.axiosInstance.post(
+      url,
+      data,
+      config,
+    );
+    return response.data;
   }
 
   public async put<T>(
@@ -67,16 +67,12 @@ class HttpClient {
     data: any,
     config?: AxiosRequestConfig,
   ): Promise<T> {
-    try {
-      const response: AxiosResponse<T> = await this.axiosInstance.put(
-        url,
-        data,
-        config,
-      );
-      return response.data;
-    } catch (error) {
-      throw this.handleRequestError(error as AxiosError);
-    }
+    const response: AxiosResponse<T> = await this.axiosInstance.put(
+      url,
+      data,
+      config,
+    );
+    return response.data;
   }
 
   public async delete<T>(url: string, config?: AxiosRequestConfig): Promise<T> {

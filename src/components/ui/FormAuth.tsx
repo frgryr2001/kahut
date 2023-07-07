@@ -24,14 +24,11 @@ interface FormAuthProps {
   signUpWithEmail?: (data: any, callback: () => void) => void;
 }
 
-type SocialSignInProps = Omit<FormAuthProps, 'activeBtn' | 'textBtn'> & {
-  isFormSignInOrUp: boolean;
-};
+type SocialSignInProps = Omit<FormAuthProps, 'activeBtn' | 'textBtn'>;
 
 function SocialSignIn({
   formType,
   gotoForm,
-  isFormSignInOrUp,
   signInSocialGoogle,
 }: SocialSignInProps) {
   return (
@@ -39,7 +36,7 @@ function SocialSignIn({
       style={{
         rowGap: 15,
       }}>
-      {isFormSignInOrUp && (
+      {formType === 'login' && (
         <View
           style={{
             flexDirection: 'column',
@@ -67,7 +64,7 @@ function SocialSignIn({
           <View style={styles.btnSignInOther}>
             <ButtonIconSignIn
               nameIcon="logo-google"
-              sizeIcon={25}
+              sizeIcon={20}
               textIcon="Google"
               colorIcon={'#DB4437'}
               activeOpacity={0.7}
@@ -77,7 +74,7 @@ function SocialSignIn({
             <ButtonIconSignIn
               activeOpacity={0.7}
               nameIcon="logo-facebook"
-              sizeIcon={25}
+              sizeIcon={20}
               textIcon="Facebook"
               colorIcon={'#4267B2'}
             />
@@ -295,8 +292,8 @@ export const FormAuth = ({
             style={{
               marginBottom: 10,
             }}
-            activeOpacity={0.9}
-            onPress={() => gotoForm('ForgotPasswordScreen')}>
+            activeOpacity={0.7}
+            onPress={() => gotoForm('OtpScreen')}>
             <Text
               style={[
                 styles.textTitle,
@@ -329,7 +326,7 @@ export const FormAuth = ({
 
         {/* Social SignIn */}
         <SocialSignIn
-          isFormSignInOrUp={isFormSignInOrUp}
+          //   isFormSignInOrUp={isFormSignInOrUp}
           formType={formType}
           gotoForm={gotoForm}
           signInSocialGoogle={signInSocialGoogle}

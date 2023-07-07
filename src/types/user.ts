@@ -11,7 +11,7 @@ export interface User {
 export interface AuthSignUpResponse {
   code: number;
   success: boolean;
-  data: SignUpDataRes;
+  data: SignUpData;
   message: string;
 }
 export interface SignUpData {
@@ -23,4 +23,17 @@ export interface SignUpDataRes {
   email: string;
   otp: string;
   expired: number;
+}
+// Verify OTP interface
+export interface AuthVerifyOtpResponse {
+  code: number;
+  success: boolean;
+  data: User;
+  message: string;
+}
+export interface VerifyOtpData {
+  email: string;
+  otp: string;
+  password: string;
+  username: string;
 }

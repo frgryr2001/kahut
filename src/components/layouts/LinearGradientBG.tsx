@@ -1,14 +1,16 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 interface Props {
   title?: string;
+  bgImage?: string;
   subTitle?: string;
   goBack?: () => void;
   isBtnBack?: boolean;
+  mgBottom?: boolean;
 }
 
 export const LinearGradientBG = ({
@@ -16,47 +18,74 @@ export const LinearGradientBG = ({
   subTitle,
   goBack,
   isBtnBack,
+  bgImage,
+  mgBottom,
 }: Props) => {
+  const getImage = useCallback(() => {
+    switch (bgImage) {
+      case 'login':
+        return require('../../assets/images/login.png');
+      case 'register':
+        return require('../../assets/images/signup.png');
+      case 'forgot':
+        return require('../../assets/images/forgot.png');
+      case 'otp':
+        return require('../../assets/images/otp.png');
+      default:
+        return require('../../assets/images/login.png');
+    }
+  }, [bgImage]);
+
   return (
     <LinearGradient
-      colors={['#7C4DFF', '#673AB7']}
-      style={styles.linearGradientBg}
-      start={{x: 0, y: 0}}
-      end={{x: 1, y: 1}}>
-      <View style={styles.container}>
-        {isBtnBack && (
-          <TouchableOpacity onPress={goBack}>
-            <Icon
-              name="chevron-back-circle-outline"
-              size={30}
-              color={'white'}
-            />
-          </TouchableOpacity>
-        )}
-        <View
+      colors={['#673AB7', '#ffffff']}
+      style={[styles.linearGradientBg, mgBottom && {marginBottom: 20}]}
+      start={{x: 0.5, y: 0.2}}
+      end={{x: 0.5, y: 0.7}}>
+      {isBtnBack && (
+        <TouchableOpacity
+          onPress={goBack}
           style={{
-            marginTop: 20,
+            position: 'absolute',
+            top: 20,
+            left: 10,
+            zIndex: 999,
           }}>
-          <Text style={styles.title}>{title}</Text>
-          <Text style={styles.subTitle}>{subTitle}</Text>
-        </View>
+          <Icon name="chevron-back-circle-outline" size={30} color={'white'} />
+        </TouchableOpacity>
+      )}
+      <View style={styles.container}>
+        <Image
+          style={{
+            width: 250,
+            height: 250,
+          }}
+          source={getImage()}
+        />
+      </View>
+      <View
+        style={{
+          paddingHorizontal: 10,
+        }}>
+        <Text style={styles.title}>{title}</Text>
+        {subTitle && <Text style={styles.subTitle}>{subTitle}</Text>}
       </View>
     </LinearGradient>
   );
 };
 const styles = StyleSheet.create({
   linearGradientBg: {
-    height: 150,
-    justifyContent: 'center',
-    alignItems: 'flex-start',
+    height: 300,
   },
   container: {
-    marginHorizontal: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  title: {color: 'white', fontSize: 30, fontFamily: 'Poppins-Bold'},
+  title: {color: 'black', fontSize: 28, fontFamily: 'Poppins-Bold'},
   subTitle: {
-    color: '#D1C4E9',
-    fontSize: 15,
+    color: '#BDBDBD',
+    fontSize: 16,
     fontFamily: 'Poppins-Regular',
+    marginBottom: 20,
   },
 });

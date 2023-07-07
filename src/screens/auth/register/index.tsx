@@ -17,7 +17,7 @@ interface Props extends StackScreenProps<RootStackParams, 'RegisterScreen'> {}
 export const RegisterScreen = ({navigation}: Props) => {
   const dispatch = useAppDispatch();
   const gotoScreen = (screen: ScreenName) => {
-    navigation.navigate(screen);
+    navigation.navigate(screen as never);
   };
 
   const signUpWithEmail = (data: any, callback: () => void) => {
@@ -34,10 +34,24 @@ export const RegisterScreen = ({navigation}: Props) => {
         username: data.username,
         email: data.email,
       }),
-    ).then(() => {
-      callback();
-      navigation.navigate('OtpScreen');
-    });
+    )
+      .unwrap()
+      .then(() => {
+        navigation.navigate('OtpScreen', {
+          email: data.email,
+          password: data.password,
+          username: data.username,
+        });
+        callback();
+      })
+      .catch(err => {
+        Snackbar.show({
+          text: err.message,
+          duration: Snackbar.LENGTH_LONG,
+          backgroundColor: '#ED4337',
+          fontFamily: 'Poppins-Regular',
+        });
+      });
   };
 
   return (
@@ -46,16 +60,16 @@ export const RegisterScreen = ({navigation}: Props) => {
         flex: 1,
       }}>
       <ScrollView>
-        <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={-350}>
+        <KeyboardAvoidingView behavior="position" keyboardVerticalOffset={-30}>
           <View
             style={{
               flex: 1,
             }}>
             <LinearGradientBG
               title="Register"
-              subTitle="Create your account"
               isBtnBack
               goBack={() => navigation.goBack()}
+              bgImage="register"
             />
             <FormAuth
               formType="register"

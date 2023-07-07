@@ -15,7 +15,7 @@ interface Props
 
 export const ForgotPasswordScreen = ({navigation}: Props) => {
   const gotoScreen = (screen: ScreenName) => {
-    navigation.navigate(screen);
+    navigation.navigate(screen as never);
   };
 
   return (
@@ -34,9 +34,12 @@ export const ForgotPasswordScreen = ({navigation}: Props) => {
               title="Forgot Password"
               subTitle="Enter your email account to reset password"
               isBtnBack
+              bgImage="forgot"
+              mgBottom
               goBack={() => navigation.goBack()}
             />
             <FormAuth
+              activeBtn
               formType="forgot"
               gotoForm={gotoScreen}
               textBtn="Continue"

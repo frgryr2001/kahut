@@ -7,22 +7,35 @@ import {
 import {
   ForgotPasswordScreen,
   HomeScreen,
+  LoadingScreen,
   LoginScreen,
   OtpScreen,
   RegisterScreen,
 } from '../screens';
+import {selectStatus} from '../redux/slices/authSlice/selector';
+import {useSelector} from 'react-redux';
 
 export type RootStackParams = {
   HomeScreen: undefined;
   LoginScreen: undefined;
   RegisterScreen: undefined;
   ForgotPasswordScreen: undefined;
-  OtpScreen: undefined;
+  OtpScreen: {
+    email: string;
+    password: string;
+    username: string;
+  };
 };
 export type ScreenName = keyof RootStackParams;
 
 const Stack = createStackNavigator<RootStackParams>();
 export const Navigator = () => {
+  //   const status = useSelector(selectStatus);
+
+  //   if (status === 'checking') {
+  //     return <LoadingScreen />;
+  //   }
+
   return (
     <NavigationContainer>
       <Stack.Navigator

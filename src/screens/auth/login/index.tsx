@@ -24,7 +24,7 @@ GoogleSignin.configure({
 
 export const LoginScreen = ({navigation}: Props) => {
   const gotoScreen = (screen: ScreenName) => {
-    navigation.navigate(screen);
+    navigation.navigate(screen as never);
   };
   const signInSocialGoogle = async () => {
     try {
@@ -69,7 +69,7 @@ export const LoginScreen = ({navigation}: Props) => {
               }}>
               <LinearGradientBG
                 title="Sign in to your Account"
-                subTitle="Sign in to your Account"
+                bgImage="login"
               />
               <FormAuth
                 formType="login"

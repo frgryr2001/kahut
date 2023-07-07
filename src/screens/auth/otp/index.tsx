@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect} from 'react';
+import React, {useState, useRef, useEffect, useMemo} from 'react';
 import {StackScreenProps} from '@react-navigation/stack';
 import {
   View,
@@ -9,17 +9,40 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 import {LinearGradientBG} from '../../../components/layouts/LinearGradientBG';
 import {RootStackParams} from '../../../navigation/Navigation';
+import Snackbar from 'react-native-snackbar';
+import {useAppDispatch} from '../../../redux/store';
+import {verifyOtpSignUp} from '../../../redux/slices/authSlice/actions';
+import {useSelector} from 'react-redux';
+import {selectLoading} from '../../../redux/slices/authSlice/selector';
 
 interface Props extends StackScreenProps<RootStackParams, 'OtpScreen'> {}
 
-export const OtpScreen = ({navigation}: Props) => {
+export const OtpScreen = ({navigation, route}: Props) => {
+  const {email, password, username} = route.params;
+  const dispatch = useAppDispatch();
+  const loading = useSelector(selectLoading);
+
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
-  const [timer, setTimer] = useState(60);
+  const [timer, setTimer] = useState(180);
   const [codeExpired, setCodeExpired] = useState(false);
   const otpInputs = useRef<TextInput[]>([]);
+
+  const {formattedTime} = useMemo(() => {
+    const calculatedMinutes = Math.floor(timer / 60);
+    const secondsRemaining = timer % 60;
+    const calculatedFormattedTime = `${calculatedMinutes}:${
+      secondsRemaining < 10 ? '0' : ''
+    }${secondsRemaining}`;
+
+    return {
+      formattedTime: calculatedFormattedTime,
+    };
+  }, [timer]);
+
   useEffect(() => {
     let intervalId: NodeJS.Timeout | undefined;
 
@@ -59,6 +82,41 @@ export const OtpScreen = ({navigation}: Props) => {
     }
   };
 
+  const onVerify = () => {
+    if (otp.join('').length !== 6) {
+      Snackbar.show({
+        text: 'Please enter a valid OTP code',
+        duration: Snackbar.LENGTH_SHORT,
+      });
+    } else {
+      if (timer === 0) {
+        return Snackbar.show({
+          text: 'Code expired, please resend code',
+          duration: Snackbar.LENGTH_LONG,
+          backgroundColor: '#ED4337',
+          fontFamily: 'Poppins-Regular',
+        });
+      }
+      dispatch(verifyOtpSignUp({email, password, username, otp: otp.join('')}))
+        .then(() => {
+          Snackbar.show({
+            text: 'Successfully verified',
+            duration: Snackbar.LENGTH_LONG,
+            backgroundColor: '#7C4DFF',
+            fontFamily: 'Poppins-Regular',
+          });
+        })
+        .catch(err => {
+          Snackbar.show({
+            text: err.message,
+            duration: Snackbar.LENGTH_LONG,
+            backgroundColor: '#ED4337',
+            fontFamily: 'Poppins-Regular',
+          });
+        });
+    }
+  };
+
   return (
     <SafeAreaView style={{flex: 1}}>
       <ScrollView>
@@ -68,6 +126,8 @@ export const OtpScreen = ({navigation}: Props) => {
               title="OTP Verification"
               subTitle="Check your email for the OTP code"
               isBtnBack
+              mgBottom
+              bgImage="otp"
               goBack={() => navigation.goBack()}
             />
 
@@ -100,7 +160,7 @@ export const OtpScreen = ({navigation}: Props) => {
                   <Text style={styles.timerText}>
                     {codeExpired
                       ? 'Code expired'
-                      : `Code will expire in ${timer} seconds`}
+                      : `Code will expire in ${formattedTime} seconds`}
                   </Text>
                   {
                     <TouchableOpacity
@@ -118,9 +178,16 @@ export const OtpScreen = ({navigation}: Props) => {
                   styles.button,
                   otp.join('').length === 6 ? {backgroundColor: '#7C4DFF'} : {},
                 ]}
-                onPress={() => {}}
+                disabled={otp.join('').length !== 6 || loading}
+                onPress={() => {
+                  onVerify();
+                }}
                 activeOpacity={0.9}>
-                <Text style={styles.buttonText}>Verify</Text>
+                {loading ? (
+                  <ActivityIndicator color="#fff" size={'small'} />
+                ) : (
+                  <Text style={styles.buttonText}>Verify</Text>
+                )}
               </TouchableOpacity>
             </View>
           </View>
