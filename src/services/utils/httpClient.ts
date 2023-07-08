@@ -1,5 +1,8 @@
 import axios, {AxiosError, AxiosRequestConfig, AxiosResponse} from 'axios';
+// import jwtDecode, {JwtPayload} from 'jwt-decode';
 import {API_URL} from '@env';
+// import {store, useAppDispatch} from '../../redux/store';
+// import {refreshToken} from '../../redux/slices/authSlice/actions';
 class HttpClient {
   private static instance: HttpClient;
   private readonly axiosInstance;
@@ -12,6 +15,16 @@ class HttpClient {
     this.axiosInstance.interceptors.request.use(
       function (config) {
         // Do something before request is sent
+        // const state = store.getState();
+        // const dispatch = useAppDispatch();
+        // const token = state.auth.user?.access_token;
+        // const refresh_Token = state.auth.user?.refresh_token;
+        // const decodedToken: JwtPayload = token ? jwtDecode(token) : {};
+        // config.headers.Authorization = `Bearer ${token}`;
+        // if (decodedToken?.exp! * 1000 < Date.now()) {
+        //   dispatch(refreshToken({refreshToken: refresh_Token!}));
+        // }
+
         return config;
       },
       function (error) {

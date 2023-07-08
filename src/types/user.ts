@@ -11,7 +11,7 @@ export interface User {
 export interface AuthSignUpResponse {
   code: number;
   success: boolean;
-  data: SignUpData;
+  data: SignUpDataRes;
   message: string;
 }
 export interface SignUpData {
@@ -37,3 +37,12 @@ export interface VerifyOtpData {
   password: string;
   username: string;
 }
+
+export type AuthRefreshToken = Pick<
+  AuthVerifyOtpResponse,
+  'code' | 'success' | 'message'
+> & {
+  data: {
+    access_token: string;
+  };
+};

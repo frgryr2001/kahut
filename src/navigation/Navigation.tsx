@@ -7,7 +7,6 @@ import {
 import {
   ForgotPasswordScreen,
   HomeScreen,
-  LoadingScreen,
   LoginScreen,
   OtpScreen,
   RegisterScreen,
@@ -30,15 +29,12 @@ export type ScreenName = keyof RootStackParams;
 
 const Stack = createStackNavigator<RootStackParams>();
 export const Navigator = () => {
-  //   const status = useSelector(selectStatus);
-
-  //   if (status === 'checking') {
-  //     return <LoadingScreen />;
-  //   }
+  const status = useSelector(selectStatus);
 
   return (
     <NavigationContainer>
       <Stack.Navigator
+        initialRouteName="HomeScreen"
         screenOptions={{
           headerShown: false,
           cardStyle: {
@@ -46,15 +42,21 @@ export const Navigator = () => {
           },
           cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
         }}>
-        <Stack.Screen name="LoginScreen" component={LoginScreen} />
-        <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
-        <Stack.Screen
-          name="ForgotPasswordScreen"
-          component={ForgotPasswordScreen}
-        />
-        <Stack.Screen name="OtpScreen" component={OtpScreen} />
-
-        <Stack.Screen name="HomeScreen" component={HomeScreen} />
+        {status !== 'authenticated' ? (
+          <>
+            <Stack.Screen name="LoginScreen" component={LoginScreen} />
+            <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
+            <Stack.Screen
+              name="ForgotPasswordScreen"
+              component={ForgotPasswordScreen}
+            />
+            <Stack.Screen name="OtpScreen" component={OtpScreen} />
+          </>
+        ) : (
+          <>
+            <Stack.Screen name="HomeScreen" component={HomeScreen} />
+          </>
+        )}
       </Stack.Navigator>
     </NavigationContainer>
   );

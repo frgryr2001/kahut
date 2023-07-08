@@ -1,17 +1,28 @@
-import {configureStore} from '@reduxjs/toolkit';
+import {combineReducers, configureStore} from '@reduxjs/toolkit';
 import logger from 'redux-logger';
 import authReducer from './slices/authSlice/reducer';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useDispatch} from 'react-redux';
+import {persistReducer, persistStore} from 'redux-persist';
+
+const persistConfig = {
+  storage: AsyncStorage,
+  key: 'root',
+};
+const rootReducer = combineReducers({
+  auth: authReducer,
+});
+
+export const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
-  reducer: {
-    auth: authReducer,
-  },
+  reducer: persistedReducer,
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
       serializableCheck: false,
     }).concat(logger),
 });
+export const persistor = persistStore(store);
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>;

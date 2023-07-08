@@ -15,9 +15,15 @@ import {LinearGradientBG} from '../../../components/layouts/LinearGradientBG';
 import {RootStackParams} from '../../../navigation/Navigation';
 import Snackbar from 'react-native-snackbar';
 import {useAppDispatch} from '../../../redux/store';
-import {verifyOtpSignUp} from '../../../redux/slices/authSlice/actions';
+import {
+  resendCodeOtp,
+  verifyOtpSignUp,
+} from '../../../redux/slices/authSlice/actions';
 import {useSelector} from 'react-redux';
-import {selectLoading} from '../../../redux/slices/authSlice/selector';
+import {
+  selectLoading,
+  selectLoadingResend,
+} from '../../../redux/slices/authSlice/selector';
 
 interface Props extends StackScreenProps<RootStackParams, 'OtpScreen'> {}
 
@@ -25,7 +31,7 @@ export const OtpScreen = ({navigation, route}: Props) => {
   const {email, password, username} = route.params;
   const dispatch = useAppDispatch();
   const loading = useSelector(selectLoading);
-
+  const loadingResend = useSelector(selectLoadingResend);
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const [timer, setTimer] = useState(180);
   const [codeExpired, setCodeExpired] = useState(false);
@@ -98,6 +104,7 @@ export const OtpScreen = ({navigation, route}: Props) => {
         });
       }
       dispatch(verifyOtpSignUp({email, password, username, otp: otp.join('')}))
+        .unwrap()
         .then(() => {
           Snackbar.show({
             text: 'Successfully verified',
@@ -115,6 +122,29 @@ export const OtpScreen = ({navigation, route}: Props) => {
           });
         });
     }
+  };
+  const handleResendCode = () => {
+    dispatch(resendCodeOtp({email}))
+      .unwrap()
+      .then(() => {
+        Snackbar.show({
+          text: 'Please check your email for the new code',
+          duration: Snackbar.LENGTH_LONG,
+          backgroundColor: '#198754',
+          textColor: '#fff',
+          fontFamily: 'Poppins-Regular',
+        });
+        setTimer(180);
+        setCodeExpired(false);
+      })
+      .catch(err => {
+        Snackbar.show({
+          text: err.message,
+          duration: Snackbar.LENGTH_LONG,
+          backgroundColor: '#ED4337',
+          fontFamily: 'Poppins-Regular',
+        });
+      });
   };
 
   return (
@@ -165,9 +195,13 @@ export const OtpScreen = ({navigation, route}: Props) => {
                   {
                     <TouchableOpacity
                       style={styles.resendButton}
-                      //   onPress={handleResendCode}
+                      onPress={handleResendCode}
                       activeOpacity={0.9}>
-                      <Text style={styles.resendButtonText}>Resend Code</Text>
+                      {loadingResend ? (
+                        <ActivityIndicator color="#7C4DFF" size={'small'} />
+                      ) : (
+                        <Text style={styles.resendButtonText}>Resend</Text>
+                      )}
                     </TouchableOpacity>
                   }
                 </View>
