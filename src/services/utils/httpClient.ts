@@ -1,8 +1,6 @@
 import axios, {AxiosError, AxiosRequestConfig, AxiosResponse} from 'axios';
-// import jwtDecode, {JwtPayload} from 'jwt-decode';
 import {API_URL} from '@env';
-// import {store, useAppDispatch} from '../../redux/store';
-// import {refreshToken} from '../../redux/slices/authSlice/actions';
+
 class HttpClient {
   private static instance: HttpClient;
   private readonly axiosInstance;
@@ -11,27 +9,6 @@ class HttpClient {
     this.axiosInstance = axios.create({
       baseURL: API_URL,
     });
-    // Add a request interceptor
-    this.axiosInstance.interceptors.request.use(
-      function (config) {
-        // Do something before request is sent
-        // const state = store.getState();
-        // const dispatch = useAppDispatch();
-        // const token = state.auth.user?.access_token;
-        // const refresh_Token = state.auth.user?.refresh_token;
-        // const decodedToken: JwtPayload = token ? jwtDecode(token) : {};
-        // config.headers.Authorization = `Bearer ${token}`;
-        // if (decodedToken?.exp! * 1000 < Date.now()) {
-        //   dispatch(refreshToken({refreshToken: refresh_Token!}));
-        // }
-
-        return config;
-      },
-      function (error) {
-        // Do something with request error
-        return Promise.reject(error);
-      },
-    );
   }
 
   public static getInstance(): HttpClient {
@@ -132,5 +109,33 @@ class HttpClient {
     throw err;
   }
 }
+
+// interceptors
+HttpClient.getInstance()
+  .getAxiosInstance()
+  .interceptors.request.use(
+    function (config) {
+      // Do something before request is sent
+      return config;
+    },
+    function (error) {
+      // Do something with request error
+      return Promise.reject(error);
+    },
+  );
+HttpClient.getInstance()
+  .getAxiosInstance()
+  .interceptors.response.use(
+    function (response) {
+      // Any status code that lie within the range of 2xx cause this function to trigger
+      // Do something with response data
+      return response;
+    },
+    function (error) {
+      // Any status codes that falls outside the range of 2xx cause this function to trigger
+      // Do something with response error
+      return Promise.reject(error);
+    },
+  );
 
 export default HttpClient.getInstance();

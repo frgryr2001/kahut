@@ -109,7 +109,7 @@ export const OtpScreen = ({navigation, route}: Props) => {
           Snackbar.show({
             text: 'Successfully verified',
             duration: Snackbar.LENGTH_LONG,
-            backgroundColor: '#7C4DFF',
+            backgroundColor: '#198754',
             fontFamily: 'Poppins-Regular',
           });
         })

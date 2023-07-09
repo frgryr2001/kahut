@@ -46,3 +46,9 @@ export type AuthRefreshToken = Pick<
     access_token: string;
   };
 };
+export type AuthLogoutToken = Pick<
+  AuthVerifyOtpResponse,
+  'code' | 'success' | 'message'
+> & {
+  data: {};
+};

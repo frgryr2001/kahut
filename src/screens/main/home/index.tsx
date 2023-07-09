@@ -4,12 +4,21 @@ import {useAppDispatch} from '../../../redux/store';
 import {logOut} from '../../../redux/slices/authSlice/actions';
 import {useSelector} from 'react-redux';
 import {selectUser} from '../../../redux/slices/authSlice/selector';
-export const HomeScreen = () => {
+import {RootStackParams} from '../../../navigation/Navigation';
+import {StackScreenProps} from '@react-navigation/stack';
+
+interface Props extends StackScreenProps<RootStackParams, 'HomeScreen'> {}
+
+export const HomeScreen = ({navigation}: Props) => {
   const dispatch = useAppDispatch();
   const user = useSelector(selectUser);
-  const {refresh_token: refreshToken, access_token} = user!;
+  const refreshToken = user?.refresh_token;
   const onLogout = () => {
-    dispatch(logOut({refreshToken, access_token}));
+    if (refreshToken) {
+      dispatch(logOut({refreshToken}))
+        .unwrap()
+        .then(() => navigation.navigate('LoginScreen'));
+    }
   };
 
   return (

@@ -1,6 +1,8 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useForm} from 'react-hook-form';
+import Snackbar from 'react-native-snackbar';
+
 import {ButtonIconSignIn} from './ButtonIconSignIn';
 import {
   ActivityIndicator,
@@ -14,6 +16,8 @@ import Input from './Input';
 import {EMAIL_REGEX} from '../../helpers/emailValidation';
 import {useSelector} from 'react-redux';
 import {selectLoading} from '../../redux/slices/authSlice/selector';
+import {useAppDispatch} from '../../redux/store';
+import {signIn} from '../../redux/slices/authSlice/actions';
 
 interface FormAuthProps {
   formType: 'login' | 'register' | 'forgot' | 'otp';
@@ -125,6 +129,7 @@ export const FormAuth = ({
   signInSocialGoogle,
   signUpWithEmail,
 }: FormAuthProps) => {
+  const dispatch = useAppDispatch();
   const loading = useSelector(selectLoading);
   // check formType
   const isFormSignInOrUp = formType === 'login' || formType === 'register';
@@ -143,10 +148,33 @@ export const FormAuth = ({
     // formState: {errors},
   } = useForm();
 
+  const signInWithEmail = (data: {email: string; password: string}) => {
+    dispatch(signIn(data))
+      .unwrap()
+      .then(() => {
+        Snackbar.show({
+          text: 'Login success',
+          duration: Snackbar.LENGTH_SHORT,
+          textColor: '#fff',
+          backgroundColor: '#00ff00',
+        });
+
+        reset();
+      })
+      .catch(err => {
+        Snackbar.show({
+          text: err.message,
+          duration: Snackbar.LENGTH_SHORT,
+          textColor: '#fff',
+          backgroundColor: '#ff0000',
+        });
+      });
+  };
+
   const onSubmit = (data: any) => {
     switch (formType) {
       case 'login':
-        console.log('login', data);
+        signInWithEmail(data);
         break;
       case 'register':
         if (signUpWithEmail) {

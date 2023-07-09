@@ -2,8 +2,9 @@ import {AnyAction, AsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {User} from '../../../types/user';
 import {
   logOut,
-  //   refreshToken,
+  refreshToken,
   resendCodeOtp,
+  signIn,
   signUp,
   verifyOtpSignUp,
 } from './actions';
@@ -52,10 +53,16 @@ const authSlice = createSlice({
         state.user = null;
         state.status = 'not-authenticated';
       })
-      //   .addCase(refreshToken.fulfilled, (state, action) => {
-      //     state.user!.access_token = action.payload.access_token;
-      //     state.status = 'authenticated';
-      //   })
+      .addCase(refreshToken.fulfilled, (state, action) => {
+        if (state.user) {
+          state.user.access_token = action.payload?.access_token;
+          state.status = 'authenticated';
+        }
+      })
+      .addCase(signIn.fulfilled, (state, action) => {
+        state.user = action.payload;
+        state.status = 'authenticated';
+      })
       .addMatcher<PendingAction>(
         (action: AnyAction): action is PendingAction => {
           if (action.type.endsWith('resendCodeOtp/pending')) {
