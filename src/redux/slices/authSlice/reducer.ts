@@ -1,4 +1,9 @@
-import {AnyAction, AsyncThunk, createSlice} from '@reduxjs/toolkit';
+import {
+  AnyAction,
+  AsyncThunk,
+  PayloadAction,
+  createSlice,
+} from '@reduxjs/toolkit';
 import {User} from '../../../types/user';
 import {
   logOut,
@@ -8,6 +13,7 @@ import {
   signUp,
   verifyOtpSignUp,
 } from './actions';
+import {NewAccessToken} from '../../../types/common';
 
 type GenericAsyncThunk = AsyncThunk<unknown, unknown, any>;
 
@@ -35,9 +41,19 @@ const initialState: AuthState = {
 const authSlice = createSlice({
   name: 'auth',
   initialState,
-  reducers: {},
+  reducers: {
+    loginSuccessNewAccessToken: (
+      state,
+      action: PayloadAction<NewAccessToken>,
+    ) => {
+      if (state.user) {
+        state.user.access_token = action.payload.access_token;
+      }
+    },
+  },
   extraReducers(builder) {
     builder
+
       .addCase(signUp.fulfilled, state => {
         state.loading = false;
       })
@@ -122,5 +138,8 @@ const authSlice = createSlice({
       );
   },
 });
+
+export const {loginSuccessNewAccessToken: loginSuccessNewAccessTokenAction} =
+  authSlice.actions;
 
 export default authSlice.reducer;
