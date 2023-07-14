@@ -1,7 +1,8 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import httpClient from '../../../services/utils/httpClient';
 import {
-  AuthLogoutToken,
+  AuthGoogleResponse,
+  AuthDataEmpty,
   AuthRefreshToken,
   AuthSignUpResponse,
   AuthVerifyOtpResponse,
@@ -9,12 +10,12 @@ import {
   VerifyOtpData,
 } from '../../../types/user';
 
-export const signUp = createAsyncThunk(
-  'auth/signUp',
+export const sendOtp = createAsyncThunk(
+  'auth/send-otp',
   async (data: SignUpData, thunkAPI) => {
     try {
       const response = await httpClient.post<AuthSignUpResponse>({
-        url: '/auth/sign-up/send-otp',
+        url: '/auth/send-otp',
         data,
         config: {
           signal: thunkAPI.signal,
@@ -35,7 +36,7 @@ export const verifyOtpSignUp = createAsyncThunk(
   async (data: VerifyOtpData, thunkAPI) => {
     try {
       const response = await httpClient.post<AuthVerifyOtpResponse>({
-        url: '/auth/sign-up/verify-otp',
+        url: '/auth/sign-up',
         data,
         config: {
           signal: thunkAPI.signal,
@@ -55,13 +56,15 @@ export const resendCodeOtp = createAsyncThunk(
   'auth/resendCodeOtp',
   async (
     data: {
+      action: string;
       email: string;
+      username: string;
     },
     thunkAPI,
   ) => {
     try {
       const response = await httpClient.post<AuthSignUpResponse>({
-        url: '/auth/sign-up/resend-otp',
+        url: '/auth/send-otp',
         data,
         config: {
           signal: thunkAPI.signal,
@@ -87,7 +90,7 @@ export const logOut = createAsyncThunk(
     thunkAPI,
   ) => {
     try {
-      const response = await httpClient.post<AuthLogoutToken>({
+      const response = await httpClient.post<AuthDataEmpty>({
         url: '/auth/sign-out',
         data,
         config: {
@@ -155,6 +158,62 @@ export const signIn = createAsyncThunk(
         },
       });
       return response.data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  },
+);
+
+export const signInWithGoogle = createAsyncThunk(
+  'auth/signInWithGoogle',
+  async (
+    data: {
+      googleId: string;
+      googleToken: string | null;
+    },
+    thunkAPI,
+  ) => {
+    try {
+      const response = await httpClient.post<AuthGoogleResponse>({
+        url: '/auth/sign-in/google',
+        data,
+        config: {
+          signal: thunkAPI.signal,
+          headers: {
+            'ngrok-skip-browser-warning': 'true',
+          },
+        },
+      });
+      return response.data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  },
+);
+
+export const resetPassword = createAsyncThunk(
+  'auth/resetPassword',
+  async (
+    data: {
+      email: string;
+      otp: string;
+      password: string;
+    },
+    thunkAPI,
+  ) => {
+    try {
+      const response = await httpClient.post<AuthDataEmpty>({
+        url: '/auth/reset-password',
+        data,
+        config: {
+          signal: thunkAPI.signal,
+          headers: {
+            'ngrok-skip-browser-warning': 'true',
+          },
+        },
+      });
+
+      return response.success;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.response.data);
     }

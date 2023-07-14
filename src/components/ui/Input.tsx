@@ -5,8 +5,8 @@ import {Control, Controller, FieldValues} from 'react-hook-form';
 interface TextInputCustomProps extends TextInputProps {
   label: string;
   name: string;
-  control: Control<FieldValues, any>;
-  rules: {};
+  control?: Control<FieldValues, any>;
+  rules?: {};
 }
 const Input = ({
   control,
@@ -25,16 +25,6 @@ const Input = ({
 
   return (
     <View>
-      <View style={styles.labelContainer}>
-        <Text
-          style={{
-            fontSize: 14,
-            color: '#BDBDBD',
-            fontFamily: 'Poppins-Regular',
-          }}>
-          {label}
-        </Text>
-      </View>
       <View>
         <Controller
           control={control}
@@ -42,6 +32,19 @@ const Input = ({
           render={({field: {onChange, onBlur, value}, fieldState: {error}}) => {
             return (
               <>
+                <View style={styles.labelContainer}>
+                  <Text
+                    style={[
+                      {
+                        fontSize: 14,
+                        color: '#BDBDBD',
+                        fontFamily: 'Poppins-Regular',
+                      },
+                      error && {color: 'red'},
+                    ]}>
+                    {label}
+                  </Text>
+                </View>
                 <TextInput
                   style={[
                     styles.inputContainer,

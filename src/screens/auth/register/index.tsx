@@ -11,7 +11,7 @@ import {LinearGradientBG} from '../../../components/layouts/LinearGradientBG';
 import {RootStackParams, ScreenName} from '../../../navigation/Navigation';
 import {FormAuth} from '../../../components/ui';
 import {useAppDispatch} from '../../../redux/store';
-import {signUp} from '../../../redux/slices/authSlice/actions';
+import {sendOtp} from '../../../redux/slices/authSlice/actions';
 
 interface Props extends StackScreenProps<RootStackParams, 'RegisterScreen'> {}
 export const RegisterScreen = ({navigation}: Props) => {
@@ -30,7 +30,8 @@ export const RegisterScreen = ({navigation}: Props) => {
       });
     }
     dispatch(
-      signUp({
+      sendOtp({
+        action: 'signup',
         username: data.username,
         email: data.email,
       }),
@@ -44,7 +45,7 @@ export const RegisterScreen = ({navigation}: Props) => {
         });
         callback();
       })
-      .catch(err => {
+      .catch((err: any) => {
         Snackbar.show({
           text: err.message,
           duration: Snackbar.LENGTH_LONG,

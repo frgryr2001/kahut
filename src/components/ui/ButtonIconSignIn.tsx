@@ -52,7 +52,7 @@ export const ButtonIconSignIn = ({
 };
 const styles = StyleSheet.create({
   btn: {
-    width: '50%',
+    width: '100%',
     height: 50,
     borderRadius: 10,
     borderWidth: 1,
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
-    columnGap: 5,
+    columnGap: 10,
   },
   textBtn: {
     fontSize: 16,

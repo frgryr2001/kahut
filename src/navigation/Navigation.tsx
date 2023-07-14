@@ -10,6 +10,7 @@ import {
   LoginScreen,
   OtpScreen,
   RegisterScreen,
+  ResetPasswordScreen,
 } from '../screens';
 import {selectStatus} from '../redux/slices/authSlice/selector';
 import {useSelector} from 'react-redux';
@@ -23,6 +24,9 @@ export type RootStackParams = {
     email: string;
     password: string;
     username: string;
+  };
+  ResetPasswordScreen: {
+    email: string;
   };
 };
 export type ScreenName = keyof RootStackParams;
@@ -51,6 +55,10 @@ export const Navigator = () => {
               component={ForgotPasswordScreen}
             />
             <Stack.Screen name="OtpScreen" component={OtpScreen} />
+            <Stack.Screen
+              name="ResetPasswordScreen"
+              component={ResetPasswordScreen}
+            />
           </>
         ) : (
           <>

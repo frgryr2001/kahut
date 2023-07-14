@@ -31,6 +31,9 @@ export const LinearGradientBG = ({
         return require('../../assets/images/forgot.png');
       case 'otp':
         return require('../../assets/images/otp.png');
+      case 'resetpassword':
+        return require('../../assets/images/resetpassword.png');
+
       default:
         return require('../../assets/images/login.png');
     }
@@ -56,11 +59,10 @@ export const LinearGradientBG = ({
       )}
       <View style={styles.container}>
         <Image
-          style={{
-            width: 250,
-            height: 250,
-          }}
+          style={[{width: 250, height: 250}]}
           source={getImage()}
+          height={250}
+          width={250}
         />
       </View>
       <View

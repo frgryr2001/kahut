@@ -10,8 +10,10 @@ import {
   refreshToken,
   resendCodeOtp,
   signIn,
-  signUp,
+  signInWithGoogle,
+  sendOtp,
   verifyOtpSignUp,
+  resetPassword,
 } from './actions';
 import {NewAccessToken} from '../../../types/common';
 
@@ -25,6 +27,7 @@ interface AuthState {
   user: User | null;
   loading: boolean;
   loadingResend?: boolean;
+  loadingScreen: boolean;
   error: string;
   status: 'checking' | 'authenticated' | 'not-authenticated';
   currentRequestId: undefined | string;
@@ -34,6 +37,7 @@ const initialState: AuthState = {
   user: null,
   loading: false,
   loadingResend: false,
+  loadingScreen: true,
   status: 'checking',
   error: '',
   currentRequestId: undefined,
@@ -53,8 +57,7 @@ const authSlice = createSlice({
   },
   extraReducers(builder) {
     builder
-
-      .addCase(signUp.fulfilled, state => {
+      .addCase(sendOtp.fulfilled, state => {
         state.loading = false;
       })
       .addCase(verifyOtpSignUp.fulfilled, (state, action) => {
@@ -68,6 +71,8 @@ const authSlice = createSlice({
       .addCase(logOut.fulfilled, state => {
         state.user = null;
         state.status = 'not-authenticated';
+        state.currentRequestId = undefined;
+        state.loading = false;
       })
       .addCase(refreshToken.fulfilled, (state, action) => {
         if (state.user) {
@@ -79,9 +84,24 @@ const authSlice = createSlice({
         state.user = action.payload;
         state.status = 'authenticated';
       })
+      .addCase(signInWithGoogle.pending, state => {
+        state.loadingScreen = true;
+      })
+      .addCase(signInWithGoogle.fulfilled, (state, action) => {
+        state.user = action.payload;
+        state.status = 'authenticated';
+        state.loadingScreen = false;
+      })
+      .addCase(signInWithGoogle.rejected, state => {
+        state.loadingScreen = false;
+      })
+      .addCase(resetPassword.fulfilled, () => {})
       .addMatcher<PendingAction>(
         (action: AnyAction): action is PendingAction => {
-          if (action.type.endsWith('resendCodeOtp/pending')) {
+          if (
+            action.type.endsWith('resendCodeOtp/pending') ||
+            action.type.endsWith('signInWithGoogle/pending')
+          ) {
             return false;
           }
           return action.type.endsWith('/pending');

@@ -124,7 +124,7 @@ export const OtpScreen = ({navigation, route}: Props) => {
     }
   };
   const handleResendCode = () => {
-    dispatch(resendCodeOtp({email}))
+    dispatch(resendCodeOtp({email, username, action: 'resendwhensignup'}))
       .unwrap()
       .then(() => {
         Snackbar.show({

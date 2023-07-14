@@ -1,6 +1,6 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {useForm} from 'react-hook-form';
+import {FieldValues, UseFormReset, useForm} from 'react-hook-form';
 import Snackbar from 'react-native-snackbar';
 
 import {ButtonIconSignIn} from './ButtonIconSignIn';
@@ -21,19 +21,23 @@ import {signIn} from '../../redux/slices/authSlice/actions';
 
 interface FormAuthProps {
   formType: 'login' | 'register' | 'forgot' | 'otp';
-  gotoForm: (screen: ScreenName) => void;
+  gotoForm: (screen: ScreenName, callback?: () => void) => void;
   textBtn?: string;
   activeBtn?: boolean;
   signInSocialGoogle?: () => Promise<void>;
   signUpWithEmail?: (data: any, callback: () => void) => void;
+  resetPassword?: (data: any) => void;
 }
 
-type SocialSignInProps = Omit<FormAuthProps, 'activeBtn' | 'textBtn'>;
+type SocialSignInProps = Omit<FormAuthProps, 'activeBtn' | 'textBtn'> & {
+  reset: UseFormReset<FieldValues>;
+};
 
 function SocialSignIn({
   formType,
   gotoForm,
   signInSocialGoogle,
+  reset,
 }: SocialSignInProps) {
   return (
     <View
@@ -69,18 +73,10 @@ function SocialSignIn({
             <ButtonIconSignIn
               nameIcon="logo-google"
               sizeIcon={20}
-              textIcon="Google"
+              textIcon="Sign in with Google"
               colorIcon={'#DB4437'}
               activeOpacity={0.7}
               onPress={signInSocialGoogle}
-            />
-
-            <ButtonIconSignIn
-              activeOpacity={0.7}
-              nameIcon="logo-facebook"
-              sizeIcon={20}
-              textIcon="Facebook"
-              colorIcon={'#4267B2'}
             />
           </View>
         </View>
@@ -89,7 +85,8 @@ function SocialSignIn({
       {formType === 'login' && (
         <View style={styles.signUpBtn}>
           <Text style={styles.textTitle}>Don't you have an account ?</Text>
-          <TouchableOpacity onPress={() => gotoForm('RegisterScreen')}>
+          <TouchableOpacity
+            onPress={() => gotoForm('RegisterScreen', () => reset())}>
             {/* 290498 */}
             <Text
               style={{
@@ -105,7 +102,8 @@ function SocialSignIn({
       {formType === 'register' && (
         <View style={styles.signUpBtn}>
           <Text style={styles.textTitle}>Have an account ?</Text>
-          <TouchableOpacity onPress={() => gotoForm('LoginScreen')}>
+          <TouchableOpacity
+            onPress={() => gotoForm('LoginScreen', () => reset())}>
             {/* 290498 */}
             <Text
               style={{
@@ -128,6 +126,7 @@ export const FormAuth = ({
   activeBtn,
   signInSocialGoogle,
   signUpWithEmail,
+  resetPassword,
 }: FormAuthProps) => {
   const dispatch = useAppDispatch();
   const loading = useSelector(selectLoading);
@@ -156,7 +155,7 @@ export const FormAuth = ({
           text: 'Login success',
           duration: Snackbar.LENGTH_SHORT,
           textColor: '#fff',
-          backgroundColor: '#00ff00',
+          backgroundColor: '#7C4DFF',
         });
 
         reset();
@@ -180,6 +179,9 @@ export const FormAuth = ({
         if (signUpWithEmail) {
           signUpWithEmail(data, () => reset());
         }
+        break;
+      case 'forgot':
+        resetPassword && resetPassword(data);
         break;
       default:
         break;
@@ -321,7 +323,7 @@ export const FormAuth = ({
               marginBottom: 10,
             }}
             activeOpacity={0.7}
-            onPress={() => gotoForm('OtpScreen')}>
+            onPress={() => gotoForm('ForgotPasswordScreen', () => reset())}>
             <Text
               style={[
                 styles.textTitle,
@@ -355,6 +357,7 @@ export const FormAuth = ({
         {/* Social SignIn */}
         <SocialSignIn
           //   isFormSignInOrUp={isFormSignInOrUp}
+          reset={reset}
           formType={formType}
           gotoForm={gotoForm}
           signInSocialGoogle={signInSocialGoogle}
@@ -402,7 +405,6 @@ const styles = StyleSheet.create({
   },
   btnSignInOther: {
     flexDirection: 'row',
-    marginHorizontal: 5,
     gap: 10,
   },
 });

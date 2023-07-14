@@ -15,8 +15,9 @@ export interface AuthSignUpResponse {
   message: string;
 }
 export interface SignUpData {
+  action: string;
   email: string;
-  username: string;
+  username?: string;
 }
 
 export interface SignUpDataRes {
@@ -31,6 +32,8 @@ export interface AuthVerifyOtpResponse {
   data: User;
   message: string;
 }
+
+export interface AuthGoogleResponse extends AuthVerifyOtpResponse {}
 export interface VerifyOtpData {
   email: string;
   otp: string;
@@ -46,7 +49,7 @@ export type AuthRefreshToken = Pick<
     access_token: string;
   };
 };
-export type AuthLogoutToken = Pick<
+export type AuthDataEmpty = Pick<
   AuthVerifyOtpResponse,
   'code' | 'success' | 'message'
 > & {

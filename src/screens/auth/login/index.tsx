@@ -9,11 +9,17 @@ import {
 import {LinearGradientBG} from '../../../components/layouts/LinearGradientBG';
 import {RootStackParams, ScreenName} from '../../../navigation/Navigation';
 import {FormAuth} from '../../../components/ui';
+import Spinner from 'react-native-loading-spinner-overlay';
+
 import {
   GoogleSignin,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
 import {WEB_CLIENT_ID} from '@env';
+import {useAppDispatch} from '../../../redux/store';
+import {signInWithGoogle} from '../../../redux/slices/authSlice/actions';
+import {useSelector} from 'react-redux';
+import {selectLoadingScreen} from '../../../redux/slices/authSlice/selector';
 
 interface Props extends StackScreenProps<RootStackParams, 'LoginScreen'> {}
 
@@ -23,15 +29,32 @@ GoogleSignin.configure({
 });
 
 export const LoginScreen = ({navigation}: Props) => {
-  const gotoScreen = (screen: ScreenName) => {
+  const dispatch = useAppDispatch();
+  const loadingScreen = useSelector(selectLoadingScreen);
+  const gotoScreen = (screen: ScreenName, callback?: () => void) => {
     navigation.navigate(screen as never);
+    callback && callback();
   };
   const signInSocialGoogle = async () => {
     try {
       await GoogleSignin.hasPlayServices();
+      await GoogleSignin.signOut();
       const userInfo = await GoogleSignin.signIn();
+
       console.log(JSON.stringify(userInfo));
       //   Call API from backend
+      if (userInfo) {
+        dispatch(
+          signInWithGoogle({
+            googleId: userInfo.user.id,
+            googleToken: userInfo.idToken,
+          }),
+        )
+          .unwrap()
+          .catch(err => {
+            console.log('Lỗi ở đây', err);
+          });
+      }
     } catch (error: any) {
       console.log('got error', error.message);
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
@@ -52,6 +75,13 @@ export const LoginScreen = ({navigation}: Props) => {
         flex: 1,
         // paddingTop: StatusBar.currentHeight,
       }}>
+      <Spinner
+        visible={loadingScreen ? true : false}
+        textContent={'Loading...'}
+        textStyle={{
+          color: '#FFF',
+        }}
+      />
       <View
         style={{
           flex: 1,
