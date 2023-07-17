@@ -5,3 +5,6 @@ export {default as ThemeSetting} from './ThemeSetting';
 export {default as Question} from './Question';
 export {default as ListQuestion} from './ListQuestion';
 export {default as AddQuestion} from './AddQuestion';
+export {default as ListTypeQuestion} from './ListTypeQuestion';
+export {default as Header} from './Header';
+export {default as ModalImage} from './ModalImage';

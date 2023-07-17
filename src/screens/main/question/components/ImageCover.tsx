@@ -1,17 +1,27 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Text, View, Pressable, Dimensions, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {ModalImage} from '.';
 
 const windowHeight = Dimensions.get('window').height;
 
 const ImageCover = () => {
+  const [modalVisible, setModalVisible] = useState(false);
+  const onPress = () => {
+    setModalVisible(true);
+  };
+  const onDismiss = () => {
+    setModalVisible(false);
+  };
   return (
     <View>
-      <Pressable style={styles.btn}>
+      <Pressable style={styles.btn} onPress={onPress}>
         {/* image-outline */}
         <Icon name="image-outline" size={30} color="black" />
         <Text style={styles.buttonText}>Tap me to add cover image</Text>
       </Pressable>
+      {/* Modal */}
+      <ModalImage modalVisible={modalVisible} onDismiss={onDismiss} />
     </View>
   );
 };

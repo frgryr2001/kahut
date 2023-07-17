@@ -1,52 +1,118 @@
-import React from 'react';
-import {ScrollView, StyleSheet, Text, View} from 'react-native';
+import React, {useCallback, useMemo, useRef} from 'react';
+import {ScrollView, StyleSheet, Text, View, SafeAreaView} from 'react-native';
 import {styles as globalStyles} from '../../../themes/appTheme';
 import {
   AddQuestion,
+  Header,
   ImageCover,
   InputTitle,
   ListQuestion,
+  ListTypeQuestion,
   Setting,
   ThemeSetting,
 } from './components';
+import {
+  BottomSheetModal,
+  BottomSheetModalProvider,
+  BottomSheetBackdrop,
+} from '@gorhom/bottom-sheet';
 
 export const QuestionScreen = () => {
+  // ref
+  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+
+  // variables
+  const snapPoints = useMemo(() => ['50%', '100%'], []);
+
+  // callbacks
+  const handlePresentModalPress = useCallback(() => {
+    bottomSheetModalRef.current?.present();
+  }, []);
+  //   const handleSheetChanges = useCallback((index: number) => {
+  //     console.log('handleSheetChanges', index);
+  //   }, []);
+
+  const renderBackdrop = useCallback(
+    (props: any) => (
+      <BottomSheetBackdrop
+        {...props}
+        disappearsOnIndex={-1}
+        appearsOnIndex={0}
+        pressBehavior="close"
+      />
+    ),
+    [],
+  );
   return (
-    <View
+    <SafeAreaView
       style={{
         flex: 1,
       }}>
-      <ScrollView automaticallyAdjustKeyboardInsets>
-        <View style={[globalStyles.globalPadding10, styles.container]}>
-          <ImageCover />
-          <View style={styles.containerTitle}>
-            <Text style={styles.title}>Title</Text>
-            <View style={styles.flexRow}>
-              <InputTitle placeholder="Enter a title" />
-              <Setting />
+      <BottomSheetModalProvider>
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: '#F5F5F5',
+          }}>
+          {/* Header  */}
+          <Header />
+          <ScrollView automaticallyAdjustKeyboardInsets>
+            <View style={[globalStyles.globalPadding10, styles.container]}>
+              <ImageCover />
+              <View style={styles.containerTitle}>
+                <Text style={styles.title}>Title</Text>
+                <View style={styles.flexRow}>
+                  <InputTitle placeholder="Enter a title" />
+                  <Setting />
+                </View>
+                {/* Theme Setting */}
+                <Text style={styles.title}>Theme</Text>
+                <ThemeSetting />
+                <Text style={styles.title}>Question (1)</Text>
+                {/* List Question */}
+                <ListQuestion />
+                <View
+                  style={{
+                    height: 90,
+                  }}
+                />
+              </View>
             </View>
-            {/* Theme Setting */}
-            <Text style={styles.title}>Theme</Text>
-            <ThemeSetting />
-            <Text style={styles.title}>Question (1)</Text>
-            {/* List Question */}
-            <ListQuestion />
-            <View
-              style={{
-                height: 90,
-              }}
-            />
-          </View>
+          </ScrollView>
+          <AddQuestion
+            onPress={handlePresentModalPress}
+            as="button"
+            label={`Add ${'\n'} question`}
+          />
+          <BottomSheetModal
+            ref={bottomSheetModalRef}
+            index={0}
+            enablePanDownToClose={true}
+            snapPoints={snapPoints}
+            style={{
+              backgroundColor: 'white',
+            }}
+            //   onChange={handleSheetChanges}
+            backdropComponent={renderBackdrop}>
+            <View style={styles.contentContainer}>
+              <Text style={styles.titleQuestion}>Add Question</Text>
+              <Text style={styles.textKnowledge}>Test Knowledge</Text>
+              <ListTypeQuestion />
+            </View>
+          </BottomSheetModal>
         </View>
-      </ScrollView>
-      <AddQuestion />
-    </View>
+      </BottomSheetModalProvider>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  contentContainer: {
+    flex: 1,
+    paddingHorizontal: 10,
   },
   flexRow: {
     flexDirection: 'row',
@@ -89,5 +155,16 @@ const styles = StyleSheet.create({
     flex: 1,
     fontFamily: 'Poppins-Regular',
     color: 'black',
+  },
+  titleQuestion: {
+    fontSize: 16,
+    fontFamily: 'Poppins-Bold',
+    textAlign: 'center',
+  },
+  textKnowledge: {
+    fontFamily: 'Poppins-Regular',
+    fontSize: 14,
+    color: '#7C7C7C',
+    marginVertical: 10,
   },
 });

@@ -16,8 +16,6 @@ import {selectStatus} from '../redux/slices/authSlice/selector';
 import {useSelector} from 'react-redux';
 import {TabsApp} from './Tab';
 
-import {HeaderButtonSaveRight} from '../components/ui';
-
 export type RootStackParams = {
   HomeScreen: undefined;
   LoginScreen: undefined;
@@ -40,7 +38,7 @@ export const Navigator = () => {
   const status = useSelector(selectStatus);
 
   return (
-    <NavigationContainer>
+    <NavigationContainer independent>
       <Stack.Navigator
         initialRouteName="HomeScreen"
         screenOptions={{
@@ -70,23 +68,23 @@ export const Navigator = () => {
             <Stack.Screen
               name="QuestionScreen"
               component={QuestionScreen}
-              options={{
-                headerShown: true,
-                headerTitle: 'Create Question',
-                headerTitleAlign: 'center',
-                headerTitleStyle: {
-                  fontSize: 18,
-                  color: 'black',
-                },
-                headerStyle: {},
-                headerRightContainerStyle: {
-                  padding: 10,
-                },
-                headerRight: HeaderButtonSaveRight,
-                cardStyle: {
-                  backgroundColor: '#F5F5F5',
-                },
-              }}
+              //   options={{
+              //     headerShown: true,
+              //     headerTitle: 'Create Question',
+              //     headerTitleAlign: 'center',
+              //     headerTitleStyle: {
+              //       fontSize: 18,
+              //       color: 'black',
+              //     },
+              //     headerStyle: {},
+              //     headerRightContainerStyle: {
+              //       padding: 10,
+              //     },
+              //     headerRight: HeaderButtonSaveRight,
+              //     cardStyle: {
+              //       backgroundColor: '#F5F5F5',
+              //     },
+              //   }}
             />
           </>
         )}

@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 const Question = () => {
   return (
-    <TouchableOpacity activeOpacity={0.7}>
+    <TouchableOpacity activeOpacity={0.9}>
       <View style={styles.questionContainer}>
         <View style={styles.imageQuestion}>
           <Icon name="image-outline" size={30} color="#BDBDBD" />
