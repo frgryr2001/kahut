@@ -1,4 +1,7 @@
 export * from './main/home';
+export * from './main/question';
+
+// Auth
 export * from './auth/login';
 export * from './auth/register';
 export * from './auth/forgot';

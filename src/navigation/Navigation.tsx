@@ -6,14 +6,17 @@ import {
 } from '@react-navigation/stack';
 import {
   ForgotPasswordScreen,
-  HomeScreen,
   LoginScreen,
   OtpScreen,
+  QuestionScreen,
   RegisterScreen,
   ResetPasswordScreen,
 } from '../screens';
 import {selectStatus} from '../redux/slices/authSlice/selector';
 import {useSelector} from 'react-redux';
+import {TabsApp} from './Tab';
+
+import {HeaderButtonSaveRight} from '../components/ui';
 
 export type RootStackParams = {
   HomeScreen: undefined;
@@ -28,6 +31,7 @@ export type RootStackParams = {
   ResetPasswordScreen: {
     email: string;
   };
+  QuestionScreen: undefined;
 };
 export type ScreenName = keyof RootStackParams;
 
@@ -62,7 +66,28 @@ export const Navigator = () => {
           </>
         ) : (
           <>
-            <Stack.Screen name="HomeScreen" component={HomeScreen} />
+            <Stack.Screen name="HomeScreen" component={TabsApp} />
+            <Stack.Screen
+              name="QuestionScreen"
+              component={QuestionScreen}
+              options={{
+                headerShown: true,
+                headerTitle: 'Create Question',
+                headerTitleAlign: 'center',
+                headerTitleStyle: {
+                  fontSize: 18,
+                  color: 'black',
+                },
+                headerStyle: {},
+                headerRightContainerStyle: {
+                  padding: 10,
+                },
+                headerRight: HeaderButtonSaveRight,
+                cardStyle: {
+                  backgroundColor: '#F5F5F5',
+                },
+              }}
+            />
           </>
         )}
       </Stack.Navigator>

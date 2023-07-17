@@ -37,7 +37,7 @@ const initialState: AuthState = {
   user: null,
   loading: false,
   loadingResend: false,
-  loadingScreen: true,
+  loadingScreen: false,
   status: 'checking',
   error: '',
   currentRequestId: undefined,

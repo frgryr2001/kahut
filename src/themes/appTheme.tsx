@@ -7,4 +7,7 @@ export const styles = StyleSheet.create({
   globalPadding: {
     paddingHorizontal: 20,
   },
+  globalPadding10: {
+    paddingHorizontal: 10,
+  },
 });

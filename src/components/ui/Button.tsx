@@ -11,18 +11,35 @@ interface Props {
   onPress: () => void;
   loading?: boolean;
   disabled?: boolean;
+  as?: 'text' | 'button';
 }
-export const Button = ({title, onPress, loading, disabled}: Props) => {
+export const Button = ({title, onPress, loading, disabled, as}: Props) => {
   return (
     <TouchableOpacity
       onPress={onPress}
       disabled={disabled}
-      style={styles.button}
-      activeOpacity={0.9}>
+      style={
+        as === 'text'
+          ? {}
+          : {
+              ...styles.button,
+            }
+      }
+      activeOpacity={0.7}>
       {loading ? (
         <ActivityIndicator color="#fff" size={'small'} />
       ) : (
-        <Text style={styles.buttonText}>{title}</Text>
+        <Text
+          style={
+            as === 'text'
+              ? {
+                  color: 'black',
+                  fontFamily: 'Poppins-Bold',
+                }
+              : {...styles.buttonText}
+          }>
+          {title}
+        </Text>
       )}
     </TouchableOpacity>
   );
