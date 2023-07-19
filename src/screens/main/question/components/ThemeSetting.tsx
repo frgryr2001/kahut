@@ -2,9 +2,13 @@ import React from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-const ThemeSetting = () => {
+interface Props {
+  onPress: () => void;
+}
+
+const ThemeSetting = ({onPress}: Props) => {
   return (
-    <Pressable style={styles.themeSetting}>
+    <Pressable style={styles.themeSetting} onPress={onPress}>
       <View style={styles.imageTheme} />
       <Text style={styles.titleTheme}>Theme Setting</Text>
       <Icon name="chevron-down-outline" size={25} color="black" />

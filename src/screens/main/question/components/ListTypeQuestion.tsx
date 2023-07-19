@@ -1,6 +1,6 @@
 import React from 'react';
 import {View} from 'react-native';
-import AddQuestion from './AddQuestion';
+import ButtonCustom from './ButtonCustom';
 
 const ListTypeQuestion = () => {
   return (
@@ -12,8 +12,8 @@ const ListTypeQuestion = () => {
         gap: 10,
         width: '100%',
       }}>
-      <AddQuestion as="card" label="Quiz" />
-      <AddQuestion as="card" label="True or False" />
+      <ButtonCustom as="card" label="Quiz" />
+      <ButtonCustom as="card" label="True or False" />
     </View>
   );
 };

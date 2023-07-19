@@ -5,9 +5,15 @@ interface Props {
   onPress?: () => void;
   as: 'card' | 'button';
   label: string;
+  color?: 'primary' | 'secondary';
 }
 
-const AddQuestion = ({onPress, as = 'button', label}: Props) => {
+const ButtonCustom = ({
+  onPress,
+  as = 'button',
+  label,
+  color = 'primary',
+}: Props) => {
   const animaValue = React.useRef(new Animated.Value(1)).current;
   const handlePress = () => {
     Animated.sequence([
@@ -39,6 +45,7 @@ const AddQuestion = ({onPress, as = 'button', label}: Props) => {
     buttonStyle = {
       ...styles.addQuestion,
       ...styles.absolute,
+      backgroundColor: color === 'primary' ? '#2886de' : 'red',
       transform: [{scale: animaValue}],
     };
   }
@@ -64,7 +71,7 @@ const AddQuestion = ({onPress, as = 'button', label}: Props) => {
 const styles = StyleSheet.create({
   addQuestion: {
     borderRadius: 3,
-    backgroundColor: '#2886de',
+
     paddingHorizontal: 30,
     paddingVertical: 10,
   },
@@ -94,4 +101,4 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
 });
-export default AddQuestion;
+export default ButtonCustom;

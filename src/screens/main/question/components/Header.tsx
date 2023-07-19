@@ -1,7 +1,11 @@
 import React from 'react';
 import {StyleSheet, Text, TouchableWithoutFeedback, View} from 'react-native';
 
-const Header = () => {
+interface Props {
+  completed: boolean;
+}
+
+const Header = ({completed}: Props) => {
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
@@ -13,7 +17,15 @@ const Header = () => {
         <Text style={styles.headerTitle}>Create Question</Text>
         {/* Save */}
         <TouchableWithoutFeedback>
-          <Text style={styles.headerAction}>Save</Text>
+          <Text
+            style={[
+              styles.headerAction,
+              {
+                color: completed ? 'black' : '#C7C7CC',
+              },
+            ]}>
+            Save
+          </Text>
         </TouchableWithoutFeedback>
       </View>
     </View>

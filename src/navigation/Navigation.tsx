@@ -11,6 +11,7 @@ import {
   QuestionScreen,
   RegisterScreen,
   ResetPasswordScreen,
+  SettingQuestionScreen,
 } from '../screens';
 import {selectStatus} from '../redux/slices/authSlice/selector';
 import {useSelector} from 'react-redux';
@@ -30,6 +31,7 @@ export type RootStackParams = {
     email: string;
   };
   QuestionScreen: undefined;
+  SettingQuestionScreen: undefined;
 };
 export type ScreenName = keyof RootStackParams;
 
@@ -50,7 +52,37 @@ export const Navigator = () => {
         }}>
         {status !== 'authenticated' ? (
           <>
-            <Stack.Screen name="LoginScreen" component={LoginScreen} />
+            <Stack.Screen name="HomeScreen" component={TabsApp} />
+            <Stack.Screen name="QuestionScreen" component={QuestionScreen} />
+            <Stack.Screen
+              name="SettingQuestionScreen"
+              component={SettingQuestionScreen}
+              options={{
+                headerShown: true,
+                headerTitle: 'Setting',
+                headerTitleAlign: 'center',
+                headerTitleStyle: {
+                  fontSize: 20,
+                  fontWeight: 'bold',
+                },
+                headerStyle: {
+                  backgroundColor: '#fff',
+                  shadowColor: '#000',
+                  shadowOffset: {
+                    width: 0,
+                    height: 2,
+                  },
+                  shadowOpacity: 0.25,
+                  shadowRadius: 3.84,
+                  elevation: 3,
+                },
+                cardStyle: {
+                  backgroundColor: '#F5F5F5',
+                },
+              }}
+            />
+
+            {/* <Stack.Screen name="LoginScreen" component={LoginScreen} />
             <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
             <Stack.Screen
               name="ForgotPasswordScreen"
@@ -60,32 +92,12 @@ export const Navigator = () => {
             <Stack.Screen
               name="ResetPasswordScreen"
               component={ResetPasswordScreen}
-            />
+            /> */}
           </>
         ) : (
           <>
-            <Stack.Screen name="HomeScreen" component={TabsApp} />
-            <Stack.Screen
-              name="QuestionScreen"
-              component={QuestionScreen}
-              //   options={{
-              //     headerShown: true,
-              //     headerTitle: 'Create Question',
-              //     headerTitleAlign: 'center',
-              //     headerTitleStyle: {
-              //       fontSize: 18,
-              //       color: 'black',
-              //     },
-              //     headerStyle: {},
-              //     headerRightContainerStyle: {
-              //       padding: 10,
-              //     },
-              //     headerRight: HeaderButtonSaveRight,
-              //     cardStyle: {
-              //       backgroundColor: '#F5F5F5',
-              //     },
-              //   }}
-            />
+            {/* <Stack.Screen name="HomeScreen" component={TabsApp} />
+            <Stack.Screen name="QuestionScreen" component={QuestionScreen} /> */}
           </>
         )}
       </Stack.Navigator>

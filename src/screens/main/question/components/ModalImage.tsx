@@ -9,10 +9,22 @@ import {
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/Ionicons';
-
 const heightWindow = Dimensions.get('window').height;
 const widthWindow = Dimensions.get('window').width;
-const ModalImage = ({modalVisible, onDismiss}: any) => {
+
+interface ModalImageProps {
+  modalVisible: boolean;
+  onDismiss: () => void;
+  openCamera: () => void;
+  openGallery: () => void;
+}
+
+const ModalImage = ({
+  modalVisible,
+  onDismiss,
+  openCamera,
+  openGallery,
+}: ModalImageProps) => {
   return (
     <SafeAreaView style={styles.fill}>
       <Modal
@@ -31,7 +43,7 @@ const ModalImage = ({modalVisible, onDismiss}: any) => {
         />
         <View style={styles.containerView}>
           {/* camera */}
-          <Pressable>
+          <Pressable onPress={openCamera}>
             <View style={styles.pickIcon}>
               <Icon name="camera-outline" size={50} color="black" />
               <View>
@@ -40,7 +52,7 @@ const ModalImage = ({modalVisible, onDismiss}: any) => {
             </View>
           </Pressable>
           {/* gallery */}
-          <Pressable>
+          <Pressable onPress={openGallery}>
             <View style={styles.pickIcon}>
               <Icon name="image-outline" size={50} color="black" />
               <View>

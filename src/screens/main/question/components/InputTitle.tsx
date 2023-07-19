@@ -6,6 +6,7 @@ interface Props {
   value?: string;
   onChangeText?: (text: string) => void;
   secureTextEntry?: boolean;
+  flex?: boolean;
   keyboardType?:
     | 'default'
     | 'number-pad'
@@ -15,13 +16,13 @@ interface Props {
     | 'phone-pad';
 }
 
-const InputTitle = ({placeholder}: Props) => {
+const InputTitle = ({placeholder, flex}: Props) => {
   const onFocus = () => {
     console.log('onFocus');
   };
   return (
     <TextInput
-      style={styles.input}
+      style={[styles.input, flex && {flex: 0.85}]}
       placeholder={placeholder}
       onFocus={onFocus}
     />
@@ -36,7 +37,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 10,
     height: 50,
-    flex: 0.85,
+
     shadowColor: '#000',
     shadowOffset: {
       width: 0,

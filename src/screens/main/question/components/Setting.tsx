@@ -1,9 +1,13 @@
 import React from 'react';
 import {StyleSheet, TouchableWithoutFeedback, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-const Setting = () => {
+
+interface SettingProps {
+  onPress: () => void;
+}
+const Setting = ({onPress}: SettingProps) => {
   return (
-    <TouchableWithoutFeedback>
+    <TouchableWithoutFeedback onPress={onPress}>
       <View style={styles.btn}>
         <Icon name="settings-outline" size={25} color="black" />
       </View>

@@ -1,5 +1,6 @@
 export * from './main/home';
 export * from './main/question';
+export * from './main/setting-question';
 
 // Auth
 export * from './auth/login';
