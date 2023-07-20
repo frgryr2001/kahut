@@ -17,6 +17,7 @@ const windowHeight = Dimensions.get('window').height;
 const ImageCover = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectImage, setSelectImage] = useState('' as string);
+
   const onPress = () => {
     setModalVisible(true);
   };
@@ -26,6 +27,9 @@ const ImageCover = () => {
   const openCamera = () => {
     launchCamera({mediaType: 'photo'}, response => {
       console.log('response', response);
+      if (response.didCancel) {
+        return;
+      }
       setSelectImage(response.assets![0].uri as string);
     });
     onDismiss();
@@ -48,7 +52,7 @@ const ImageCover = () => {
           <>
             <Image
               source={{uri: selectImage}}
-              resizeMode="cover"
+              resizeMode="contain"
               style={styles.image}
             />
             {/* delete image */}

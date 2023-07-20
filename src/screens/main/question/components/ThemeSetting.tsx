@@ -1,15 +1,20 @@
 import React from 'react';
-import {Pressable, StyleSheet, Text, View} from 'react-native';
+import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 interface Props {
   onPress: () => void;
+  getBackground: () => any;
 }
 
-const ThemeSetting = ({onPress}: Props) => {
+const ThemeSetting = ({onPress, getBackground}: Props) => {
   return (
     <Pressable style={styles.themeSetting} onPress={onPress}>
-      <View style={styles.imageTheme} />
+      {getBackground() !== null && (
+        <Image source={getBackground()} style={styles.imageTheme} />
+      )}
+      {getBackground() === null && <View style={styles.imageTheme} />}
+
       <Text style={styles.titleTheme}>Theme Setting</Text>
       <Icon name="chevron-down-outline" size={25} color="black" />
     </Pressable>
@@ -38,7 +43,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 50,
     flex: 0.2,
-    backgroundColor: 'red',
+    backgroundColor: '#969da3',
   },
   titleTheme: {
     flex: 1,

@@ -2,9 +2,11 @@ import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {
   CardStyleInterpolators,
+  TransitionPresets,
   createStackNavigator,
 } from '@react-navigation/stack';
 import {
+  CreateQuestionScreen,
   ForgotPasswordScreen,
   LoginScreen,
   OtpScreen,
@@ -32,6 +34,10 @@ export type RootStackParams = {
   };
   QuestionScreen: undefined;
   SettingQuestionScreen: undefined;
+  CreateQuestionScreen: {
+    type: 'quiz' | 'tf';
+  };
+  ModalQuestionScreen: undefined;
 };
 export type ScreenName = keyof RootStackParams;
 
@@ -79,7 +85,22 @@ export const Navigator = () => {
                 cardStyle: {
                   backgroundColor: '#F5F5F5',
                 },
+                // presentation: 'modal',
+                // cardOverlayEnabled: true,
+                // ...TransitionPresets.ModalPresentationIOS,
+                // cardOverlay: () => (
+                //   <View
+                //     style={{
+                //       flex: 1,
+                //       backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                //     }}
+                //   />
+                // ),
               }}
+            />
+            <Stack.Screen
+              name="CreateQuestionScreen"
+              component={CreateQuestionScreen}
             />
 
             {/* <Stack.Screen name="LoginScreen" component={LoginScreen} />

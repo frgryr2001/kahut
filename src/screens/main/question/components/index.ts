@@ -8,3 +8,4 @@ export {default as ButtonCustom} from './ButtonCustom';
 export {default as ListTypeQuestion} from './ListTypeQuestion';
 export {default as Header} from './Header';
 export {default as ModalImage} from './ModalImage';
+export {default as ThemeBackground} from './ThemeBackground';

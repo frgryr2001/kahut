@@ -1,19 +1,35 @@
-import {View} from 'react-native';
+import {View, Button} from 'react-native';
 import React from 'react';
 import {Theme} from './Theme';
-import {Button} from 'react-native';
+import {useAppDispatch} from '../../../../redux/store';
+import {choiceTheme} from '../../../../redux/slices/questionSlice/reducer';
+import {theme} from '../../../../types/question';
 
-const nameTheme = ['Standard', 'Spring', 'Summer', 'Autumn', 'Winter', 'Dark'];
+const nameTheme = [
+  'Standard',
+  'Spring',
+  'Summer',
+  'Autumn',
+  'Winter',
+  'Dark',
+] as string[];
 
-export const ListTheme = () => {
-  const [idFocus, setIdFocus] = React.useState<number>();
+interface Props {
+  onCloseBottomModal: () => void;
+}
+
+export const ListTheme = ({onCloseBottomModal}: Props) => {
+  const [idFocus, setIdFocus] = React.useState<number>(0);
+
+  const dispatch = useAppDispatch();
   const onPress = (id: number) => {
     setIdFocus(id);
   };
 
   const selectTheme = () => {
-    console.log(idFocus);
-    // dispatch to do something
+    const nameSelected = nameTheme[idFocus] as theme;
+    dispatch(choiceTheme(nameSelected));
+    onCloseBottomModal();
   };
 
   return (

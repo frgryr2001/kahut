@@ -1,13 +1,16 @@
 import React from 'react';
 import {StyleSheet, TouchableWithoutFeedback, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {RootStackParams} from '../../../../navigation/Navigation';
+import {StackNavigationProp} from '@react-navigation/stack';
 
 interface SettingProps {
-  onPress: () => void;
+  navigation: StackNavigationProp<RootStackParams, 'QuestionScreen', undefined>;
 }
-const Setting = ({onPress}: SettingProps) => {
+const Setting = ({navigation}: SettingProps) => {
   return (
-    <TouchableWithoutFeedback onPress={onPress}>
+    <TouchableWithoutFeedback
+      onPress={() => navigation.navigate('SettingQuestionScreen')}>
       <View style={styles.btn}>
         <Icon name="settings-outline" size={25} color="black" />
       </View>

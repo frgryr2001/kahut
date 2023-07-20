@@ -10,6 +10,7 @@ import {
   ListTypeQuestion,
   Setting,
   ThemeSetting,
+  ThemeBackground,
 } from './components';
 import {
   BottomSheetModal,
@@ -19,12 +20,13 @@ import {
 import {StackScreenProps} from '@react-navigation/stack';
 import {RootStackParams} from '../../../navigation/Navigation';
 import {ListTheme} from './components/ListTheme';
+import {useThemeQuestion} from '../../../hooks/getTheme';
 
 interface Props extends StackScreenProps<RootStackParams, 'QuestionScreen'> {}
 
 export const QuestionScreen = ({navigation}: Props) => {
   const [isClickShowTheme, setIsClickShowTheme] = useState<boolean>(false);
-
+  const {themeQuestion, getBackground} = useThemeQuestion();
   // ref
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
@@ -35,15 +37,15 @@ export const QuestionScreen = ({navigation}: Props) => {
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
   }, []);
+
+  const handleCloseModalPress = useCallback(() => {
+    bottomSheetModalRef.current?.close();
+  }, []);
   const handleSheetChanges = useCallback((index: number) => {
     if (index === -1) {
       setIsClickShowTheme(false);
     }
   }, []);
-
-  const gotoScreen = () => {
-    navigation.navigate('SettingQuestionScreen');
-  };
 
   const renderBackdrop = useCallback(
     (props: any) => (
@@ -67,26 +69,56 @@ export const QuestionScreen = ({navigation}: Props) => {
             flex: 1,
             backgroundColor: '#F5F5F5',
           }}>
+          {/* <ThemeBackground /> */}
+          <ThemeBackground
+            themeQuestion={themeQuestion}
+            getBackground={getBackground}
+          />
           {/* Header  */}
           <Header completed />
           <ScrollView automaticallyAdjustKeyboardInsets>
             <View style={[globalStyles.globalPadding10, styles.container]}>
               <ImageCover />
               <View style={styles.containerTitle}>
-                <Text style={styles.title}>Title</Text>
+                <Text
+                  style={[
+                    styles.title,
+                    {
+                      color: themeQuestion === 'Standard' ? 'black' : 'white',
+                    },
+                  ]}>
+                  Title
+                </Text>
                 <View style={styles.flexRow}>
                   <InputTitle placeholder="Enter a title" flex />
-                  <Setting onPress={gotoScreen} />
+                  <Setting navigation={navigation} />
                 </View>
                 {/* Theme Setting */}
-                <Text style={styles.title}>Theme</Text>
+                <Text
+                  style={[
+                    styles.title,
+                    {
+                      color: themeQuestion === 'Standard' ? 'black' : 'white',
+                    },
+                  ]}>
+                  Theme
+                </Text>
                 <ThemeSetting
                   onPress={() => {
                     setIsClickShowTheme(true);
                     handlePresentModalPress();
                   }}
+                  getBackground={getBackground}
                 />
-                <Text style={styles.title}>Question (1)</Text>
+                <Text
+                  style={[
+                    styles.title,
+                    {
+                      color: themeQuestion === 'Standard' ? 'black' : 'white',
+                    },
+                  ]}>
+                  Question (1)
+                </Text>
                 {/* List Question */}
                 <ListQuestion />
                 <View
@@ -116,10 +148,15 @@ export const QuestionScreen = ({navigation}: Props) => {
               <View style={styles.contentContainer}>
                 <Text style={styles.titleQuestion}>Add Question</Text>
                 <Text style={styles.textKnowledge}>Test Knowledge</Text>
-                <ListTypeQuestion />
+                <ListTypeQuestion
+                  navigation={navigation}
+                  handleCloseModalPress={handleCloseModalPress}
+                />
               </View>
             )}
-            {isClickShowTheme && <ListTheme />}
+            {isClickShowTheme && (
+              <ListTheme onCloseBottomModal={handleCloseModalPress} />
+            )}
           </BottomSheetModal>
         </View>
       </BottomSheetModalProvider>
