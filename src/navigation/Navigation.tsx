@@ -5,6 +5,7 @@ import {
   TransitionPresets,
   createStackNavigator,
 } from '@react-navigation/stack';
+
 import {
   CreateQuestionScreen,
   ForgotPasswordScreen,
@@ -18,6 +19,7 @@ import {
 import {selectStatus} from '../redux/slices/authSlice/selector';
 import {useSelector} from 'react-redux';
 import {TabsApp} from './Tab';
+import ModalScreen from '../screens/main/create-question/modal';
 
 export type RootStackParams = {
   HomeScreen: undefined;
@@ -42,6 +44,7 @@ export type RootStackParams = {
 export type ScreenName = keyof RootStackParams;
 
 const Stack = createStackNavigator<RootStackParams>();
+
 export const Navigator = () => {
   const status = useSelector(selectStatus);
 
@@ -101,8 +104,22 @@ export const Navigator = () => {
             <Stack.Screen
               name="CreateQuestionScreen"
               component={CreateQuestionScreen}
+              options={{
+                ...TransitionPresets.ModalSlideFromBottomIOS,
+              }}
             />
-
+            <Stack.Screen
+              name="ModalQuestionScreen"
+              component={ModalScreen}
+              options={{
+                presentation: 'transparentModal',
+                ...TransitionPresets.ModalFadeTransition,
+                animationEnabled: true,
+                cardStyle: {
+                  backgroundColor: 'transparent',
+                },
+              }}
+            />
             {/* <Stack.Screen name="LoginScreen" component={LoginScreen} />
             <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
             <Stack.Screen

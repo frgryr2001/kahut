@@ -30,6 +30,7 @@ export function TabsApp() {
         }}
         component={HomeScreen}
       />
+
       <Tab.Screen
         name="Create"
         listeners={({navigation, route}) => ({

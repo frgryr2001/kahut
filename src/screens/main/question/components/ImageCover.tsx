@@ -14,7 +14,12 @@ import {ModalImage} from '.';
 
 const windowHeight = Dimensions.get('window').height;
 
-const ImageCover = () => {
+interface Props {
+  as: 'image' | 'media';
+  content: string;
+}
+
+const ImageCover = ({as, content}: Props) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectImage, setSelectImage] = useState('' as string);
 
@@ -44,7 +49,7 @@ const ImageCover = () => {
   return (
     <View>
       <Pressable
-        style={styles.btn}
+        style={[styles.btn, as === 'image' && {flex: 1}]}
         onPress={onPress}
         disabled={selectImage ? true : false}>
         {/* image-outline */}
@@ -72,7 +77,7 @@ const ImageCover = () => {
         ) : (
           <>
             <Icon name="image-outline" size={30} color="black" />
-            <Text style={styles.buttonText}>Tap me to add cover image</Text>
+            <Text style={styles.buttonText}>{content}</Text>
           </>
         )}
       </Pressable>
@@ -89,7 +94,6 @@ const ImageCover = () => {
 
 const styles = StyleSheet.create({
   btn: {
-    flex: 1,
     backgroundColor: 'white',
     // paddingVertical: 15,
     borderRadius: 10,

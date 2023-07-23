@@ -21,8 +21,11 @@ import {StackScreenProps} from '@react-navigation/stack';
 import {RootStackParams} from '../../../navigation/Navigation';
 import {ListTheme} from './components/ListTheme';
 import {useThemeQuestion} from '../../../hooks/getTheme';
+import {Question} from '../../../types/question';
 
 interface Props extends StackScreenProps<RootStackParams, 'QuestionScreen'> {}
+
+const questions: Question[] = [];
 
 export const QuestionScreen = ({navigation}: Props) => {
   const [isClickShowTheme, setIsClickShowTheme] = useState<boolean>(false);
@@ -78,7 +81,7 @@ export const QuestionScreen = ({navigation}: Props) => {
           <Header completed />
           <ScrollView automaticallyAdjustKeyboardInsets>
             <View style={[globalStyles.globalPadding10, styles.container]}>
-              <ImageCover />
+              <ImageCover as="image" content="Tap me to add cover image" />
               <View style={styles.containerTitle}>
                 <Text
                   style={[
@@ -120,7 +123,7 @@ export const QuestionScreen = ({navigation}: Props) => {
                   Question (1)
                 </Text>
                 {/* List Question */}
-                <ListQuestion />
+                <ListQuestion questions={questions} />
                 <View
                   style={{
                     height: 90,

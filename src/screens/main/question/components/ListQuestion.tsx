@@ -2,7 +2,7 @@ import React from 'react';
 import {View} from 'react-native';
 import Question from './Question';
 
-const ListQuestion = () => {
+const ListQuestion = ({questions}: any) => {
   return (
     <View
       style={{
@@ -10,7 +10,7 @@ const ListQuestion = () => {
         rowGap: 10,
       }}>
       {/* <Question /> */}
-      {Array.from(Array(8).keys()).map((item, index) => (
+      {questions.map((item, index) => (
         <Question key={index} />
       ))}
     </View>
