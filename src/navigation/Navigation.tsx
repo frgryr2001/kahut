@@ -1,10 +1,11 @@
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import {
-  CardStyleInterpolators,
-  TransitionPresets,
-  createStackNavigator,
-} from '@react-navigation/stack';
+// import {
+//   CardStyleInterpolators,
+//   TransitionPresets,
+//   createStackNavigator,
+// } from '@react-navigation/stack';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import {
   CreateQuestionScreen,
@@ -38,26 +39,28 @@ export type RootStackParams = {
   SettingQuestionScreen: undefined;
   CreateQuestionScreen: {
     type: 'quiz' | 'tf';
+    question?: string;
   };
-  ModalQuestionScreen: undefined;
+
+  ModalQuestionScreen: {
+    question: string;
+  };
 };
 export type ScreenName = keyof RootStackParams;
 
-const Stack = createStackNavigator<RootStackParams>();
+const Stack = createNativeStackNavigator<RootStackParams>();
 
 export const Navigator = () => {
   const status = useSelector(selectStatus);
 
   return (
-    <NavigationContainer independent>
+    <NavigationContainer>
       <Stack.Navigator
         initialRouteName="HomeScreen"
         screenOptions={{
+          animation: 'slide_from_right',
+
           headerShown: false,
-          cardStyle: {
-            backgroundColor: 'white',
-          },
-          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
         }}>
         {status !== 'authenticated' ? (
           <>
@@ -76,48 +79,35 @@ export const Navigator = () => {
                 },
                 headerStyle: {
                   backgroundColor: '#fff',
-                  shadowColor: '#000',
-                  shadowOffset: {
-                    width: 0,
-                    height: 2,
-                  },
-                  shadowOpacity: 0.25,
-                  shadowRadius: 3.84,
-                  elevation: 3,
+                  //   shadowColor: '#000',
+                  //   shadowOffset: {
+                  //     width: 0,
+                  //     height: 2,
+                  //   },
+                  //   shadowOpacity: 0.25,
+                  //   shadowRadius: 3.84,
+                  //   elevation: 3,
                 },
-                cardStyle: {
-                  backgroundColor: '#F5F5F5',
-                },
-                // presentation: 'modal',
-                // cardOverlayEnabled: true,
-                // ...TransitionPresets.ModalPresentationIOS,
-                // cardOverlay: () => (
-                //   <View
-                //     style={{
-                //       flex: 1,
-                //       backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                //     }}
-                //   />
-                // ),
+                // cardStyle: {
+                //   backgroundColor: '#F5F5F5',
+                // },
               }}
             />
             <Stack.Screen
               name="CreateQuestionScreen"
               component={CreateQuestionScreen}
               options={{
-                ...TransitionPresets.ModalSlideFromBottomIOS,
+                animation: 'slide_from_bottom',
               }}
             />
             <Stack.Screen
               name="ModalQuestionScreen"
               component={ModalScreen}
               options={{
+                headerShown: false,
                 presentation: 'transparentModal',
-                ...TransitionPresets.ModalFadeTransition,
-                animationEnabled: true,
-                cardStyle: {
-                  backgroundColor: 'transparent',
-                },
+
+                animation: 'fade',
               }}
             />
             {/* <Stack.Screen name="LoginScreen" component={LoginScreen} />

@@ -22,6 +22,7 @@ import {RootStackParams} from '../../../navigation/Navigation';
 import {ListTheme} from './components/ListTheme';
 import {useThemeQuestion} from '../../../hooks/getTheme';
 import {Question} from '../../../types/question';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 interface Props extends StackScreenProps<RootStackParams, 'QuestionScreen'> {}
 
@@ -62,108 +63,110 @@ export const QuestionScreen = ({navigation}: Props) => {
     [],
   );
   return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-      }}>
-      <BottomSheetModalProvider>
-        <View
-          style={{
-            flex: 1,
-            backgroundColor: '#F5F5F5',
-          }}>
-          {/* <ThemeBackground /> */}
-          <ThemeBackground
-            themeQuestion={themeQuestion}
-            getBackground={getBackground}
-          />
-          {/* Header  */}
-          <Header completed />
-          <ScrollView automaticallyAdjustKeyboardInsets>
-            <View style={[globalStyles.globalPadding10, styles.container]}>
-              <ImageCover as="image" content="Tap me to add cover image" />
-              <View style={styles.containerTitle}>
-                <Text
-                  style={[
-                    styles.title,
-                    {
-                      color: themeQuestion === 'Standard' ? 'black' : 'white',
-                    },
-                  ]}>
-                  Title
-                </Text>
-                <View style={styles.flexRow}>
-                  <InputTitle placeholder="Enter a title" flex />
-                  <Setting navigation={navigation} />
-                </View>
-                {/* Theme Setting */}
-                <Text
-                  style={[
-                    styles.title,
-                    {
-                      color: themeQuestion === 'Standard' ? 'black' : 'white',
-                    },
-                  ]}>
-                  Theme
-                </Text>
-                <ThemeSetting
-                  onPress={() => {
-                    setIsClickShowTheme(true);
-                    handlePresentModalPress();
-                  }}
-                  getBackground={getBackground}
-                />
-                <Text
-                  style={[
-                    styles.title,
-                    {
-                      color: themeQuestion === 'Standard' ? 'black' : 'white',
-                    },
-                  ]}>
-                  Question (1)
-                </Text>
-                {/* List Question */}
-                <ListQuestion questions={questions} />
-                <View
-                  style={{
-                    height: 90,
-                  }}
-                />
-              </View>
-            </View>
-          </ScrollView>
-          <ButtonCustom
-            onPress={handlePresentModalPress}
-            as="button"
-            label={`Add ${'\n'} question`}
-          />
-          <BottomSheetModal
-            ref={bottomSheetModalRef}
-            index={isClickShowTheme ? 1 : 0}
-            enablePanDownToClose={true}
-            snapPoints={snapPoints}
+    <GestureHandlerRootView style={{flex: 1}}>
+      <SafeAreaView
+        style={{
+          flex: 1,
+        }}>
+        <BottomSheetModalProvider>
+          <View
             style={{
-              backgroundColor: 'white',
-            }}
-            onChange={handleSheetChanges}
-            backdropComponent={renderBackdrop}>
-            {!isClickShowTheme && (
-              <View style={styles.contentContainer}>
-                <Text style={styles.titleQuestion}>Add Question</Text>
-                <Text style={styles.textKnowledge}>Test Knowledge</Text>
-                <ListTypeQuestion
-                  navigation={navigation}
-                  handleCloseModalPress={handleCloseModalPress}
-                />
+              flex: 1,
+              backgroundColor: '#F5F5F5',
+            }}>
+            {/* <ThemeBackground /> */}
+            <ThemeBackground
+              themeQuestion={themeQuestion}
+              getBackground={getBackground}
+            />
+            {/* Header  */}
+            <Header completed />
+            <ScrollView automaticallyAdjustKeyboardInsets>
+              <View style={[globalStyles.globalPadding10, styles.container]}>
+                <ImageCover as="image" content="Tap me to add cover image" />
+                <View style={styles.containerTitle}>
+                  <Text
+                    style={[
+                      styles.title,
+                      {
+                        color: themeQuestion === 'Standard' ? 'black' : 'white',
+                      },
+                    ]}>
+                    Title
+                  </Text>
+                  <View style={styles.flexRow}>
+                    <InputTitle placeholder="Enter a title" flex />
+                    <Setting navigation={navigation} />
+                  </View>
+                  {/* Theme Setting */}
+                  <Text
+                    style={[
+                      styles.title,
+                      {
+                        color: themeQuestion === 'Standard' ? 'black' : 'white',
+                      },
+                    ]}>
+                    Theme
+                  </Text>
+                  <ThemeSetting
+                    onPress={() => {
+                      setIsClickShowTheme(true);
+                      handlePresentModalPress();
+                    }}
+                    getBackground={getBackground}
+                  />
+                  <Text
+                    style={[
+                      styles.title,
+                      {
+                        color: themeQuestion === 'Standard' ? 'black' : 'white',
+                      },
+                    ]}>
+                    Question (1)
+                  </Text>
+                  {/* List Question */}
+                  <ListQuestion questions={questions} />
+                  <View
+                    style={{
+                      height: 90,
+                    }}
+                  />
+                </View>
               </View>
-            )}
-            {isClickShowTheme && (
-              <ListTheme onCloseBottomModal={handleCloseModalPress} />
-            )}
-          </BottomSheetModal>
-        </View>
-      </BottomSheetModalProvider>
-    </SafeAreaView>
+            </ScrollView>
+            <ButtonCustom
+              onPress={handlePresentModalPress}
+              as="button"
+              label={`Add ${'\n'} question`}
+            />
+            <BottomSheetModal
+              ref={bottomSheetModalRef}
+              index={isClickShowTheme ? 1 : 0}
+              enablePanDownToClose={true}
+              snapPoints={snapPoints}
+              style={{
+                backgroundColor: 'white',
+              }}
+              onChange={handleSheetChanges}
+              backdropComponent={renderBackdrop}>
+              {!isClickShowTheme && (
+                <View style={styles.contentContainer}>
+                  <Text style={styles.titleQuestion}>Add Question</Text>
+                  <Text style={styles.textKnowledge}>Test Knowledge</Text>
+                  <ListTypeQuestion
+                    navigation={navigation}
+                    handleCloseModalPress={handleCloseModalPress}
+                  />
+                </View>
+              )}
+              {isClickShowTheme && (
+                <ListTheme onCloseBottomModal={handleCloseModalPress} />
+              )}
+            </BottomSheetModal>
+          </View>
+        </BottomSheetModalProvider>
+      </SafeAreaView>
+    </GestureHandlerRootView>
   );
 };
 

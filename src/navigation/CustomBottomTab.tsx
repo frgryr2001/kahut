@@ -4,7 +4,7 @@ import {getIcon} from '../helpers/getIcon';
 
 function CustomBottomTab({state, descriptors, navigation}: any) {
   return (
-    <View style={{flexDirection: 'row', height: 60}}>
+    <View style={styles.tabBottomItem}>
       {state.routes.map((route: any, index: any) => {
         const {options} = descriptors[route.key];
         const label =
@@ -69,6 +69,13 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  tabBottomItem: {
+    flexDirection: 'row',
+    height: 60,
+    backgroundColor: 'white',
+    borderWidth: 0,
+    elevation: 0,
   },
 });
 

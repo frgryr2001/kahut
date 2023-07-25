@@ -5,20 +5,27 @@ import Icon from 'react-native-vector-icons/Ionicons';
 interface Props {
   color: string;
   isAnswer?: boolean;
+  isOptional?: boolean;
 }
 
-export const Answer = ({color, isAnswer = true}: Props) => {
+export const Answer = ({color, isAnswer = false, isOptional}: Props) => {
   return (
     <View style={[styles.textInput, {backgroundColor: color}]}>
       <TextInput
-        editable={false}
+        editable={true}
         style={{
           fontSize: 16,
           fontWeight: 'bold',
           color: '#FFFFFF',
+          textAlignVertical: 'center',
+          textAlign: 'center',
         }}
         multiline={true}
         maxFontSizeMultiplier={1}
+        placeholder={isOptional ? 'Optional' : 'Add Answer'}
+        placeholderTextColor={
+          isOptional ? 'rgba(255,255,255,0.5)' : 'rgba(255,255,255,0.8)'
+        }
       />
       <Icon
         name="checkmark-circle-outline"

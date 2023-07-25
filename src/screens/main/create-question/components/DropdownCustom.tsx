@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {Dropdown} from 'react-native-element-dropdown';
 const data = [
@@ -16,6 +16,10 @@ export const DropdownCustom = ({typeQuestion}: Props) => {
     return 'tf';
   });
   const [isFocus, setIsFocus] = useState(false);
+
+  useEffect(() => {
+    setValue(typeQuestion);
+  }, [typeQuestion]);
 
   return (
     <View style={styles.container}>

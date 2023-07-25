@@ -3,7 +3,6 @@ import React from 'react';
 import {HomeScreen} from '../screens';
 import CustomBottomTab from './CustomBottomTab';
 import {getIcon} from '../helpers/getIcon';
-import {StyleSheet} from 'react-native';
 
 const Tab = createBottomTabNavigator();
 
@@ -17,9 +16,6 @@ export function TabsApp() {
       tabBar={tabBar}
       screenOptions={{
         headerTitleAlign: 'center',
-        headerTitleStyle: styles.headerTitleStyle,
-        tabBarStyle: styles.tabBarStyle,
-        tabBarLabelStyle: styles.tabBarLabelStyle,
         headerRight: () => getIcon('notifications-outline', 25, 'black'),
       }}>
       <Tab.Screen
@@ -49,21 +45,3 @@ export function TabsApp() {
     </Tab.Navigator>
   );
 }
-const styles = StyleSheet.create({
-  headerTitleStyle: {
-    fontSize: 20,
-    color: 'black',
-  },
-  tabBarStyle: {
-    backgroundColor: 'rgba(255,255,255,0.9)',
-    height: 60,
-    paddingTop: 8,
-    paddingBottom: 8,
-    borderWidth: 0,
-    elevation: 0,
-  },
-  tabBarLabelStyle: {
-    fontSize: 12,
-    fontWeight: 'bold',
-  },
-});
