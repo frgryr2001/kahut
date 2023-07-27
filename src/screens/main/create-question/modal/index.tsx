@@ -1,34 +1,45 @@
 import {BlurView} from '@react-native-community/blur';
-import React from 'react';
-import {Pressable, StyleSheet, TextInput} from 'react-native';
+import React, {useEffect} from 'react';
+import {Pressable, StyleSheet, Text, TextInput, View} from 'react-native';
 import {RootStackParams} from '../../../../navigation/Navigation';
 import {StackScreenProps} from '@react-navigation/stack';
-import Animated from 'react-native-reanimated';
-import {sharedTransition} from '../../../../services/utils/CustomAnimation';
+import {Answer} from '../components';
+import {CustomSwitch} from './CustomSwitch';
+import Icon from 'react-native-vector-icons/Ionicons';
+import {useDebounce} from '../../../../hooks/useDebounce';
+import {useAppDispatch} from '../../../../redux/store';
+import {addTitleQuestion} from '../../../../redux/slices/questionSlice/reducer';
+
+const color = ['#3273e3', '#e84357', '#59c242', '#d9db44'];
 
 interface Props
   extends StackScreenProps<RootStackParams, 'ModalQuestionScreen'> {}
 const ModalScreen = ({navigation, route}: Props) => {
-  const {question} = route.params;
-  const [value, setValue] = React.useState(question);
+  const {
+    indexQuestion = 0,
+    isQuestionTitle,
+    id,
+    kahootID,
+    questionTitle,
+  } = route.params;
+  const [value, setValue] = React.useState(questionTitle);
   const ref = React.useRef<TextInput>(null);
+  const dispatch = useAppDispatch();
 
-  React.useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      ref.current?.focus();
-    });
+  const valueQuestionDebounce = useDebounce(value, 150);
 
-    return unsubscribe;
-  }, [navigation]);
-  const handleTextInputFocus = () => {
-    // Programmatically focus the TextInput
-    ref.current?.focus();
-  };
+  useEffect(() => {
+    if (valueQuestionDebounce) {
+      dispatch(
+        addTitleQuestion({
+          kahootId: kahootID,
+          questionId: id,
+          titleQuestion: valueQuestionDebounce,
+        }),
+      );
+    }
+  }, [valueQuestionDebounce, dispatch, kahootID, id]);
 
-  const handleTextInputBlur = () => {
-    // Programmatically blur the TextInput
-    ref.current?.blur();
-  };
   return (
     <BlurView
       blurType="dark"
@@ -37,37 +48,66 @@ const ModalScreen = ({navigation, route}: Props) => {
       style={styles.container}>
       <Pressable
         onPress={() =>
-          navigation.navigate('CreateQuestionScreen', {
-            type: 'tf',
-            question: value,
-          })
+          // dispatch action to update answer
+          navigation.goBack()
         }
         style={{
-          alignItems: 'center',
           flex: 1,
+          alignItems: 'center',
         }}>
-        <Animated.View
-          style={{
-            width: '100%',
-            paddingHorizontal: 10,
-            position: 'relative',
-            top: 300,
-          }}
-          sharedTransitionTag="sharedTag123"
-          sharedTransitionStyle={sharedTransition}>
-          <TextInput
-            ref={ref}
-            value={value}
-            onChangeText={setValue}
-            textAlignVertical="center"
-            onFocus={handleTextInputFocus}
-            onBlur={handleTextInputBlur}
-            onEndEditing={handleTextInputFocus}
-            multiline={true}
-            style={styles.textInputQuestion}
-            placeholder="Enter your question"
-          />
-        </Animated.View>
+        <View
+          style={[
+            styles.wrapper,
+            !isQuestionTitle ? {alignItems: 'center'} : {},
+          ]}>
+          {isQuestionTitle ? (
+            <TextInput
+              ref={ref}
+              value={value}
+              onChangeText={setValue}
+              textAlignVertical="center"
+              autoFocus
+              autoCorrect={false}
+              multiline={true}
+              style={styles.textInputQuestion}
+              placeholder="Enter your question"
+            />
+          ) : (
+            <>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: 10,
+                }}>
+                <Answer
+                  color={color[indexQuestion]}
+                  isEdit={true}
+                  isFocus
+                  hidePlaceHoder
+                />
+                <Pressable
+                  onPress={() => console.log('add')}
+                  style={{
+                    width: 40,
+                    height: 40,
+                    backgroundColor: 'white',
+                    borderRadius: 3,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}>
+                  <Icon name="image-outline" size={30} color={'black'} />
+                </Pressable>
+              </View>
+              <View style={styles.containerAnswer}>
+                <Text>Answer</Text>
+                <CustomSwitch isOn={false} color={color[indexQuestion]} />
+              </View>
+            </>
+          )}
+          {/* <Answer color={color[0]} isEdit={true} isFocus /> */}
+        </View>
       </Pressable>
     </BlurView>
   );
@@ -81,7 +121,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     backgroundColor: '#FFFFFF',
-    // backgroundColor: 'red',
     color: '#000000',
     padding: 10,
     height: 80,
@@ -95,6 +134,22 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.22,
     shadowRadius: 2.22,
     elevation: 1,
+  },
+  containerAnswer: {
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    padding: 15,
+    backgroundColor: 'white',
+    borderRadius: 8,
+    marginTop: 10,
+  },
+  wrapper: {
+    width: '100%',
+    paddingHorizontal: 10,
+    position: 'relative',
+    top: 200,
   },
 });
 

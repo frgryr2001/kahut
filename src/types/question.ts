@@ -4,21 +4,36 @@ export type theme =
   | 'Summer'
   | 'Autumn'
   | 'Winter'
-  | 'Dark';
+  | 'Pride';
 
-export type Question = {
-  type: string;
+export type QuestionKahoot = {
+  id?: string;
+  type: 'quiz' | 'trueorfalse';
   media: string;
   timeLimit: number;
-  points: number;
+  points: 0 | 1000 | 2000;
   question: string;
-  answer: [
-    {
-      answer: string;
-      isCorrect: boolean;
-      image: string;
-    },
-  ];
+  answers:
+    | [
+        {
+          text: string;
+          isCorrect: boolean;
+          image: string;
+        },
+      ]
+    | [];
+};
+export type Question = {
+  idQuestion?: string;
+  userId: number;
+  coverImage: string;
+  title: string;
+  theme: theme;
+  description: string;
+  media: string;
+  visibleScope: 'public' | 'private';
+  questions: QuestionKahoot[] | [];
+  isDraft?: boolean;
 };
 
 export type colorAnswer = 'red' | 'blue' | 'green' | 'yellow';

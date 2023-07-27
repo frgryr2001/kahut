@@ -1,19 +1,37 @@
-import React from 'react';
-import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
+import React, {useCallback} from 'react';
+import {Pressable, StyleSheet, Text, View, Image} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {theme as Theme} from '../../../../types/question';
 
 interface Props {
   onPress: () => void;
-  getBackground: () => any;
+  theme: Theme | undefined;
 }
 
-const ThemeSetting = ({onPress, getBackground}: Props) => {
+const ThemeSetting = ({onPress, theme}: Props) => {
+  const getBackground = useCallback(() => {
+    switch (theme) {
+      case 'Spring':
+        return require('../../../../assets/images/themes/springTheme.png');
+      case 'Summer':
+        return require('../../../../assets/images/themes/summerTheme.png');
+      case 'Autumn':
+        return require('../../../../assets/images/themes/autumnTheme.png');
+      case 'Winter':
+        return require('../../../../assets/images/themes/winterTheme.png');
+      case 'Pride':
+        return require('../../../../assets/images/themes/prideTheme.png');
+      default:
+        return null;
+    }
+  }, [theme]);
   return (
     <Pressable style={styles.themeSetting} onPress={onPress}>
-      {getBackground() !== null && (
+      {theme !== 'Standard' ? (
         <Image source={getBackground()} style={styles.imageTheme} />
+      ) : (
+        <View style={styles.imageTheme} />
       )}
-      {getBackground() === null && <View style={styles.imageTheme} />}
 
       <Text style={styles.titleTheme}>Theme Setting</Text>
       <Icon name="chevron-down-outline" size={25} color="black" />

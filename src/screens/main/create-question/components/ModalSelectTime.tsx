@@ -15,7 +15,7 @@ const widthWindow = Dimensions.get('window').width;
 interface ModalSelectTimeProps {
   modalVisible: boolean;
   onDismiss: () => void;
-  handleSetTime: (time: string) => void;
+  handleSetTime: (timeSelect: string) => void;
 }
 
 const ModalSelectTime = ({
@@ -76,12 +76,15 @@ const styles = StyleSheet.create({
   },
   pickIcon: {
     flexDirection: 'row',
+    flexWrap: 'wrap',
     gap: 5,
     justifyContent: 'center',
     alignItems: 'center',
     width: widthWindow * 0.8,
     paddingVertical: 20,
     backgroundColor: 'white',
+    borderBottomWidth: 1,
+    borderBottomColor: '#E0E0E0',
   },
   titlePickIcon: {fontFamily: 'Poppins-Regular', fontSize: 16},
 });

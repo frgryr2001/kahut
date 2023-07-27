@@ -4,11 +4,28 @@ import {Answer} from './Answer';
 
 const width = Dimensions.get('window').width;
 const color = ['#3273e3', '#e84357', '#59c242', '#d9db44'];
-export const AnswerBox = () => {
+
+interface Props {
+  navigation: any;
+  kahootID: string;
+  id: string;
+}
+
+export const AnswerBox = ({navigation, kahootID, id}: Props) => {
   return (
     <View style={styles.container}>
       {color.map((item, index) => {
-        return <Answer color={item} key={item} isOptional={index > 1} />;
+        return (
+          <Answer
+            color={item}
+            key={item}
+            index={index}
+            isOptional={index > 1}
+            navigation={navigation}
+            kahootID={kahootID}
+            id={id}
+          />
+        );
       })}
     </View>
   );

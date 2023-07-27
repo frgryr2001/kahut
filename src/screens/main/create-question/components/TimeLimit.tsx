@@ -12,8 +12,8 @@ export const TimeLimit = () => {
   const handleCloseModal = () => {
     setModalVisible(false);
   };
-  const handleSetTime = (time: string) => {
-    setTime(time);
+  const handleSetTime = (timeSelect: string) => {
+    setTime(timeSelect);
     setModalVisible(false);
   };
 

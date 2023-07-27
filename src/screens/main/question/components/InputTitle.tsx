@@ -1,5 +1,8 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {StyleSheet, TextInput} from 'react-native';
+import {useDebounce} from '../../../../hooks/useDebounce';
+import {useAppDispatch} from '../../../../redux/store';
+import {addTitleKahoot} from '../../../../redux/slices/questionSlice/reducer';
 
 interface Props {
   placeholder: string;
@@ -7,6 +10,7 @@ interface Props {
   onChangeText?: (text: string) => void;
   secureTextEntry?: boolean;
   flex?: boolean;
+  idQuestion?: string;
   keyboardType?:
     | 'default'
     | 'number-pad'
@@ -16,15 +20,28 @@ interface Props {
     | 'phone-pad';
 }
 
-const InputTitle = ({placeholder, flex}: Props) => {
-  const onFocus = () => {
-    console.log('onFocus');
-  };
+const InputTitle = ({placeholder, flex, value, idQuestion}: Props) => {
+  const dispatch = useAppDispatch();
+  const [valueInput, setValueInput] = React.useState<string>(value ?? '');
+  const valueDebounce = useDebounce(valueInput, 500);
+
+  useEffect(() => {
+    if (valueDebounce) {
+      dispatch(
+        addTitleKahoot({
+          kahootId: idQuestion!,
+          titleKahoot: valueDebounce,
+        }),
+      );
+    }
+  }, [valueDebounce, dispatch, idQuestion]);
+
   return (
     <TextInput
       style={[styles.input, flex && {flex: 0.85}]}
       placeholder={placeholder}
-      onFocus={onFocus}
+      value={valueInput}
+      onChangeText={setValueInput}
     />
   );
 };

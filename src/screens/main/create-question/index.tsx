@@ -6,16 +6,14 @@ import {
   TextInput,
   Pressable,
   Dimensions,
-  ScrollView,
-  KeyboardAvoidingView,
   SafeAreaView,
 } from 'react-native';
 import {RootStackParams} from '../../../navigation/Navigation';
 import {PaddingContainer} from '../../../components/layouts/PaddingContainer';
 import {AnswerBox, Header, TimeLimit} from './components';
 import {ImageCover} from '../question/components';
-import Animated from 'react-native-reanimated';
-import {sharedTransition} from '../../../services/utils/CustomAnimation';
+import {useSelector} from 'react-redux';
+import {selectQuestions} from '../../../redux/slices/questionSlice/selector';
 
 const HEIGHT_HEADER = 50;
 const width = Dimensions.get('window').width;
@@ -24,58 +22,66 @@ interface Props
   extends StackScreenProps<RootStackParams, 'CreateQuestionScreen'> {}
 
 export const CreateQuestionScreen = ({navigation, route}: Props) => {
-  const {type, question = ''} = route.params;
+  const {kahootID, id} = route.params;
+
+  const kahootArr = useSelector(selectQuestions);
+  const kahoot = kahootArr.find(item => item.idQuestion === kahootID);
+  const question = kahoot?.questions.find(item => item.id === id);
 
   return (
     <SafeAreaView
       style={{
         flex: 1,
       }}>
-      <KeyboardAvoidingView behavior="height" keyboardVerticalOffset={-100}>
-        <ScrollView automaticallyAdjustKeyboardInsets>
-          <View style={styles.container}>
-            <Header navigation={navigation} typeQuestion={type} />
-            <PaddingContainer>
-              {/* Header */}
-              <View>
-                <ImageCover as="media" content="Add media" />
-                {/* Time limit */}
-                <TimeLimit />
-              </View>
-              <View style={styles.questionContainer}>
-                {/* Question */}
-                <Pressable
-                  style={{
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                  onPress={() =>
-                    navigation.navigate('ModalQuestionScreen', {
-                      question: question,
-                    })
-                  }>
-                  <Animated.View
-                    style={{width: width, paddingHorizontal: 10}}
-                    sharedTransitionTag="sharedTag123"
-                    sharedTransitionStyle={sharedTransition}>
-                    <TextInput
-                      editable={false}
-                      textAlignVertical="center"
-                      value={question}
-                      multiline={true}
-                      style={styles.inputQuestion}
-                      placeholder="Tap to add question"
-                    />
-                  </Animated.View>
-                </Pressable>
-
-                {/* Answer */}
-                <AnswerBox />
-              </View>
-            </PaddingContainer>
+      <View style={styles.container}>
+        <Header navigation={navigation} typeQuestion={question?.type ?? ''} />
+        <PaddingContainer>
+          {/* Header */}
+          <View>
+            <ImageCover
+              as="media"
+              content="Add media"
+              imageDefault={question?.media ?? ''}
+              kahootID={kahootID}
+              id={id}
+            />
+            {/* Time limit */}
+            <TimeLimit />
           </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
+          <View style={styles.questionContainer}>
+            {/* Question */}
+            <Pressable
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+              onPress={() =>
+                navigation.navigate('ModalQuestionScreen', {
+                  isQuestionTitle: true,
+                  questionTitle: question?.question,
+                  kahootID: kahootID,
+                  id: id,
+                })
+              }>
+              <View style={{width: width, paddingHorizontal: 10}}>
+                <TextInput
+                  editable={false}
+                  textAlignVertical="center"
+                  value={question?.question}
+                  multiline={true}
+                  style={styles.inputQuestion}
+                  placeholder="Tap to add question"
+                />
+              </View>
+            </Pressable>
+
+            {/* Answer */}
+            {question?.type === 'quiz' && (
+              <AnswerBox navigation={navigation} kahootID={kahootID} id={id} />
+            )}
+          </View>
+        </PaddingContainer>
+      </View>
     </SafeAreaView>
   );
 };

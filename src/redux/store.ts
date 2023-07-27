@@ -12,7 +12,7 @@ const persistConfig = {
 };
 const rootReducer = combineReducers({
   auth: authReducer,
-  questions: questionReducer,
+  kahoot: questionReducer,
 });
 
 export const persistedReducer = persistReducer(persistConfig, rootReducer);

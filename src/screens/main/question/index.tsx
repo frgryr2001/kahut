@@ -1,5 +1,12 @@
 import React, {useCallback, useMemo, useRef, useState} from 'react';
-import {ScrollView, StyleSheet, Text, View, SafeAreaView} from 'react-native';
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  SafeAreaView,
+  Alert,
+} from 'react-native';
 import {styles as globalStyles} from '../../../themes/appTheme';
 import {
   ButtonCustom,
@@ -20,17 +27,24 @@ import {
 import {StackScreenProps} from '@react-navigation/stack';
 import {RootStackParams} from '../../../navigation/Navigation';
 import {ListTheme} from './components/ListTheme';
-import {useThemeQuestion} from '../../../hooks/getTheme';
-import {Question} from '../../../types/question';
+
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import {useSelector} from 'react-redux';
+import {selectQuestions} from '../../../redux/slices/questionSlice/selector';
+// import {useAppDispatch} from '../../../redux/store';
 
 interface Props extends StackScreenProps<RootStackParams, 'QuestionScreen'> {}
 
-const questions: Question[] = [];
+export const QuestionScreen = ({navigation, route}: Props) => {
+  const {idQuestion} = route.params.question;
 
-export const QuestionScreen = ({navigation}: Props) => {
+  const kahootArray = useSelector(selectQuestions);
+  const kahoot = kahootArray.find(item => item.idQuestion === idQuestion);
+
+  console.log('Kahoot question con', JSON.stringify(kahoot, null, 2));
+
   const [isClickShowTheme, setIsClickShowTheme] = useState<boolean>(false);
-  const {themeQuestion, getBackground} = useThemeQuestion();
+
   // ref
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
@@ -62,6 +76,37 @@ export const QuestionScreen = ({navigation}: Props) => {
     ),
     [],
   );
+  const hasUnsavedChanges = Boolean(kahoot?.isDraft);
+
+  React.useEffect(
+    () =>
+      navigation.addListener('beforeRemove', e => {
+        if (!hasUnsavedChanges) {
+          // If we don't have unsaved changes, then we don't need to do anything
+          return;
+        }
+
+        // Prevent default behavior of leaving the screen
+        e.preventDefault();
+
+        // Prompt the user before leaving the screen
+        Alert.alert(
+          'Discard changes?',
+          'You have unsaved changes. Are you sure to discard them and leave the screen?',
+          [
+            {text: "Don't leave", style: 'cancel', onPress: () => {}},
+            {
+              text: 'Discard',
+              style: 'destructive',
+              // If the user confirmed, then we dispatch the action we blocked earlier
+              // This will continue the action that had triggered the removal of the screen
+              onPress: () => navigation.dispatch(e.data.action),
+            },
+          ],
+        );
+      }),
+    [navigation, hasUnsavedChanges],
+  );
   return (
     <GestureHandlerRootView style={{flex: 1}}>
       <SafeAreaView
@@ -75,27 +120,34 @@ export const QuestionScreen = ({navigation}: Props) => {
               backgroundColor: '#F5F5F5',
             }}>
             {/* <ThemeBackground /> */}
-            <ThemeBackground
-              themeQuestion={themeQuestion}
-              getBackground={getBackground}
-            />
+            <ThemeBackground theme={kahoot?.theme} />
             {/* Header  */}
             <Header completed />
             <ScrollView automaticallyAdjustKeyboardInsets>
               <View style={[globalStyles.globalPadding10, styles.container]}>
-                <ImageCover as="image" content="Tap me to add cover image" />
+                <ImageCover
+                  as="image"
+                  content="Tap me to add cover image"
+                  imageDefault={kahoot?.coverImage}
+                  kahootID={idQuestion}
+                />
                 <View style={styles.containerTitle}>
                   <Text
                     style={[
                       styles.title,
                       {
-                        color: themeQuestion === 'Standard' ? 'black' : 'white',
+                        color: kahoot?.theme === 'Standard' ? 'black' : 'white',
                       },
                     ]}>
                     Title
                   </Text>
                   <View style={styles.flexRow}>
-                    <InputTitle placeholder="Enter a title" flex />
+                    <InputTitle
+                      placeholder="Enter a title"
+                      flex
+                      value={kahoot?.title}
+                      idQuestion={idQuestion ?? ''}
+                    />
                     <Setting navigation={navigation} />
                   </View>
                   {/* Theme Setting */}
@@ -103,29 +155,33 @@ export const QuestionScreen = ({navigation}: Props) => {
                     style={[
                       styles.title,
                       {
-                        color: themeQuestion === 'Standard' ? 'black' : 'white',
+                        color: kahoot?.theme === 'Standard' ? 'black' : 'white',
                       },
                     ]}>
                     Theme
                   </Text>
                   <ThemeSetting
+                    theme={kahoot?.theme}
                     onPress={() => {
                       setIsClickShowTheme(true);
                       handlePresentModalPress();
                     }}
-                    getBackground={getBackground}
                   />
                   <Text
                     style={[
                       styles.title,
                       {
-                        color: themeQuestion === 'Standard' ? 'black' : 'white',
+                        color: kahoot?.theme === 'Standard' ? 'black' : 'white',
                       },
                     ]}>
-                    Question (1)
+                    Question ({kahoot?.questions.length ?? 0})
                   </Text>
                   {/* List Question */}
-                  <ListQuestion questions={questions} />
+                  <ListQuestion
+                    questions={kahoot?.questions ?? []}
+                    navigation={navigation}
+                    idQuestion={idQuestion ?? ''}
+                  />
                   <View
                     style={{
                       height: 90,
@@ -156,11 +212,15 @@ export const QuestionScreen = ({navigation}: Props) => {
                   <ListTypeQuestion
                     navigation={navigation}
                     handleCloseModalPress={handleCloseModalPress}
+                    idQuestion={idQuestion ?? ''}
                   />
                 </View>
               )}
               {isClickShowTheme && (
-                <ListTheme onCloseBottomModal={handleCloseModalPress} />
+                <ListTheme
+                  onCloseBottomModal={handleCloseModalPress}
+                  idQuestion={idQuestion}
+                />
               )}
             </BottomSheetModal>
           </View>

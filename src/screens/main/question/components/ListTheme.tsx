@@ -2,7 +2,7 @@ import {View, Button} from 'react-native';
 import React from 'react';
 import {Theme} from './Theme';
 import {useAppDispatch} from '../../../../redux/store';
-import {choiceTheme} from '../../../../redux/slices/questionSlice/reducer';
+import {changeTheme} from '../../../../redux/slices/questionSlice/reducer';
 import {theme} from '../../../../types/question';
 
 const nameTheme = [
@@ -11,14 +11,15 @@ const nameTheme = [
   'Summer',
   'Autumn',
   'Winter',
-  'Dark',
-] as string[];
+  'Pride',
+] as theme[];
 
 interface Props {
   onCloseBottomModal: () => void;
+  idQuestion: string | undefined;
 }
 
-export const ListTheme = ({onCloseBottomModal}: Props) => {
+export const ListTheme = ({onCloseBottomModal, idQuestion}: Props) => {
   const [idFocus, setIdFocus] = React.useState<number>(0);
 
   const dispatch = useAppDispatch();
@@ -28,7 +29,7 @@ export const ListTheme = ({onCloseBottomModal}: Props) => {
 
   const selectTheme = () => {
     const nameSelected = nameTheme[idFocus] as theme;
-    dispatch(choiceTheme(nameSelected));
+    dispatch(changeTheme({idQuestion: idQuestion ?? '', theme: nameSelected}));
     onCloseBottomModal();
   };
 

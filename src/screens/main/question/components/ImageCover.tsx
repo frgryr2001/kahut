@@ -9,19 +9,27 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
-
 import {ModalImage} from '.';
+import {useAppDispatch} from '../../../../redux/store';
+import {
+  addImageCoverKahoot,
+  addImageQuestion,
+  deleteImageQuestion,
+} from '../../../../redux/slices/questionSlice/reducer';
 
 const windowHeight = Dimensions.get('window').height;
 
 interface Props {
   as: 'image' | 'media';
   content: string;
+  imageDefault?: string;
+  kahootID?: string;
+  id?: string;
 }
 
-const ImageCover = ({as, content}: Props) => {
+const ImageCover = ({as, content, imageDefault, kahootID, id}: Props) => {
+  const dispatch = useAppDispatch();
   const [modalVisible, setModalVisible] = useState(false);
-  const [selectImage, setSelectImage] = useState('' as string);
 
   const onPress = () => {
     setModalVisible(true);
@@ -35,14 +43,48 @@ const ImageCover = ({as, content}: Props) => {
       if (response.didCancel) {
         return;
       }
-      setSelectImage(response.assets![0].uri as string);
+      if (kahootID && id) {
+        dispatch(
+          addImageQuestion({
+            kahootId: kahootID!,
+            questionId: id!,
+            imageQuestion: response.assets![0].uri as string,
+          }),
+        );
+      }
+      if (kahootID && !id) {
+        dispatch(
+          addImageCoverKahoot({
+            kahootId: kahootID!,
+            imageCover: response.assets![0].uri as string,
+          }),
+        );
+      }
     });
     onDismiss();
   };
   const openGallery = () => {
     launchImageLibrary({mediaType: 'photo'}, response => {
-      console.log('response', response);
-      setSelectImage(response.assets![0].uri as string);
+      if (response.didCancel) {
+        return;
+      }
+      if (kahootID && id) {
+        dispatch(
+          addImageQuestion({
+            kahootId: kahootID!,
+            questionId: id!,
+            imageQuestion: response.assets![0].uri as string,
+          }),
+        );
+      }
+      if (kahootID && !id) {
+        dispatch(
+          addImageCoverKahoot({
+            kahootId: kahootID!,
+            imageCover: response.assets![0].uri as string,
+          }),
+        );
+      }
     });
     onDismiss();
   };
@@ -51,26 +93,24 @@ const ImageCover = ({as, content}: Props) => {
       <Pressable
         style={[styles.btn, as === 'image' && {flex: 1}]}
         onPress={onPress}
-        disabled={selectImage ? true : false}>
+        disabled={imageDefault ? true : false}>
         {/* image-outline */}
-        {selectImage ? (
+        {imageDefault ? (
           <>
             <Image
-              source={{uri: selectImage}}
+              source={{uri: imageDefault}}
               resizeMode="contain"
               style={styles.image}
             />
+
             {/* delete image */}
             <Pressable
-              style={{
-                position: 'absolute',
-                top: 10,
-                right: 10,
-                backgroundColor: 'white',
-                borderRadius: 50,
-                padding: 5,
-              }}
-              onPress={() => setSelectImage('')}>
+              style={styles.btnDelete}
+              onPress={() =>
+                dispatch(
+                  deleteImageQuestion({kahootId: kahootID!, questionId: id!}),
+                )
+              }>
               <Icon name="close-outline" size={20} color="black" />
             </Pressable>
           </>
@@ -117,6 +157,14 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     height: '100%',
+  },
+  btnDelete: {
+    position: 'absolute',
+    top: 5,
+    right: 10,
+    backgroundColor: 'white',
+    borderRadius: 50,
+    padding: 5,
   },
 });
 

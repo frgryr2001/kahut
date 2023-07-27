@@ -1,8 +1,14 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import React from 'react';
+import 'react-native-get-random-values';
+import {v4 as uuidv4} from 'uuid';
 import {HomeScreen} from '../screens';
 import CustomBottomTab from './CustomBottomTab';
 import {getIcon} from '../helpers/getIcon';
+import {useAppDispatch, RootState} from '../redux/store';
+import {Question} from '../types/question';
+import {useSelector} from 'react-redux';
+import {initQuestion} from '../redux/slices/questionSlice/reducer';
 
 const Tab = createBottomTabNavigator();
 
@@ -10,7 +16,27 @@ const CreateQuestionComponent = () => {
   return null;
 };
 export function TabsApp() {
+  const dispatch = useAppDispatch();
+  const userId = useSelector((state: RootState) => state.auth.user?.id);
   const tabBar = (props: any) => <CustomBottomTab {...props} />;
+
+  const handleInitQuestion = async () => {
+    const question: Question = {
+      idQuestion: uuidv4(),
+      userId: userId!,
+      title: '',
+      description: '',
+      theme: 'Standard',
+      coverImage: '',
+      media: '',
+      visibleScope: 'public',
+      questions: [],
+      isDraft: true,
+    };
+    dispatch(initQuestion(question));
+    return question;
+  };
+
   return (
     <Tab.Navigator
       tabBar={tabBar}
@@ -26,13 +52,23 @@ export function TabsApp() {
         }}
         component={HomeScreen}
       />
+      <Tab.Screen
+        name="Discover"
+        options={{
+          tabBarLabel: 'Discover',
+          tabBarActiveTintColor: '#7C4DFF',
+        }}
+        component={HomeScreen}
+      />
 
       <Tab.Screen
         name="Create"
-        listeners={({navigation, route}) => ({
+        listeners={({navigation}) => ({
           tabPress: e => {
             e.preventDefault();
-            navigation.navigate('QuestionScreen');
+            handleInitQuestion().then(question => {
+              navigation.navigate('QuestionScreen', {question});
+            });
           },
         })}
         options={{
@@ -41,6 +77,15 @@ export function TabsApp() {
           tabBarActiveTintColor: '#7C4DFF',
         }}
         component={CreateQuestionComponent}
+      />
+
+      <Tab.Screen
+        name="Library"
+        options={{
+          tabBarLabel: 'Library',
+          tabBarActiveTintColor: '#7C4DFF',
+        }}
+        component={HomeScreen}
       />
     </Tab.Navigator>
   );

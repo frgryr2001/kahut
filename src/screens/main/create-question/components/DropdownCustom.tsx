@@ -3,7 +3,7 @@ import {View, StyleSheet} from 'react-native';
 import {Dropdown} from 'react-native-element-dropdown';
 const data = [
   {label: 'Quiz', type: 'quiz'},
-  {label: 'True or False', type: 'tf'},
+  {label: 'True or False', type: 'trueorfalse'},
 ];
 interface Props {
   typeQuestion: string;
@@ -13,7 +13,7 @@ export const DropdownCustom = ({typeQuestion}: Props) => {
     if (typeQuestion === 'quiz') {
       return 'quiz';
     }
-    return 'tf';
+    return 'trueorfalse';
   });
   const [isFocus, setIsFocus] = useState(false);
 

@@ -20,6 +20,10 @@ function CustomBottomTab({state, descriptors, navigation}: any) {
           iconName = isFocused ? 'home' : 'home-outline';
         } else if (route.name === 'Create') {
           iconName = isFocused ? 'add-circle' : 'add-circle-outline';
+        } else if (route.name === 'Library') {
+          iconName = isFocused ? 'library' : 'library-outline';
+        } else if (route.name === 'Discover') {
+          iconName = isFocused ? 'compass' : 'compass-outline';
         }
 
         const onPress = () => {
@@ -53,7 +57,11 @@ function CustomBottomTab({state, descriptors, navigation}: any) {
             onLongPress={onLongPress}>
             <View style={styles.btn}>
               {getIcon(iconName, 25, isFocused ? '#673ab7' : '#222')}
-              <Text style={{color: isFocused ? '#673ab7' : '#222'}}>
+              <Text
+                style={{
+                  color: isFocused ? '#673ab7' : '#222',
+                  fontWeight: 'bold',
+                }}>
                 {label}
               </Text>
             </View>

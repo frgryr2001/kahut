@@ -21,6 +21,7 @@ import {selectStatus} from '../redux/slices/authSlice/selector';
 import {useSelector} from 'react-redux';
 import {TabsApp} from './Tab';
 import ModalScreen from '../screens/main/create-question/modal';
+import {Question} from '../types/question';
 
 export type RootStackParams = {
   HomeScreen: undefined;
@@ -35,15 +36,22 @@ export type RootStackParams = {
   ResetPasswordScreen: {
     email: string;
   };
-  QuestionScreen: undefined;
+  QuestionScreen: {
+    question: Question;
+  };
   SettingQuestionScreen: undefined;
   CreateQuestionScreen: {
-    type: 'quiz' | 'tf';
-    question?: string;
+    type?: 'quiz' | 'tf';
+    kahootID: string;
+    id: string;
   };
 
   ModalQuestionScreen: {
-    question: string;
+    indexQuestion?: number;
+    isQuestionTitle?: boolean;
+    questionTitle?: string;
+    kahootID: string;
+    id: string;
   };
 };
 export type ScreenName = keyof RootStackParams;
@@ -64,6 +72,56 @@ export const Navigator = () => {
         }}>
         {status !== 'authenticated' ? (
           <>
+            <Stack.Screen
+              name="LoginScreen"
+              component={LoginScreen}
+              options={{
+                contentStyle: {
+                  backgroundColor: '#fff',
+                },
+              }}
+            />
+            <Stack.Screen
+              name="RegisterScreen"
+              component={RegisterScreen}
+              options={{
+                contentStyle: {
+                  backgroundColor: '#fff',
+                },
+              }}
+            />
+            <Stack.Screen
+              name="ForgotPasswordScreen"
+              component={ForgotPasswordScreen}
+              options={{
+                contentStyle: {
+                  backgroundColor: '#fff',
+                },
+              }}
+            />
+            <Stack.Screen
+              name="OtpScreen"
+              component={OtpScreen}
+              options={{
+                contentStyle: {
+                  backgroundColor: '#fff',
+                },
+              }}
+            />
+            <Stack.Screen
+              name="ResetPasswordScreen"
+              component={ResetPasswordScreen}
+              options={{
+                contentStyle: {
+                  backgroundColor: '#fff',
+                },
+              }}
+            />
+          </>
+        ) : (
+          <>
+            {/* <Stack.Screen name="HomeScreen" component={TabsApp} />
+            <Stack.Screen name="QuestionScreen" component={QuestionScreen} /> */}
             <Stack.Screen name="HomeScreen" component={TabsApp} />
             <Stack.Screen name="QuestionScreen" component={QuestionScreen} />
             <Stack.Screen
@@ -79,18 +137,7 @@ export const Navigator = () => {
                 },
                 headerStyle: {
                   backgroundColor: '#fff',
-                  //   shadowColor: '#000',
-                  //   shadowOffset: {
-                  //     width: 0,
-                  //     height: 2,
-                  //   },
-                  //   shadowOpacity: 0.25,
-                  //   shadowRadius: 3.84,
-                  //   elevation: 3,
                 },
-                // cardStyle: {
-                //   backgroundColor: '#F5F5F5',
-                // },
               }}
             />
             <Stack.Screen
@@ -106,26 +153,9 @@ export const Navigator = () => {
               options={{
                 headerShown: false,
                 presentation: 'transparentModal',
-
                 animation: 'fade',
               }}
             />
-            {/* <Stack.Screen name="LoginScreen" component={LoginScreen} />
-            <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
-            <Stack.Screen
-              name="ForgotPasswordScreen"
-              component={ForgotPasswordScreen}
-            />
-            <Stack.Screen name="OtpScreen" component={OtpScreen} />
-            <Stack.Screen
-              name="ResetPasswordScreen"
-              component={ResetPasswordScreen}
-            /> */}
-          </>
-        ) : (
-          <>
-            {/* <Stack.Screen name="HomeScreen" component={TabsApp} />
-            <Stack.Screen name="QuestionScreen" component={QuestionScreen} /> */}
           </>
         )}
       </Stack.Navigator>

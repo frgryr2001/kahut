@@ -1,8 +1,15 @@
 import React from 'react';
 import {View} from 'react-native';
 import Question from './Question';
+import {QuestionKahoot} from '../../../../types/question';
 
-const ListQuestion = ({questions}: any) => {
+interface Props {
+  questions: QuestionKahoot[];
+  navigation: any;
+  idQuestion: string;
+}
+
+const ListQuestion = ({questions, navigation, idQuestion}: Props) => {
   return (
     <View
       style={{
@@ -11,7 +18,13 @@ const ListQuestion = ({questions}: any) => {
       }}>
       {/* <Question /> */}
       {questions.map((item, index) => (
-        <Question key={index} />
+        <Question
+          key={item.id}
+          question={item}
+          index={index}
+          navigation={navigation}
+          idQuestion={idQuestion}
+        />
       ))}
     </View>
   );
