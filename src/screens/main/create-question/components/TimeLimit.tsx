@@ -2,10 +2,21 @@ import React from 'react';
 import {View, TouchableOpacity, Text, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ModalSelectTime from './ModalSelectTime';
+import {QuestionKahoot} from '../../../../types/question';
+import {useAppDispatch} from '../../../../redux/store';
+import {updateFieldQuestion} from '../../../../redux/slices/questionSlice/reducer';
 
-export const TimeLimit = () => {
+interface Props {
+  kahootID: string;
+  id: string;
+  question: QuestionKahoot | undefined;
+}
+
+export const TimeLimit = ({kahootID, id, question}: Props) => {
   const [modalVisible, setModalVisible] = React.useState(false);
-  const [time, setTime] = React.useState('20' as string);
+  const [time, setTime] = React.useState(question?.timeLimit ?? '20');
+  const dispatch = useAppDispatch();
+
   const handleOpenModal = () => {
     setModalVisible(true);
   };
@@ -14,6 +25,16 @@ export const TimeLimit = () => {
   };
   const handleSetTime = (timeSelect: string) => {
     setTime(timeSelect);
+    dispatch(
+      updateFieldQuestion({
+        kahootId: kahootID,
+        questionId: id,
+        fieldsToUpdate: {
+          timeLimit: +timeSelect,
+        },
+      }),
+    );
+
     setModalVisible(false);
   };
 

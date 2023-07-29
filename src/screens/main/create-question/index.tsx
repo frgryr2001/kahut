@@ -7,6 +7,7 @@ import {
   Pressable,
   Dimensions,
   SafeAreaView,
+  Text,
 } from 'react-native';
 import {RootStackParams} from '../../../navigation/Navigation';
 import {PaddingContainer} from '../../../components/layouts/PaddingContainer';
@@ -46,7 +47,7 @@ export const CreateQuestionScreen = ({navigation, route}: Props) => {
               id={id}
             />
             {/* Time limit */}
-            <TimeLimit />
+            <TimeLimit kahootID={kahootID} id={id} question={question} />
           </View>
           <View style={styles.questionContainer}>
             {/* Question */}
@@ -77,8 +78,14 @@ export const CreateQuestionScreen = ({navigation, route}: Props) => {
 
             {/* Answer */}
             {question?.type === 'quiz' && (
-              <AnswerBox navigation={navigation} kahootID={kahootID} id={id} />
+              <AnswerBox
+                navigation={navigation}
+                kahootID={kahootID}
+                id={id}
+                answers={question.answers}
+              />
             )}
+            {question?.type === 'trueorfalse' && <Text>True or false</Text>}
           </View>
         </PaddingContainer>
       </View>

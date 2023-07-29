@@ -3,14 +3,20 @@ import {StyleSheet, TouchableWithoutFeedback, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {RootStackParams} from '../../../../navigation/Navigation';
 import {StackNavigationProp} from '@react-navigation/stack';
+import {Question} from '../../../../types/question';
 
 interface SettingProps {
   navigation: StackNavigationProp<RootStackParams, 'QuestionScreen', undefined>;
+  kahoot: Question | undefined;
 }
-const Setting = ({navigation}: SettingProps) => {
+const Setting = ({navigation, kahoot}: SettingProps) => {
   return (
     <TouchableWithoutFeedback
-      onPress={() => navigation.navigate('SettingQuestionScreen')}>
+      onPress={() =>
+        navigation.navigate('SettingQuestionScreen', {
+          kahoot: kahoot!,
+        })
+      }>
       <View style={styles.btn}>
         <Icon name="settings-outline" size={25} color="black" />
       </View>

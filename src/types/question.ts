@@ -13,12 +13,13 @@ export type QuestionKahoot = {
   timeLimit: number;
   points: 0 | 1000 | 2000;
   question: string;
+  answer?: boolean;
   answers:
     | [
         {
-          text: string;
+          text?: string;
           isCorrect: boolean;
-          image: string;
+          image?: string;
         },
       ]
     | [];
@@ -34,6 +35,12 @@ export type Question = {
   visibleScope: 'public' | 'private';
   questions: QuestionKahoot[] | [];
   isDraft?: boolean;
+};
+
+export type QuestionKahootType = keyof Question;
+
+export type KeyTypeKahoot<T extends keyof Question> = {
+  [P in T]: Question[P];
 };
 
 export type colorAnswer = 'red' | 'blue' | 'green' | 'yellow';

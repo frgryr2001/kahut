@@ -1,4 +1,4 @@
-import React, {useMemo, useState} from 'react';
+import React, {useMemo} from 'react';
 import RadioGroup, {RadioButtonProps} from 'react-native-radio-buttons-group';
 
 const visibleTo = [
@@ -14,48 +14,19 @@ const visibleTo = [
   },
 ];
 
-const point = [
-  {
-    id: '0', // acts as primary key, should be unique and non-empty string
-    label: '0',
-    value: '0',
-  },
-  {
-    id: '1000',
-    label: '1000',
-    value: '1000',
-  },
-  {
-    id: '2000',
-    label: '2000',
-    value: '2000',
-  },
-];
-
-interface RadioGroupProps {
-  type: 'visibleTo' | 'point';
+interface Props {
+  value: string;
+  handleChangeRadio: (value: 'public' | 'private') => void;
 }
 
-export function RadioGr({type}: RadioGroupProps) {
-  const radioButtons: RadioButtonProps[] = useMemo(
-    () => (type === 'visibleTo' ? visibleTo : point),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [],
-  );
-
-  const [selectedId, setSelectedId] = useState<string | undefined>(function () {
-    if (type === 'visibleTo') {
-      return 'public';
-    }
-    return '0';
-  });
-  console.log('selectedId', selectedId);
+export function RadioGr({value, handleChangeRadio}: Props) {
+  const radioButtons: RadioButtonProps[] = useMemo(() => visibleTo, []);
 
   return (
     <RadioGroup
       radioButtons={radioButtons}
-      onPress={setSelectedId}
-      selectedId={selectedId}
+      onPress={selected => handleChangeRadio(selected as 'public' | 'private')}
+      selectedId={value}
       layout="row"
     />
   );

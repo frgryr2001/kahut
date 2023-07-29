@@ -8,9 +8,15 @@ import {CustomSwitch} from './CustomSwitch';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useDebounce} from '../../../../hooks/useDebounce';
 import {useAppDispatch} from '../../../../redux/store';
-import {addTitleQuestion} from '../../../../redux/slices/questionSlice/reducer';
+import {
+  addTextAnswerQuestion,
+  addTitleQuestion,
+  changeIsCorrectAnswerQuestion,
+} from '../../../../redux/slices/questionSlice/reducer';
+import {useSelector} from 'react-redux';
+import {selectQuestions} from '../../../../redux/slices/questionSlice/selector';
 
-const color = ['#3273e3', '#e84357', '#59c242', '#d9db44'];
+const color = ['#3273e3', '#e84357', '#b93ddb', '#d9db44'];
 
 interface Props
   extends StackScreenProps<RootStackParams, 'ModalQuestionScreen'> {}
@@ -22,11 +28,23 @@ const ModalScreen = ({navigation, route}: Props) => {
     kahootID,
     questionTitle,
   } = route.params;
+  const kahootArr = useSelector(selectQuestions);
+  const kahoot = kahootArr.find(item => item.idQuestion === kahootID);
+  const questions = kahoot?.questions.find(item => item.id === id);
+  const {answers} = questions ?? {answers: []};
   const [value, setValue] = React.useState(questionTitle);
+  const [valueTextAnswer, setValueTextAnswer] = React.useState(
+    answers[indexQuestion]?.text,
+  );
+  const [isSwitchOn, setIsSwitchOn] = React.useState(
+    answers[indexQuestion]?.isCorrect,
+  );
+
   const ref = React.useRef<TextInput>(null);
   const dispatch = useAppDispatch();
-
   const valueQuestionDebounce = useDebounce(value, 150);
+  const valueAnswerDebounce = useDebounce(valueTextAnswer, 150);
+  console.log('valueQuestionDebounce', valueAnswerDebounce);
 
   useEffect(() => {
     if (valueQuestionDebounce) {
@@ -39,6 +57,36 @@ const ModalScreen = ({navigation, route}: Props) => {
       );
     }
   }, [valueQuestionDebounce, dispatch, kahootID, id]);
+
+  const handleOnChangeTextAnswer = (text: string) => {
+    setValueTextAnswer(text);
+  };
+  const handleOnPressSwitch = () => {
+    setIsSwitchOn(prevState => {
+      return !prevState;
+    });
+    dispatch(
+      changeIsCorrectAnswerQuestion({
+        kahootId: kahootID,
+        questionId: id,
+        index: indexQuestion,
+        isCorrect: !isSwitchOn,
+      }),
+    );
+  };
+
+  useEffect(() => {
+    if (valueAnswerDebounce) {
+      dispatch(
+        addTextAnswerQuestion({
+          kahootId: kahootID,
+          questionId: id,
+          answer: valueAnswerDebounce,
+          index: indexQuestion,
+        }),
+      );
+    }
+  }, [valueAnswerDebounce, dispatch, kahootID, id, indexQuestion]);
 
   return (
     <BlurView
@@ -85,7 +133,9 @@ const ModalScreen = ({navigation, route}: Props) => {
                   color={color[indexQuestion]}
                   isEdit={true}
                   isFocus
+                  value={valueTextAnswer ?? ''}
                   hidePlaceHoder
+                  handleOnChangeTextAnswer={handleOnChangeTextAnswer}
                 />
                 <Pressable
                   onPress={() => console.log('add')}
@@ -102,11 +152,14 @@ const ModalScreen = ({navigation, route}: Props) => {
               </View>
               <View style={styles.containerAnswer}>
                 <Text>Answer</Text>
-                <CustomSwitch isOn={false} color={color[indexQuestion]} />
+                <CustomSwitch
+                  isOn={isSwitchOn}
+                  handleOnPressSwitch={handleOnPressSwitch}
+                  color={color[indexQuestion]}
+                />
               </View>
             </>
           )}
-          {/* <Answer color={color[0]} isEdit={true} isFocus /> */}
         </View>
       </Pressable>
     </BlurView>

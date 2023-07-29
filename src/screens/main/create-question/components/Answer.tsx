@@ -4,23 +4,31 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 interface Props {
   color: string;
+  value: string;
   isAnswer?: boolean;
   isOptional?: boolean;
   isEdit?: boolean;
   isFocus?: boolean;
   index?: number;
+  kahootID?: string;
+  id?: string;
   hidePlaceHoder?: boolean;
+  handleOnChangeTextAnswer?: (text: string) => void;
   navigation?: any;
 }
 
 export const Answer = ({
   color,
+  value,
   isAnswer = false,
   isEdit = false,
   isFocus = false,
   hidePlaceHoder = false,
   isOptional,
   index,
+  kahootID,
+  handleOnChangeTextAnswer,
+  id,
   navigation,
 }: Props) => {
   return (
@@ -28,24 +36,21 @@ export const Answer = ({
       style={[styles.textInput, {backgroundColor: color}]}
       onPress={() =>
         navigation.navigate('ModalQuestionScreen', {
-          isAnswer: false,
-          answer: '123',
           indexQuestion: index,
+          kahootID: kahootID,
+          id: id,
         })
       }>
       <TextInput
         editable={isEdit}
-        style={{
-          fontSize: 16,
-          fontWeight: 'bold',
-          color: '#FFFFFF',
-          textAlignVertical: 'center',
-          textAlign: 'center',
-        }}
+        style={styles.input}
         autoFocus={isFocus}
+        onChangeText={text => handleOnChangeTextAnswer!(text)}
         multiline={true}
+        value={value}
         selectionColor={'black'}
         maxFontSizeMultiplier={1}
+        underlineColorAndroid="transparent"
         placeholder={
           hidePlaceHoder ? '' : isOptional ? 'Optional' : 'Add answer'
         }
@@ -54,9 +59,9 @@ export const Answer = ({
         }
       />
       <Icon
-        name="checkmark-circle-outline"
+        name="checkmark-circle"
         size={25}
-        color={'white'}
+        color={'#30d916'}
         style={{
           position: 'absolute',
           right: 0,
@@ -82,5 +87,12 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 3,
+  },
+  input: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#FFFFFF',
+    textAlignVertical: 'center',
+    textAlign: 'center',
   },
 });

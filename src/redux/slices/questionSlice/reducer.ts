@@ -23,6 +23,7 @@ const questionSlice = createSlice({
     initQuestion(state, action: PayloadAction<Question>) {
       state.questions.push({...action.payload});
     },
+    // Not clean code
     changeTheme(
       state,
       action: PayloadAction<{idQuestion: string; theme: Theme}>,
@@ -95,6 +96,74 @@ const questionSlice = createSlice({
         }
       }
     },
+    addTextAnswerQuestion(
+      state,
+      action: PayloadAction<{
+        kahootId: string;
+        questionId: string;
+        answer: string;
+        index: number;
+      }>,
+    ) {
+      const {kahootId, questionId, answer, index} = action.payload;
+      const kahoot = state.questions.find(k => k.idQuestion === kahootId);
+      if (kahoot) {
+        const question = kahoot.questions.find(q => q.id === questionId);
+
+        if (question) {
+          question.answers[index] = {
+            ...question.answers[index],
+            text: answer,
+          };
+        }
+        if (question?.answers[index].isCorrect === undefined) {
+          question!.answers[index] = {
+            ...question?.answers[index],
+            isCorrect: false,
+          };
+        }
+      }
+    },
+    changeIsCorrectAnswerQuestion(
+      state,
+      action: PayloadAction<{
+        kahootId: string;
+        questionId: string;
+        index: number;
+        isCorrect: boolean;
+      }>,
+    ) {
+      const {kahootId, questionId, index, isCorrect} = action.payload;
+      const kahoot = state.questions.find(k => k.idQuestion === kahootId);
+      if (kahoot) {
+        const question = kahoot.questions.find(q => q.id === questionId);
+        if (question) {
+          question.answers[index] = {
+            ...question.answers[index],
+            isCorrect,
+          };
+        }
+      }
+    },
+    // clean code
+    updateFieldQuestion(
+      state,
+      action: PayloadAction<{
+        kahootId: string;
+        questionId: string;
+        fieldsToUpdate: Partial<QuestionKahoot>;
+      }>,
+    ) {
+      const {kahootId, questionId, fieldsToUpdate} = action.payload;
+      const kahoot = state.questions.find(k => k.idQuestion === kahootId);
+      if (kahoot) {
+        const question = kahoot.questions.find(q => q.id === questionId);
+        if (question) {
+          Object.assign(question, fieldsToUpdate);
+        }
+      }
+    },
+
     // Kahoot
     addImageCoverKahoot(
       state,
@@ -129,6 +198,19 @@ const questionSlice = createSlice({
         kahoot.title = titleKahoot;
       }
     },
+    updateKahoot(
+      state,
+      action: PayloadAction<{
+        kahootId: string;
+        fieldsToUpdate: Partial<Question>;
+      }>,
+    ) {
+      const {kahootId, fieldsToUpdate} = action.payload;
+      const kahoot = state.questions.find(k => k.idQuestion === kahootId);
+      if (kahoot) {
+        Object.assign(kahoot, fieldsToUpdate);
+      }
+    },
   },
 });
 
@@ -139,10 +221,14 @@ export const {
   addTitleQuestion,
   addImageQuestion,
   deleteImageQuestion,
+  addTextAnswerQuestion,
+  changeIsCorrectAnswerQuestion,
+  updateFieldQuestion,
   // Kahoot
   addImageCoverKahoot,
   deleteImageCoverKahoot,
   addTitleKahoot,
+  updateKahoot,
 } = questionSlice.actions;
 
 export default questionSlice.reducer;

@@ -39,7 +39,9 @@ export type RootStackParams = {
   QuestionScreen: {
     question: Question;
   };
-  SettingQuestionScreen: undefined;
+  SettingQuestionScreen: {
+    kahoot: Question;
+  };
   CreateQuestionScreen: {
     type?: 'quiz' | 'tf';
     kahootID: string;

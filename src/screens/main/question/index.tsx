@@ -148,7 +148,7 @@ export const QuestionScreen = ({navigation, route}: Props) => {
                       value={kahoot?.title}
                       idQuestion={idQuestion ?? ''}
                     />
-                    <Setting navigation={navigation} />
+                    <Setting navigation={navigation} kahoot={kahoot} />
                   </View>
                   {/* Theme Setting */}
                   <Text
