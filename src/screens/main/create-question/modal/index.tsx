@@ -3,7 +3,6 @@ import React, {useEffect} from 'react';
 import {Pressable, StyleSheet, Text, TextInput, View} from 'react-native';
 import {RootStackParams} from '../../../../navigation/Navigation';
 import {StackScreenProps} from '@react-navigation/stack';
-import {Answer} from '../components';
 import {CustomSwitch} from './CustomSwitch';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useDebounce} from '../../../../hooks/useDebounce';
@@ -26,6 +25,7 @@ const ModalScreen = ({navigation, route}: Props) => {
     isQuestionTitle,
     id,
     kahootID,
+
     questionTitle,
   } = route.params;
   const kahootArr = useSelector(selectQuestions);
@@ -34,17 +34,16 @@ const ModalScreen = ({navigation, route}: Props) => {
   const {answers} = questions ?? {answers: []};
   const [value, setValue] = React.useState(questionTitle);
   const [valueTextAnswer, setValueTextAnswer] = React.useState(
-    answers[indexQuestion]?.text,
+    answers[indexQuestion]?.text ?? '',
   );
   const [isSwitchOn, setIsSwitchOn] = React.useState(
-    answers[indexQuestion]?.isCorrect,
+    answers[indexQuestion]?.isCorrect ?? false,
   );
 
   const ref = React.useRef<TextInput>(null);
   const dispatch = useAppDispatch();
   const valueQuestionDebounce = useDebounce(value, 150);
   const valueAnswerDebounce = useDebounce(valueTextAnswer, 150);
-  console.log('valueQuestionDebounce', valueAnswerDebounce);
 
   useEffect(() => {
     if (valueQuestionDebounce) {
@@ -129,13 +128,20 @@ const ModalScreen = ({navigation, route}: Props) => {
                   justifyContent: 'center',
                   gap: 10,
                 }}>
-                <Answer
-                  color={color[indexQuestion]}
-                  isEdit={true}
-                  isFocus
-                  value={valueTextAnswer ?? ''}
-                  hidePlaceHoder
-                  handleOnChangeTextAnswer={handleOnChangeTextAnswer}
+                <TextInput
+                  value={valueTextAnswer}
+                  onChangeText={handleOnChangeTextAnswer}
+                  textAlignVertical="center"
+                  autoFocus
+                  autoCorrect={false}
+                  multiline={true}
+                  style={[
+                    styles.textInputQuestion,
+                    {
+                      width: '60%',
+                      backgroundColor: color[indexQuestion],
+                    },
+                  ]}
                 />
                 <Pressable
                   onPress={() => console.log('add')}
@@ -203,6 +209,24 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     position: 'relative',
     top: 200,
+  },
+  inputModal: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    backgroundColor: '#FFFFFF',
+    color: '#000000',
+    padding: 10,
+    height: 80,
+    borderRadius: 8,
+    textAlign: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+    elevation: 3,
   },
 });
 

@@ -9,6 +9,7 @@ import {useAppDispatch, RootState} from '../redux/store';
 import {Question} from '../types/question';
 import {useSelector} from 'react-redux';
 import {initQuestion} from '../redux/slices/questionSlice/reducer';
+import {LibraryScreen} from '../screens/main/library';
 
 const Tab = createBottomTabNavigator();
 
@@ -30,6 +31,7 @@ export function TabsApp() {
       coverImage: '',
       media: '',
       visibleScope: 'public',
+      images: [],
       questions: [],
       isDraft: true,
     };
@@ -85,7 +87,7 @@ export function TabsApp() {
           tabBarLabel: 'Library',
           tabBarActiveTintColor: '#7C4DFF',
         }}
-        component={HomeScreen}
+        component={LibraryScreen}
       />
     </Tab.Navigator>
   );

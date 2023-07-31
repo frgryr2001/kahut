@@ -12,8 +12,11 @@ interface Props {
   index?: number;
   kahootID?: string;
   id?: string;
+
+  typeTf?: boolean;
   hidePlaceHoder?: boolean;
   handleOnChangeTextAnswer?: (text: string) => void;
+  handleChoiceAnswer?: (index: number) => void;
   navigation?: any;
 }
 
@@ -26,21 +29,31 @@ export const Answer = ({
   hidePlaceHoder = false,
   isOptional,
   index,
+  typeTf,
   kahootID,
   handleOnChangeTextAnswer,
+  handleChoiceAnswer,
   id,
   navigation,
 }: Props) => {
   return (
     <Pressable
-      style={[styles.textInput, {backgroundColor: color}]}
-      onPress={() =>
-        navigation.navigate('ModalQuestionScreen', {
-          indexQuestion: index,
-          kahootID: kahootID,
-          id: id,
-        })
-      }>
+      style={[
+        styles.textInput,
+        {backgroundColor: color},
+        {height: typeTf ? 200 : 100},
+      ]}
+      onPress={() => {
+        if (!typeTf) {
+          navigation.navigate('ModalQuestionScreen', {
+            indexQuestion: index,
+            kahootID: kahootID,
+            id: id,
+          });
+        } else {
+          handleChoiceAnswer!(index!);
+        }
+      }}>
       <TextInput
         editable={isEdit}
         style={styles.input}

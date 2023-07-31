@@ -8,23 +8,40 @@ import {
 
 interface Props {
   title: string;
-  onPress: () => void;
+  onPress?: () => void;
+  size?: 'small' | 'medium' | 'large';
   loading?: boolean;
   disabled?: boolean;
   as?: 'text' | 'button';
+  color?: string;
+  width?: number;
 }
-export const Button = ({title, onPress, loading, disabled, as}: Props) => {
+export const Button = ({
+  title,
+  onPress,
+  loading,
+  disabled,
+  as,
+  size,
+  color,
+  width,
+}: Props) => {
   return (
     <TouchableOpacity
       onPress={onPress}
       disabled={disabled}
-      style={
+      style={[
         as === 'text'
           ? {}
           : {
               ...styles.button,
-            }
-      }
+            },
+        size === 'small' && {paddingVertical: 5, paddingHorizontal: 20},
+        size === 'medium' && {paddingVertical: 10, paddingHorizontal: 30},
+        size === 'large' && {paddingVertical: 20, paddingHorizontal: 40},
+        {backgroundColor: color},
+        {width},
+      ]}
       activeOpacity={0.7}>
       {loading ? (
         <ActivityIndicator color="#fff" size={'small'} />

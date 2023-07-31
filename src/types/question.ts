@@ -11,7 +11,7 @@ export type QuestionKahoot = {
   type: 'quiz' | 'trueorfalse';
   media: string;
   timeLimit: number;
-  points: 0 | 1000 | 2000;
+  point: 0 | 1000 | 2000;
   question: string;
   answer?: boolean;
   answers:
@@ -35,6 +35,7 @@ export type Question = {
   visibleScope: 'public' | 'private';
   questions: QuestionKahoot[] | [];
   isDraft?: boolean;
+  images?: any[];
 };
 
 export type QuestionKahootType = keyof Question;

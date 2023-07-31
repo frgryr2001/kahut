@@ -7,7 +7,6 @@ import {
   Pressable,
   Dimensions,
   SafeAreaView,
-  Text,
 } from 'react-native';
 import {RootStackParams} from '../../../navigation/Navigation';
 import {PaddingContainer} from '../../../components/layouts/PaddingContainer';
@@ -28,6 +27,7 @@ export const CreateQuestionScreen = ({navigation, route}: Props) => {
   const kahootArr = useSelector(selectQuestions);
   const kahoot = kahootArr.find(item => item.idQuestion === kahootID);
   const question = kahoot?.questions.find(item => item.id === id);
+  console.log('question', JSON.stringify(question, null, 2));
 
   return (
     <SafeAreaView
@@ -35,7 +35,12 @@ export const CreateQuestionScreen = ({navigation, route}: Props) => {
         flex: 1,
       }}>
       <View style={styles.container}>
-        <Header navigation={navigation} typeQuestion={question?.type ?? ''} />
+        <Header
+          navigation={navigation}
+          typeQuestion={question?.type ?? ''}
+          kahootID={kahootID}
+          id={id}
+        />
         <PaddingContainer>
           {/* Header */}
           <View>
@@ -85,7 +90,14 @@ export const CreateQuestionScreen = ({navigation, route}: Props) => {
                 answers={question.answers}
               />
             )}
-            {question?.type === 'trueorfalse' && <Text>True or false</Text>}
+            {question?.type === 'trueorfalse' && (
+              <AnswerBox
+                navigation={navigation}
+                kahootID={kahootID}
+                id={id}
+                answer={question.answer}
+              />
+            )}
           </View>
         </PaddingContainer>
       </View>

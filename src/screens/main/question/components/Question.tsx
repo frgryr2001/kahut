@@ -28,7 +28,9 @@ const Question = ({question, index, navigation, idQuestion}: Props) => {
             <Icon name="image-outline" size={30} color="#BDBDBD" />
           ) : (
             <Image
-              source={{uri: question.media}}
+              source={{
+                uri: `file:///data/user/0/com.kahut/cache/${question.media}`,
+              }}
               resizeMode="cover"
               style={{
                 width: '100%',

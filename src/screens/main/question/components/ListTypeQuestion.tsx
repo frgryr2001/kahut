@@ -28,7 +28,7 @@ const ListTypeQuestion = ({
       type,
       media: '',
       timeLimit: 20,
-      points: 0,
+      point: 0,
       answers: [],
     };
 

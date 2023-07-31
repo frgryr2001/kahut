@@ -1,20 +1,32 @@
-import {PayloadAction, createSlice} from '@reduxjs/toolkit';
+import {
+  AnyAction,
+  AsyncThunk,
+  PayloadAction,
+  createSlice,
+} from '@reduxjs/toolkit';
 import {
   Question,
   QuestionKahoot,
   theme as Theme,
 } from '../../../types/question';
+// import {createKahoot} from './action';
+type GenericAsyncThunk = AsyncThunk<unknown, unknown, any>;
 
+type PendingAction = ReturnType<GenericAsyncThunk['pending']>;
+type RejectedAction = ReturnType<GenericAsyncThunk['rejected']>;
+type FulfilledAction = ReturnType<GenericAsyncThunk['fulfilled']>;
 interface QuestionState {
   questions: Question[];
   loading: boolean;
   error: string | null;
+  currentRequestId: string | undefined;
 }
 
 const initialState: QuestionState = {
   questions: [],
   loading: false,
   error: null,
+  currentRequestId: undefined,
 };
 const questionSlice = createSlice({
   name: 'questions',
@@ -69,14 +81,20 @@ const questionSlice = createSlice({
         kahootId: string;
         questionId: string;
         imageQuestion: string;
+        file: {
+          uri: string;
+          type: string;
+          name: string;
+        };
       }>,
     ) {
-      const {kahootId, questionId, imageQuestion} = action.payload;
+      const {kahootId, questionId, imageQuestion, file} = action.payload;
       const kahoot = state.questions.find(k => k.idQuestion === kahootId);
       if (kahoot) {
         const question = kahoot.questions.find(q => q.id === questionId);
         if (question) {
           question.media = imageQuestion;
+          kahoot.images?.push(file);
         }
       }
     },
@@ -163,6 +181,22 @@ const questionSlice = createSlice({
         }
       }
     },
+    deleteQuestion(
+      state,
+      action: PayloadAction<{
+        kahootId: string;
+        questionId: string;
+      }>,
+    ) {
+      const {kahootId, questionId} = action.payload;
+      const kahoot = state.questions.find(k => k.idQuestion === kahootId);
+      if (kahoot) {
+        const question = kahoot.questions.find(q => q.id === questionId);
+        if (question) {
+          kahoot.questions = kahoot.questions.filter(q => q.id !== questionId);
+        }
+      }
+    },
 
     // Kahoot
     addImageCoverKahoot(
@@ -170,12 +204,18 @@ const questionSlice = createSlice({
       action: PayloadAction<{
         kahootId: string;
         imageCover: string;
+        file: {
+          uri: string;
+          type: string;
+          name: string;
+        };
       }>,
     ) {
-      const {kahootId, imageCover} = action.payload;
+      const {kahootId, imageCover, file} = action.payload;
       const kahoot = state.questions.find(k => k.idQuestion === kahootId);
       if (kahoot) {
         kahoot.coverImage = imageCover;
+        kahoot.images?.push(file);
       }
     },
     deleteImageCoverKahoot(state, action: PayloadAction<{kahootId: string}>) {
@@ -211,6 +251,53 @@ const questionSlice = createSlice({
         Object.assign(kahoot, fieldsToUpdate);
       }
     },
+    deleteKahoot(state, action: PayloadAction<{kahootId: string}>) {
+      const {kahootId} = action.payload;
+      const index = state.questions.findIndex(
+        kahoot => kahoot.idQuestion === kahootId,
+      );
+      if (index !== -1) {
+        state.questions.splice(index, 1);
+      }
+    },
+  },
+  extraReducers: builder => {
+    builder
+      //   .addCase(createKahoot.fulfilled, (state, action) => {
+      //     // state.questions.push(action.payload);
+      //   })
+      .addMatcher<PendingAction>(
+        (action: AnyAction): action is PendingAction =>
+          action.type.endsWith('/pending'),
+        (state, action) => {
+          state.loading = true;
+          state.currentRequestId = action.meta.requestId;
+        },
+      )
+      .addMatcher<RejectedAction>(
+        (action: AnyAction): action is RejectedAction =>
+          action.type.endsWith('/rejected'),
+        (state, action) => {
+          if (
+            state.currentRequestId === action.meta.requestId &&
+            state.loading === true
+          ) {
+            state.loading = false;
+          }
+        },
+      )
+      .addMatcher<FulfilledAction>(
+        (action: AnyAction): action is FulfilledAction =>
+          action.type.endsWith('/fulfilled'),
+        (state, action) => {
+          if (
+            state.currentRequestId === action.meta.requestId &&
+            state.loading === true
+          ) {
+            state.loading = false;
+          }
+        },
+      );
   },
 });
 
@@ -224,11 +311,13 @@ export const {
   addTextAnswerQuestion,
   changeIsCorrectAnswerQuestion,
   updateFieldQuestion,
+  deleteQuestion,
   // Kahoot
   addImageCoverKahoot,
   deleteImageCoverKahoot,
   addTitleKahoot,
   updateKahoot,
+  deleteKahoot,
 } = questionSlice.actions;
 
 export default questionSlice.reducer;

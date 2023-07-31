@@ -31,7 +31,7 @@ import {ListTheme} from './components/ListTheme';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {useSelector} from 'react-redux';
 import {selectQuestions} from '../../../redux/slices/questionSlice/selector';
-// import {useAppDispatch} from '../../../redux/store';
+import {useIsFocused} from '@react-navigation/native';
 
 interface Props extends StackScreenProps<RootStackParams, 'QuestionScreen'> {}
 
@@ -41,10 +41,10 @@ export const QuestionScreen = ({navigation, route}: Props) => {
   const kahootArray = useSelector(selectQuestions);
   const kahoot = kahootArray.find(item => item.idQuestion === idQuestion);
 
-  console.log('Kahoot question con', JSON.stringify(kahoot, null, 2));
+  console.log('kahoot', JSON.stringify(kahoot, null, 2));
 
   const [isClickShowTheme, setIsClickShowTheme] = useState<boolean>(false);
-
+  const isFocus = useIsFocused();
   // ref
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
@@ -81,7 +81,7 @@ export const QuestionScreen = ({navigation, route}: Props) => {
   React.useEffect(
     () =>
       navigation.addListener('beforeRemove', e => {
-        if (!hasUnsavedChanges) {
+        if (!hasUnsavedChanges || !isFocus) {
           // If we don't have unsaved changes, then we don't need to do anything
           return;
         }
@@ -105,7 +105,7 @@ export const QuestionScreen = ({navigation, route}: Props) => {
           ],
         );
       }),
-    [navigation, hasUnsavedChanges],
+    [navigation, hasUnsavedChanges, isFocus],
   );
   return (
     <GestureHandlerRootView style={{flex: 1}}>
@@ -122,7 +122,7 @@ export const QuestionScreen = ({navigation, route}: Props) => {
             {/* <ThemeBackground /> */}
             <ThemeBackground theme={kahoot?.theme} />
             {/* Header  */}
-            <Header completed />
+            <Header completed kahoot={kahoot} navigation={navigation} />
             <ScrollView automaticallyAdjustKeyboardInsets>
               <View style={[globalStyles.globalPadding10, styles.container]}>
                 <ImageCover

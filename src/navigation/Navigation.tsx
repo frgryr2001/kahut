@@ -1,12 +1,6 @@
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-// import {
-//   CardStyleInterpolators,
-//   TransitionPresets,
-//   createStackNavigator,
-// } from '@react-navigation/stack';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-
 import {
   CreateQuestionScreen,
   ForgotPasswordScreen,
@@ -53,6 +47,7 @@ export type RootStackParams = {
     isQuestionTitle?: boolean;
     questionTitle?: string;
     kahootID: string;
+    typeTf?: boolean;
     id: string;
   };
 };
@@ -74,7 +69,41 @@ export const Navigator = () => {
         }}>
         {status !== 'authenticated' ? (
           <>
+            <Stack.Screen name="HomeScreen" component={TabsApp} />
+            <Stack.Screen name="QuestionScreen" component={QuestionScreen} />
             <Stack.Screen
+              name="SettingQuestionScreen"
+              component={SettingQuestionScreen}
+              options={{
+                headerShown: true,
+                headerTitle: 'Setting',
+                headerTitleAlign: 'center',
+                headerTitleStyle: {
+                  fontSize: 20,
+                  fontWeight: 'bold',
+                },
+                headerStyle: {
+                  backgroundColor: '#fff',
+                },
+              }}
+            />
+            <Stack.Screen
+              name="CreateQuestionScreen"
+              component={CreateQuestionScreen}
+              options={{
+                animation: 'slide_from_bottom',
+              }}
+            />
+            <Stack.Screen
+              name="ModalQuestionScreen"
+              component={ModalScreen}
+              options={{
+                headerShown: false,
+                presentation: 'transparentModal',
+                animation: 'fade',
+              }}
+            />
+            {/* <Stack.Screen
               name="LoginScreen"
               component={LoginScreen}
               options={{
@@ -118,13 +147,11 @@ export const Navigator = () => {
                   backgroundColor: '#fff',
                 },
               }}
-            />
+            /> */}
           </>
         ) : (
           <>
             {/* <Stack.Screen name="HomeScreen" component={TabsApp} />
-            <Stack.Screen name="QuestionScreen" component={QuestionScreen} /> */}
-            <Stack.Screen name="HomeScreen" component={TabsApp} />
             <Stack.Screen name="QuestionScreen" component={QuestionScreen} />
             <Stack.Screen
               name="SettingQuestionScreen"
@@ -157,7 +184,7 @@ export const Navigator = () => {
                 presentation: 'transparentModal',
                 animation: 'fade',
               }}
-            />
+            /> */}
           </>
         )}
       </Stack.Navigator>

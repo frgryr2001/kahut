@@ -15,6 +15,7 @@ import {
   addImageCoverKahoot,
   addImageQuestion,
   deleteImageQuestion,
+  updateKahoot,
 } from '../../../../redux/slices/questionSlice/reducer';
 
 const windowHeight = Dimensions.get('window').height;
@@ -39,7 +40,7 @@ const ImageCover = ({as, content, imageDefault, kahootID, id}: Props) => {
   };
   const openCamera = () => {
     launchCamera({mediaType: 'photo'}, response => {
-      console.log('response', response);
+      console.log('response', JSON.stringify(response, null, 2));
       if (response.didCancel) {
         return;
       }
@@ -48,7 +49,12 @@ const ImageCover = ({as, content, imageDefault, kahootID, id}: Props) => {
           addImageQuestion({
             kahootId: kahootID!,
             questionId: id!,
-            imageQuestion: response.assets![0].uri as string,
+            imageQuestion: response.assets![0].fileName as string,
+            file: {
+              uri: response.assets![0].uri as string,
+              type: response.assets![0].type as string,
+              name: response.assets![0].fileName as string,
+            },
           }),
         );
       }
@@ -56,7 +62,12 @@ const ImageCover = ({as, content, imageDefault, kahootID, id}: Props) => {
         dispatch(
           addImageCoverKahoot({
             kahootId: kahootID!,
-            imageCover: response.assets![0].uri as string,
+            imageCover: response.assets![0].fileName as string,
+            file: {
+              uri: response.assets![0].uri as string,
+              type: response.assets![0].type as string,
+              name: response.assets![0].fileName as string,
+            },
           }),
         );
       }
@@ -73,7 +84,12 @@ const ImageCover = ({as, content, imageDefault, kahootID, id}: Props) => {
           addImageQuestion({
             kahootId: kahootID!,
             questionId: id!,
-            imageQuestion: response.assets![0].uri as string,
+            imageQuestion: response.assets![0].fileName as string,
+            file: {
+              uri: response.assets![0].uri as string,
+              type: response.assets![0].type as string,
+              name: response.assets![0].fileName as string,
+            },
           }),
         );
       }
@@ -81,7 +97,12 @@ const ImageCover = ({as, content, imageDefault, kahootID, id}: Props) => {
         dispatch(
           addImageCoverKahoot({
             kahootId: kahootID!,
-            imageCover: response.assets![0].uri as string,
+            imageCover: response.assets![0].fileName as string,
+            file: {
+              uri: response.assets![0].uri as string,
+              type: response.assets![0].type as string,
+              name: response.assets![0].fileName as string,
+            },
           }),
         );
       }
@@ -98,7 +119,9 @@ const ImageCover = ({as, content, imageDefault, kahootID, id}: Props) => {
         {imageDefault ? (
           <>
             <Image
-              source={{uri: imageDefault}}
+              source={{
+                uri: `file:///data/user/0/com.kahut/cache/${imageDefault}`,
+              }}
               resizeMode="contain"
               style={styles.image}
             />
@@ -106,11 +129,22 @@ const ImageCover = ({as, content, imageDefault, kahootID, id}: Props) => {
             {/* delete image */}
             <Pressable
               style={styles.btnDelete}
-              onPress={() =>
-                dispatch(
-                  deleteImageQuestion({kahootId: kahootID!, questionId: id!}),
-                )
-              }>
+              onPress={() => {
+                if (kahootID && id) {
+                  dispatch(
+                    deleteImageQuestion({kahootId: kahootID!, questionId: id!}),
+                  );
+                } else {
+                  dispatch(
+                    updateKahoot({
+                      kahootId: kahootID!,
+                      fieldsToUpdate: {
+                        coverImage: '',
+                      },
+                    }),
+                  );
+                }
+              }}>
               <Icon name="close-outline" size={20} color="black" />
             </Pressable>
           </>
@@ -135,7 +169,6 @@ const ImageCover = ({as, content, imageDefault, kahootID, id}: Props) => {
 const styles = StyleSheet.create({
   btn: {
     backgroundColor: 'white',
-    // paddingVertical: 15,
     borderRadius: 10,
     alignItems: 'center',
     marginTop: 10,

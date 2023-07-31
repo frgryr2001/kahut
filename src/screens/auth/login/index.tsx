@@ -88,8 +88,8 @@ export const LoginScreen = ({navigation}: Props) => {
         }}>
         <ScrollView>
           <KeyboardAvoidingView
-            behavior="padding"
-            keyboardVerticalOffset={-350}
+            behavior="position"
+            keyboardVerticalOffset={-200}
             style={{
               flex: 1,
             }}>

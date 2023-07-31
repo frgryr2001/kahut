@@ -2,7 +2,6 @@ import React from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {FieldValues, UseFormReset, useForm} from 'react-hook-form';
 import Snackbar from 'react-native-snackbar';
-
 import {ButtonIconSignIn} from './ButtonIconSignIn';
 import {
   ActivityIndicator,
