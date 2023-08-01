@@ -25,7 +25,7 @@ import {
   BottomSheetBackdrop,
 } from '@gorhom/bottom-sheet';
 import {StackScreenProps} from '@react-navigation/stack';
-import {RootStackParams} from '../../../navigation/Navigation';
+import {RootStackParams} from '../../../navigation/AppNavigationContainer';
 import {ListTheme} from './components/ListTheme';
 
 import {GestureHandlerRootView} from 'react-native-gesture-handler';

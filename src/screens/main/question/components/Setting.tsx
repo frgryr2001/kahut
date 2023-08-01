@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, TouchableWithoutFeedback, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {RootStackParams} from '../../../../navigation/Navigation';
+import {RootStackParams} from '../../../../navigation/AppNavigationContainer';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {Question} from '../../../../types/question';
 
