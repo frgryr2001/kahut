@@ -116,8 +116,6 @@ export const refreshToken = createAsyncThunk(
     },
     thunkAPI,
   ) => {
-    console.log('data', data);
-
     try {
       const response = await httpClient.post<AuthRefreshToken>({
         url: '/auth/refresh-access-token',

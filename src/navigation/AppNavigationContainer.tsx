@@ -62,7 +62,6 @@ export const AppNavigationContainer = () => {
         initialRouteName="HomeScreen"
         screenOptions={{
           animation: 'slide_from_right',
-
           headerShown: false,
         }}>
         {status !== 'authenticated' ? (

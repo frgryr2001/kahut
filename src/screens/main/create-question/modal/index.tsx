@@ -144,7 +144,7 @@ const ModalScreen = ({navigation, route}: Props) => {
                   ]}
                 />
                 <Pressable
-                  onPress={() => console.log('add')}
+                  // onPress={() => console.log('add')}
                   style={{
                     width: 40,
                     height: 40,
