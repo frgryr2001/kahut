@@ -12,7 +12,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import {LinearGradientBG} from '../../../components/layouts/LinearGradientBG';
-import {RootStackParams} from '../../../navigation/Navigation';
+import {RootStackParams} from '../../../navigation/AppNavigationContainer';
 import Snackbar from 'react-native-snackbar';
 import {useAppDispatch} from '../../../redux/store';
 import {

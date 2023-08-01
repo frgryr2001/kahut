@@ -2,21 +2,21 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import React from 'react';
 import 'react-native-get-random-values';
 import {v4 as uuidv4} from 'uuid';
-import {HomeScreen} from '../screens';
+// import {HomeScreen} from '../screens';
 import CustomBottomTab from './CustomBottomTab';
 import {getIcon} from '../helpers/getIcon';
 import {useAppDispatch, RootState} from '../redux/store';
 import {Question} from '../types/question';
 import {useSelector} from 'react-redux';
 import {initQuestion} from '../redux/slices/questionSlice/reducer';
-import {LibraryScreen} from '../screens/main/library';
+import {HomeScreen, LibraryScreen} from '../screens';
 
 const Tab = createBottomTabNavigator();
 
 const CreateQuestionComponent = () => {
   return null;
 };
-export function TabsApp() {
+export function AppTabNavigator() {
   const dispatch = useAppDispatch();
   const userId = useSelector((state: RootState) => state.auth.user?.id);
   const tabBar = (props: any) => <CustomBottomTab {...props} />;

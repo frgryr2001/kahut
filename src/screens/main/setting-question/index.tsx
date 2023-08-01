@@ -11,7 +11,7 @@ import React, {useState} from 'react';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {ButtonCustom} from '../question/components';
 import {RadioGr} from './components/radio-group';
-import {RootStackParams} from '../../../navigation/Navigation';
+import {RootStackParams} from '../../../navigation/AppNavigationContainer';
 import {StackScreenProps} from '@react-navigation/stack';
 import {useDebounce} from '../../../hooks/useDebounce';
 import {useAppDispatch} from '../../../redux/store';

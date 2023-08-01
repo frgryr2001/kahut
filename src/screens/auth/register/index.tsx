@@ -8,7 +8,10 @@ import {
 } from 'react-native';
 import Snackbar from 'react-native-snackbar';
 import {LinearGradientBG} from '../../../components/layouts/LinearGradientBG';
-import {RootStackParams, ScreenName} from '../../../navigation/Navigation';
+import {
+  RootStackParams,
+  ScreenName,
+} from '../../../navigation/AppNavigationContainer';
 import {FormAuth} from '../../../components/ui';
 import {useAppDispatch} from '../../../redux/store';
 import {sendOtp} from '../../../redux/slices/authSlice/actions';

@@ -8,7 +8,7 @@ import {
   Dimensions,
   SafeAreaView,
 } from 'react-native';
-import {RootStackParams} from '../../../navigation/Navigation';
+import {RootStackParams} from '../../../navigation/AppNavigationContainer';
 import {PaddingContainer} from '../../../components/layouts/PaddingContainer';
 import {AnswerBox, Header, TimeLimit} from './components';
 import {ImageCover} from '../question/components';

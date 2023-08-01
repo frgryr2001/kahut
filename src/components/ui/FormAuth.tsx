@@ -10,7 +10,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {ScreenName} from '../../navigation/Navigation';
+import {ScreenName} from '../../navigation/AppNavigationContainer';
 import Input from './Input';
 import {EMAIL_REGEX} from '../../helpers/emailValidation';
 import {useSelector} from 'react-redux';

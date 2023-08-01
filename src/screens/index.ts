@@ -1,4 +1,4 @@
-export * from './main/home';
+export {default as HomeScreen} from './main/home';
 export * from './main/question';
 export * from './main/setting-question';
 export * from './main/create-question';

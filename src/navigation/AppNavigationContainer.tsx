@@ -1,21 +1,18 @@
 import React from 'react';
+import {useColorScheme} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {
   CreateQuestionScreen,
-  ForgotPasswordScreen,
-  LoginScreen,
-  OtpScreen,
   QuestionScreen,
-  RegisterScreen,
-  ResetPasswordScreen,
   SettingQuestionScreen,
 } from '../screens';
 import {selectStatus} from '../redux/slices/authSlice/selector';
 import {useSelector} from 'react-redux';
-import {TabsApp} from './Tab';
+import {AppTabNavigator} from './AppTabNavigator';
 import ModalScreen from '../screens/main/create-question/modal';
 import {Question} from '../types/question';
+import {DarkTheme, LightTheme} from '../themes/appTheme';
 
 export type RootStackParams = {
   HomeScreen: undefined;
@@ -55,11 +52,12 @@ export type ScreenName = keyof RootStackParams;
 
 const Stack = createNativeStackNavigator<RootStackParams>();
 
-export const Navigator = () => {
+export const AppNavigationContainer = () => {
+  const scheme = useColorScheme();
   const status = useSelector(selectStatus);
 
   return (
-    <NavigationContainer>
+    <NavigationContainer theme={scheme === 'light' ? LightTheme : DarkTheme}>
       <Stack.Navigator
         initialRouteName="HomeScreen"
         screenOptions={{
@@ -69,7 +67,7 @@ export const Navigator = () => {
         }}>
         {status !== 'authenticated' ? (
           <>
-            <Stack.Screen name="HomeScreen" component={TabsApp} />
+            <Stack.Screen name="HomeScreen" component={AppTabNavigator} />
             <Stack.Screen name="QuestionScreen" component={QuestionScreen} />
             <Stack.Screen
               name="SettingQuestionScreen"
@@ -103,55 +101,10 @@ export const Navigator = () => {
                 animation: 'fade',
               }}
             />
-            {/* <Stack.Screen
-              name="LoginScreen"
-              component={LoginScreen}
-              options={{
-                contentStyle: {
-                  backgroundColor: '#fff',
-                },
-              }}
-            />
-            <Stack.Screen
-              name="RegisterScreen"
-              component={RegisterScreen}
-              options={{
-                contentStyle: {
-                  backgroundColor: '#fff',
-                },
-              }}
-            />
-            <Stack.Screen
-              name="ForgotPasswordScreen"
-              component={ForgotPasswordScreen}
-              options={{
-                contentStyle: {
-                  backgroundColor: '#fff',
-                },
-              }}
-            />
-            <Stack.Screen
-              name="OtpScreen"
-              component={OtpScreen}
-              options={{
-                contentStyle: {
-                  backgroundColor: '#fff',
-                },
-              }}
-            />
-            <Stack.Screen
-              name="ResetPasswordScreen"
-              component={ResetPasswordScreen}
-              options={{
-                contentStyle: {
-                  backgroundColor: '#fff',
-                },
-              }}
-            /> */}
           </>
         ) : (
           <>
-            {/* <Stack.Screen name="HomeScreen" component={TabsApp} />
+            <Stack.Screen name="HomeScreen" component={AppTabNavigator} />
             <Stack.Screen name="QuestionScreen" component={QuestionScreen} />
             <Stack.Screen
               name="SettingQuestionScreen"
@@ -184,7 +137,7 @@ export const Navigator = () => {
                 presentation: 'transparentModal',
                 animation: 'fade',
               }}
-            /> */}
+            />
           </>
         )}
       </Stack.Navigator>

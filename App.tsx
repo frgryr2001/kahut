@@ -1,7 +1,7 @@
 import 'react-native-gesture-handler';
 import React, {useEffect} from 'react';
 import SplashScreen from 'react-native-splash-screen';
-import {Navigator} from './src/navigation/Navigation';
+import {AppNavigationContainer} from './src/navigation/AppNavigationContainer';
 import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/integration/react';
 import {persistor, store} from './src/redux/store';
@@ -15,7 +15,7 @@ export default function App() {
   return (
     <Provider store={store}>
       <PersistGate loading={<LoadingScreen />} persistor={persistor}>
-        <Navigator />
+        <AppNavigationContainer />
       </PersistGate>
     </Provider>
   );

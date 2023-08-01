@@ -6,6 +6,7 @@ class HttpClient {
   private readonly axiosInstance;
 
   private constructor() {
+    console.info('[INFO] API URL:', API_URL);
     this.axiosInstance = axios.create({
       baseURL: API_URL,
     });

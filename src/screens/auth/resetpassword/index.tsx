@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import Snackbar from 'react-native-snackbar';
 import {LinearGradientBG} from '../../../components/layouts/LinearGradientBG';
-import {RootStackParams} from '../../../navigation/Navigation';
+import {RootStackParams} from '../../../navigation/AppNavigationContainer';
 import Input from '../../../components/ui/Input';
 import {useForm} from 'react-hook-form';
 import {Button} from '../../../components/ui';

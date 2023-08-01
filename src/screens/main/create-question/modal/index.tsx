@@ -1,7 +1,7 @@
 import {BlurView} from '@react-native-community/blur';
 import React, {useEffect} from 'react';
 import {Pressable, StyleSheet, Text, TextInput, View} from 'react-native';
-import {RootStackParams} from '../../../../navigation/Navigation';
+import {RootStackParams} from '../../../../navigation/AppNavigationContainer';
 import {StackScreenProps} from '@react-navigation/stack';
 import {CustomSwitch} from './CustomSwitch';
 import Icon from 'react-native-vector-icons/Ionicons';

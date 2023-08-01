@@ -7,7 +7,10 @@ import {
   ScrollView,
 } from 'react-native';
 import {LinearGradientBG} from '../../../components/layouts/LinearGradientBG';
-import {RootStackParams, ScreenName} from '../../../navigation/Navigation';
+import {
+  RootStackParams,
+  ScreenName,
+} from '../../../navigation/AppNavigationContainer';
 import {FormAuth} from '../../../components/ui';
 import Spinner from 'react-native-loading-spinner-overlay';
 
@@ -25,7 +28,7 @@ interface Props extends StackScreenProps<RootStackParams, 'LoginScreen'> {}
 
 GoogleSignin.configure({
   webClientId: WEB_CLIENT_ID, // client ID of type WEB for your server (needed to verify user ID and offline access)
-  offlineAccess: true,
+  offlineAccess: false,
 });
 
 export const LoginScreen = ({navigation}: Props) => {
