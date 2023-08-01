@@ -151,7 +151,7 @@ export const Navigator = () => {
           </>
         ) : (
           <>
-            {/* <Stack.Screen name="HomeScreen" component={TabsApp} />
+            <Stack.Screen name="HomeScreen" component={TabsApp} />
             <Stack.Screen name="QuestionScreen" component={QuestionScreen} />
             <Stack.Screen
               name="SettingQuestionScreen"
@@ -184,7 +184,7 @@ export const Navigator = () => {
                 presentation: 'transparentModal',
                 animation: 'fade',
               }}
-            /> */}
+            />
           </>
         )}
       </Stack.Navigator>

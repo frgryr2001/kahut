@@ -17,7 +17,7 @@ interface Props {
 
 export const Header = ({navigation, typeQuestion, kahootID, id}: Props) => {
   const dispatch = useAppDispatch();
-  const [visibleModalPoint, setVisibleModalPoint] = React.useState(true);
+  const [visibleModalPoint, setVisibleModalPoint] = React.useState(false);
 
   const handleGoBackScreen = () => {
     navigation.goBack();
@@ -34,6 +34,9 @@ export const Header = ({navigation, typeQuestion, kahootID, id}: Props) => {
   const handleOnCloseModal = () => {
     setVisibleModalPoint(false);
   };
+  const handleOpenPointModal = () => {
+    setVisibleModalPoint(true);
+  };
 
   return (
     <View style={styles.container}>
@@ -49,6 +52,7 @@ export const Header = ({navigation, typeQuestion, kahootID, id}: Props) => {
       <PopupMenu
         handleGoBackScreen={handleGoBackScreen}
         handleDeleteQuestion={handleDeleteQuestion}
+        onOpenModal={handleOpenPointModal}
       />
       <ModalPoint
         visible={visibleModalPoint}

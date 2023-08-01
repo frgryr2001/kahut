@@ -15,20 +15,22 @@ const width = Dimensions.get('window').width;
 interface Props {
   handleGoBackScreen: () => void;
   handleDeleteQuestion: () => void;
+  onOpenModal: () => void;
 }
 
 export const PopupMenu = ({
   handleGoBackScreen,
   handleDeleteQuestion,
+  onOpenModal,
 }: Props) => {
   const [visible, setVisible] = React.useState(false);
   const scale = React.useRef(new Animated.Value(0)).current;
   const options = React.useMemo(
     () => [
       {
-        title: 'Point',
+        title: 'Change Point',
         icon: 'medal-outline',
-        onPress: () => handleGoBackScreen(),
+        onPress: () => onOpenModal(),
       },
       {
         title: 'Delete',
@@ -39,7 +41,7 @@ export const PopupMenu = ({
         },
       },
     ],
-    [handleGoBackScreen, handleDeleteQuestion],
+    [handleGoBackScreen, handleDeleteQuestion, onOpenModal],
   );
 
   function resizePopupTransition(to: number) {
@@ -85,13 +87,7 @@ export const PopupMenu = ({
             {options.map((option, index) => (
               <TouchableOpacity
                 key={index}
-                style={[
-                  styles.popupItem,
-                  {
-                    borderBottomWidth: index === options.length - 1 ? 0 : 1,
-                    borderBottomColor: '#ccc',
-                  },
-                ]}
+                style={[styles.popupItem]}
                 onPress={() => {
                   option.onPress();
                   setVisible(false);
@@ -114,7 +110,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   popup: {
-    width: width / 3,
+    width: width / 2,
     borderRadius: 3,
     backgroundColor: '#fff',
     paddingHorizontal: 20,
