@@ -30,27 +30,42 @@ export const ModalPoint = ({visible, onCloseModal}: Props) => {
       <Pressable style={styles.backdrop} onPress={onCloseModal} />
       <View style={styles.container}>
         <View style={styles.box}>
-          <Button
-            title="0"
-            size="small"
-            color="blue"
-            width={widthWindow / 4}
-            onPress={() => console.log('test')}
-          />
-          <Button
-            title="1000"
-            size="small"
-            color="red"
-            width={widthWindow / 4}
-            onPress={() => console.log('test')}
-          />
-          <Button
-            title="2000"
-            size="small"
-            color="red"
-            width={widthWindow / 4}
-            onPress={() => console.log('test')}
-          />
+          <Text style={{}}>Change Point</Text>
+          <Text
+            style={{
+              fontSize: 16,
+              textAlign: 'center',
+            }}>
+            Choose the point you want to change to
+          </Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-around',
+              alignItems: 'center',
+            }}>
+            <Button
+              title="0"
+              size="small"
+              color="blue"
+              width={widthWindow / 4}
+              onPress={() => console.log('test')}
+            />
+            <Button
+              title="1000"
+              size="small"
+              color="red"
+              width={widthWindow / 4}
+              onPress={() => console.log('test')}
+            />
+            <Button
+              title="2000"
+              size="small"
+              color="red"
+              width={widthWindow / 4}
+              onPress={() => console.log('test')}
+            />
+          </View>
         </View>
       </View>
     </Modal>
@@ -71,8 +86,5 @@ const styles = StyleSheet.create({
     height: heightWindow / 5,
     backgroundColor: 'white',
     borderRadius: 3,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
   },
 });
