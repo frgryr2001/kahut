@@ -49,14 +49,9 @@ export const LoginScreen = ({navigation}: Props) => {
             googleId: userInfo.user.id,
             googleToken: userInfo.idToken,
           }),
-        )
-          .unwrap()
-          .catch(err => {
-            console.log('Lỗi ở đây', err);
-          });
+        ).unwrap();
       }
     } catch (error: any) {
-      console.log('got error', error.message);
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         // user cancelled the login flow
       } else if (error.code === statusCodes.IN_PROGRESS) {

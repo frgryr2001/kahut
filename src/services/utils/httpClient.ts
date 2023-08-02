@@ -45,12 +45,16 @@ class HttpClient {
     data: any;
     config?: AxiosRequestConfig;
   }): Promise<T> {
-    const response: AxiosResponse<T> = await this.axiosInstance.post(
-      url,
-      data,
-      config,
-    );
-    return response.data;
+    try {
+      const response: AxiosResponse<T> = await this.axiosInstance.post(
+        url,
+        data,
+        config,
+      );
+      return response.data;
+    } catch (error) {
+      throw this.handleRequestError(error as AxiosError);
+    }
   }
 
   public async put<T>(
@@ -58,12 +62,16 @@ class HttpClient {
     data: any,
     config?: AxiosRequestConfig,
   ): Promise<T> {
-    const response: AxiosResponse<T> = await this.axiosInstance.put(
-      url,
-      data,
-      config,
-    );
-    return response.data;
+    try {
+      const response: AxiosResponse<T> = await this.axiosInstance.put(
+        url,
+        data,
+        config,
+      );
+      return response.data;
+    } catch (error) {
+      throw this.handleRequestError(error as AxiosError);
+    }
   }
 
   public async delete<T>(url: string, config?: AxiosRequestConfig): Promise<T> {

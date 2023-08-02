@@ -40,7 +40,7 @@ const ImageCover = ({as, content, imageDefault, kahootID, id}: Props) => {
   };
   const openCamera = () => {
     launchCamera({mediaType: 'photo'}, response => {
-      console.log('response', JSON.stringify(response, null, 2));
+      // console.log('response', JSON.stringify(response, null, 2));
       if (response.didCancel) {
         return;
       }
