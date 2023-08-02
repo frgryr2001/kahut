@@ -6,7 +6,7 @@ import {
 } from '@reduxjs/toolkit';
 import {User} from '../../../types/user';
 import {
-  logOut,
+  signOut,
   refreshToken,
   resendCodeOtp,
   signIn,
@@ -29,7 +29,7 @@ interface AuthState {
   loadingResend?: boolean;
   loadingScreen: boolean;
   error: string;
-  status: 'checking' | 'authenticated' | 'not-authenticated';
+  status: 'authenticated' | 'not-authenticated';
   currentRequestId: undefined | string;
 }
 
@@ -38,7 +38,7 @@ const initialState: AuthState = {
   loading: false,
   loadingResend: false,
   loadingScreen: false,
-  status: 'checking',
+  status: 'not-authenticated',
   error: '',
   currentRequestId: undefined,
 };
@@ -68,7 +68,7 @@ const authSlice = createSlice({
       .addCase(resendCodeOtp.fulfilled, state => {
         state.loadingResend = false;
       })
-      .addCase(logOut.fulfilled, state => {
+      .addCase(signOut.fulfilled, state => {
         state.user = null;
         state.status = 'not-authenticated';
         state.currentRequestId = undefined;

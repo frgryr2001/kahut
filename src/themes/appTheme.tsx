@@ -17,7 +17,7 @@ const LightTheme = {
   dark: false,
   colors: {
     primary: 'rgb(0, 122, 255)',
-    background: 'rgb(238, 238, 228)', //
+    background: 'rgb(245, 245, 245)', //
     card: 'rgb(255, 255, 255)',
     text: 'rgb(17, 17, 17)', //
     border: 'rgb(216, 216, 216)',

@@ -81,8 +81,8 @@ export const resendCodeOtp = createAsyncThunk(
   },
 );
 
-export const logOut = createAsyncThunk(
-  'auth/logOut',
+export const signOut = createAsyncThunk(
+  'auth/signOut',
   async (
     data: {
       refreshToken: string;

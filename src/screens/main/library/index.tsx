@@ -12,7 +12,7 @@ export const LibraryScreen = () => {
         paddingRight: insets.right,
       }}>
       <StatusBar barStyle="dark-content" backgroundColor="white" />
-      <Text>HomeScreen7</Text>
+      <Text>Library page</Text>
     </View>
   );
 };
