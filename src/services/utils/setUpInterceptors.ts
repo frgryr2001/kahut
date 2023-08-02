@@ -28,15 +28,14 @@ const setup = () => {
       const originalConfig = err.config;
 
       if (
-        (originalConfig.url as string).endsWith('/auth/sign-out') &&
-        err.response
+        (originalConfig.url as string).endsWith('/auth/sign-out') ||
+        ((originalConfig.url as string).endsWith('/kahoots') && err.response)
       ) {
         const refresh_token = getState().auth.user?.refresh_token;
 
         // Access Token was expired
-        if (err.response.status === 401 && !originalConfig._retry) {
+        if (err.response.status === 403 && !originalConfig._retry) {
           originalConfig._retry = true;
-
           try {
             const res = await axiosInstance.post<AuthRefreshToken>({
               url: '/auth/refresh-access-token',

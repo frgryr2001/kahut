@@ -5,19 +5,30 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import {DropdownCustom} from './DropdownCustom';
 import {PopupMenu} from './PopupMenu';
 import {useAppDispatch} from '../../../../redux/store';
-import {deleteQuestion} from '../../../../redux/slices/questionSlice/reducer';
+import {
+  deleteQuestion,
+  updateFieldQuestion,
+} from '../../../../redux/slices/questionSlice/reducer';
 import {ModalPoint} from './ModalPoint';
+import {QuestionKahoot} from '../../../../types/question';
 
 interface Props {
   navigation: any;
   typeQuestion: string;
   kahootID?: string;
-  id?: string;
+  question?: QuestionKahoot;
 }
 
-export const Header = ({navigation, typeQuestion, kahootID, id}: Props) => {
+export const Header = ({
+  navigation,
+  typeQuestion,
+  kahootID,
+  question,
+}: Props) => {
   const dispatch = useAppDispatch();
   const [visibleModalPoint, setVisibleModalPoint] = React.useState(false);
+
+  const pointChoice = question?.point;
 
   const handleGoBackScreen = () => {
     navigation.goBack();
@@ -27,7 +38,18 @@ export const Header = ({navigation, typeQuestion, kahootID, id}: Props) => {
     dispatch(
       deleteQuestion({
         kahootId: kahootID!,
-        questionId: id!,
+        questionId: question?.id!,
+      }),
+    );
+  };
+  const handleChangePoint = (point: 0 | 1000 | 2000) => {
+    dispatch(
+      updateFieldQuestion({
+        kahootId: kahootID!,
+        questionId: question?.id!,
+        fieldsToUpdate: {
+          point: point,
+        },
       }),
     );
   };
@@ -57,6 +79,8 @@ export const Header = ({navigation, typeQuestion, kahootID, id}: Props) => {
       <ModalPoint
         visible={visibleModalPoint}
         onCloseModal={handleOnCloseModal}
+        pointChoice={pointChoice}
+        handleChangePoint={handleChangePoint}
       />
     </View>
   );

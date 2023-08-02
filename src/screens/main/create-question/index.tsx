@@ -39,7 +39,7 @@ export const CreateQuestionScreen = ({navigation, route}: Props) => {
           navigation={navigation}
           typeQuestion={question?.type ?? ''}
           kahootID={kahootID}
-          id={id}
+          question={question}
         />
         <PaddingContainer>
           {/* Header */}

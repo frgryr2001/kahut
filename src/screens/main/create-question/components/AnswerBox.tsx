@@ -52,6 +52,7 @@ export const AnswerBox = ({
           return (
             <Answer
               value={answers[index]?.text ?? ''}
+              image={answers[index]?.image ?? ''}
               isAnswer={answers[index]?.isCorrect ?? false}
               color={item}
               key={item}

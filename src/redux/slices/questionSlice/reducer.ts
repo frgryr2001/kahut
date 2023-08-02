@@ -9,7 +9,7 @@ import {
   QuestionKahoot,
   theme as Theme,
 } from '../../../types/question';
-// import {createKahoot} from './action';
+import {createKahoot} from './action';
 type GenericAsyncThunk = AsyncThunk<unknown, unknown, any>;
 
 type PendingAction = ReturnType<GenericAsyncThunk['pending']>;
@@ -35,7 +35,6 @@ const questionSlice = createSlice({
     initQuestion(state, action: PayloadAction<Question>) {
       state.questions.push({...action.payload});
     },
-    // Not clean code
     changeTheme(
       state,
       action: PayloadAction<{idQuestion: string; theme: Theme}>,
@@ -163,6 +162,28 @@ const questionSlice = createSlice({
         }
       }
     },
+    addImageAnswerQuestion(
+      state,
+      action: PayloadAction<{
+        kahootId: string;
+        questionId: string;
+        index: number;
+        image: string; // name of image
+      }>,
+    ) {
+      const {kahootId, questionId, index, image} = action.payload;
+      const kahoot = state.questions.find(k => k.idQuestion === kahootId);
+      if (kahoot) {
+        const question = kahoot.questions.find(q => q.id === questionId);
+        if (question) {
+          question.answers[index] = {
+            ...question.answers[index],
+            image: image,
+          };
+          kahoot.images?.push(image);
+        }
+      }
+    },
     // clean code
     updateFieldQuestion(
       state,
@@ -263,9 +284,9 @@ const questionSlice = createSlice({
   },
   extraReducers: builder => {
     builder
-      //   .addCase(createKahoot.fulfilled, (state, action) => {
-      //     // state.questions.push(action.payload);
-      //   })
+      .addCase(createKahoot.fulfilled, (state, action) => {
+        state.questions.push(action.payload);
+      })
       .addMatcher<PendingAction>(
         (action: AnyAction): action is PendingAction =>
           action.type.endsWith('/pending'),
@@ -310,6 +331,7 @@ export const {
   deleteImageQuestion,
   addTextAnswerQuestion,
   changeIsCorrectAnswerQuestion,
+  addImageAnswerQuestion,
   updateFieldQuestion,
   deleteQuestion,
   // Kahoot

@@ -8,16 +8,27 @@ import {
   Dimensions,
 } from 'react-native';
 import {Button} from '../../../../components/ui';
+import {useTheme} from '@react-navigation/native';
 
 interface Props {
   visible: boolean;
   onCloseModal: () => void;
+  pointChoice: number | undefined;
+  handleChangePoint: (point: 0 | 1000 | 2000) => void;
 }
+const point = [0, 1000, 2000];
 
 const widthWindow = Dimensions.get('window').width;
 const heightWindow = Dimensions.get('window').height;
 
-export const ModalPoint = ({visible, onCloseModal}: Props) => {
+export const ModalPoint = ({
+  visible,
+  onCloseModal,
+  pointChoice,
+  handleChangePoint,
+}: Props) => {
+  const {colors} = useTheme();
+
   return (
     <Modal
       visible={visible}
@@ -30,11 +41,22 @@ export const ModalPoint = ({visible, onCloseModal}: Props) => {
       <Pressable style={styles.backdrop} onPress={onCloseModal} />
       <View style={styles.container}>
         <View style={styles.box}>
-          <Text style={{}}>Change Point</Text>
+          <Text
+            style={{
+              fontSize: 20,
+              textAlign: 'center',
+              fontWeight: 'bold',
+              color: colors.text,
+              marginTop: 10,
+            }}>
+            Change Point
+          </Text>
           <Text
             style={{
               fontSize: 16,
               textAlign: 'center',
+              color: colors.text,
+              marginTop: 10,
             }}>
             Choose the point you want to change to
           </Text>
@@ -44,27 +66,20 @@ export const ModalPoint = ({visible, onCloseModal}: Props) => {
               justifyContent: 'space-around',
               alignItems: 'center',
             }}>
-            <Button
-              title="0"
-              size="small"
-              color="blue"
-              width={widthWindow / 4}
-              onPress={() => console.log('test')}
-            />
-            <Button
-              title="1000"
-              size="small"
-              color="red"
-              width={widthWindow / 4}
-              onPress={() => console.log('test')}
-            />
-            <Button
-              title="2000"
-              size="small"
-              color="red"
-              width={widthWindow / 4}
-              onPress={() => console.log('test')}
-            />
+            {point.map(item => (
+              <Button
+                key={item}
+                title={item.toString()}
+                size="small"
+                color={colors.background}
+                width={widthWindow / 4}
+                isActive={pointChoice === item}
+                onPress={() => {
+                  handleChangePoint(item as 0 | 1000 | 2000);
+                  onCloseModal();
+                }}
+              />
+            ))}
           </View>
         </View>
       </View>
@@ -82,7 +97,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   box: {
-    width: widthWindow / 1.25,
+    width: widthWindow / 1.2,
     height: heightWindow / 5,
     backgroundColor: 'white',
     borderRadius: 3,

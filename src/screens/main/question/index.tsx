@@ -107,6 +107,15 @@ export const QuestionScreen = ({navigation, route}: Props) => {
       }),
     [navigation, hasUnsavedChanges, isFocus],
   );
+
+  const validateValueBeforeSave = useCallback(() => {
+    //   Least 1 title and  question and 2 answer and 1 correct answer
+    if (kahoot?.title !== '' || (kahoot?.questions ?? []).length > 0) {
+      return true;
+    }
+    return false;
+  }, [kahoot]);
+
   return (
     <GestureHandlerRootView style={{flex: 1}}>
       <SafeAreaView
@@ -122,7 +131,11 @@ export const QuestionScreen = ({navigation, route}: Props) => {
             {/* <ThemeBackground /> */}
             <ThemeBackground theme={kahoot?.theme} />
             {/* Header  */}
-            <Header completed kahoot={kahoot} navigation={navigation} />
+            <Header
+              completed={validateValueBeforeSave()}
+              kahoot={kahoot}
+              navigation={navigation}
+            />
             <ScrollView automaticallyAdjustKeyboardInsets>
               <View style={[globalStyles.globalPadding10, styles.container]}>
                 <ImageCover

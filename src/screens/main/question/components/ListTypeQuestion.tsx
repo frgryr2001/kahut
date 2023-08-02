@@ -31,6 +31,9 @@ const ListTypeQuestion = ({
       point: 0,
       answers: [],
     };
+    if (type === 'trueorfalse') {
+      questionInit.answer = false;
+    }
 
     dispatch(addQuestion({idQuestion: idQuestion, question: questionInit}));
     return questionInit;
