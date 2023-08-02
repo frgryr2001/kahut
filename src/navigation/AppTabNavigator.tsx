@@ -1,21 +1,23 @@
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import React from 'react';
 import 'react-native-get-random-values';
+import React from 'react';
+import {useSelector} from 'react-redux';
 import {v4 as uuidv4} from 'uuid';
-// import {HomeScreen} from '../screens';
+import {Image} from 'react-native';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+
 import CustomBottomTab from './CustomBottomTab';
-import {getIcon} from '../helpers/getIcon';
 import {useAppDispatch, RootState} from '../redux/store';
 import {Question} from '../types/question';
-import {useSelector} from 'react-redux';
 import {initQuestion} from '../redux/slices/questionSlice/reducer';
-import {HomeScreen, LibraryScreen} from '../screens';
+import {DiscoverScreen, HomeScreen, LibraryScreen} from '../screens';
+import {AppBarIconButton} from '../components/ui';
 
 const Tab = createBottomTabNavigator();
 
 const CreateQuestionComponent = () => {
   return null;
 };
+
 export function AppTabNavigator() {
   const dispatch = useAppDispatch();
   const userId = useSelector((state: RootState) => state.auth.user?.id);
@@ -39,19 +41,48 @@ export function AppTabNavigator() {
     return question;
   };
 
+  const getAppBarLogo = () => {
+    return (
+      <Image
+        source={require('../assets/images/logo.png')}
+        style={{width: 32, height: 32}}
+        resizeMode="cover"
+      />
+    );
+  };
+
   return (
     <Tab.Navigator
       tabBar={tabBar}
       screenOptions={{
         headerTitleAlign: 'center',
-        headerRight: () => getIcon('notifications-outline', 25, 'black'),
       }}>
       <Tab.Screen
         name="Home"
-        options={{
+        options={({navigation}) => ({
           tabBarLabel: 'Home',
           tabBarActiveTintColor: '#7C4DFF',
-        }}
+          headerTitle: () => getAppBarLogo(),
+          headerLeftContainerStyle: {
+            paddingHorizontal: 8,
+          },
+          headerLeft: () =>
+            AppBarIconButton({
+              type: 'normal',
+              onPress: () => navigation.push('UserSettingScreen'),
+              icon: 'person-circle-outline',
+            }),
+          headerRight: () =>
+            AppBarIconButton({
+              type: 'normal',
+              onPress: () => navigation.push('UserSettingScreen'),
+              icon: 'notifications-outline',
+            }),
+          headerRightContainerStyle: {
+            paddingHorizontal: 8,
+          },
+          headerShadowVisible: true,
+        })}
         component={HomeScreen}
       />
       <Tab.Screen
@@ -60,7 +91,7 @@ export function AppTabNavigator() {
           tabBarLabel: 'Discover',
           tabBarActiveTintColor: '#7C4DFF',
         }}
-        component={HomeScreen}
+        component={DiscoverScreen}
       />
 
       <Tab.Screen

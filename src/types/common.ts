@@ -1,9 +1,9 @@
 export type NewAccessToken = {
   access_token: string;
 };
-export interface ResponseData {
+export interface RequestResponse<T> {
   code: number;
   success: boolean;
-  data: any;
+  data: T;
   message: string;
 }
