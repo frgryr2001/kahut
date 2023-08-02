@@ -24,9 +24,14 @@ const InputTitle = ({placeholder, flex, value, idQuestion}: Props) => {
   const dispatch = useAppDispatch();
   const [valueInput, setValueInput] = React.useState<string>(value ?? '');
   const valueDebounce = useDebounce(valueInput, 500);
+  const firstUpdate = React.useRef(true);
 
   useEffect(() => {
-    if (valueDebounce) {
+    if (firstUpdate.current) {
+      firstUpdate.current = false;
+      return;
+    }
+    if (valueDebounce || valueDebounce === '') {
       dispatch(
         addTitleKahoot({
           kahootId: idQuestion!,

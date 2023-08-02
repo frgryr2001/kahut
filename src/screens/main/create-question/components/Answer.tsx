@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, TextInput, Pressable} from 'react-native';
+import {StyleSheet, TextInput, Pressable, ImageBackground} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 interface Props {
@@ -8,6 +8,7 @@ interface Props {
   isAnswer?: boolean;
   isOptional?: boolean;
   isEdit?: boolean;
+  image?: string;
   isFocus?: boolean;
   index?: number;
   kahootID?: string;
@@ -28,6 +29,7 @@ export const Answer = ({
   isFocus = false,
   hidePlaceHoder = false,
   isOptional,
+  image,
   index,
   typeTf,
   kahootID,
@@ -54,23 +56,37 @@ export const Answer = ({
           handleChoiceAnswer!(index!);
         }
       }}>
-      <TextInput
-        editable={isEdit}
-        style={styles.input}
-        autoFocus={isFocus}
-        onChangeText={text => handleOnChangeTextAnswer!(text)}
-        multiline={true}
-        value={value}
-        selectionColor={'black'}
-        maxFontSizeMultiplier={1}
-        underlineColorAndroid="transparent"
-        placeholder={
-          hidePlaceHoder ? '' : isOptional ? 'Optional' : 'Add answer'
-        }
-        placeholderTextColor={
-          isOptional ? 'rgba(255,255,255,0.5)' : 'rgba(255,255,255,0.8)'
-        }
-      />
+      {image ? (
+        <ImageBackground
+          source={{
+            uri: `file:///data/user/0/com.kahut/cache/${image}`,
+          }}
+          style={{
+            width: '100%',
+            height: '100%',
+          }}
+          resizeMode="contain"
+        />
+      ) : (
+        <TextInput
+          editable={isEdit}
+          style={styles.input}
+          autoFocus={isFocus}
+          onChangeText={text => handleOnChangeTextAnswer!(text)}
+          multiline={true}
+          value={value}
+          selectionColor={'black'}
+          maxFontSizeMultiplier={1}
+          underlineColorAndroid="transparent"
+          placeholder={
+            hidePlaceHoder ? '' : isOptional ? 'Optional' : 'Add answer'
+          }
+          placeholderTextColor={
+            isOptional ? 'rgba(255,255,255,0.5)' : 'rgba(255,255,255,0.8)'
+          }
+        />
+      )}
+
       <Icon
         name="checkmark-circle"
         size={25}

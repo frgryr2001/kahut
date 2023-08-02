@@ -8,10 +8,12 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import {useDebounce} from '../../../../hooks/useDebounce';
 import {useAppDispatch} from '../../../../redux/store';
 import {
+  addImageAnswerQuestion,
   addTextAnswerQuestion,
   addTitleQuestion,
   changeIsCorrectAnswerQuestion,
 } from '../../../../redux/slices/questionSlice/reducer';
+import {launchImageLibrary} from 'react-native-image-picker';
 import {useSelector} from 'react-redux';
 import {selectQuestions} from '../../../../redux/slices/questionSlice/selector';
 
@@ -25,7 +27,6 @@ const ModalScreen = ({navigation, route}: Props) => {
     isQuestionTitle,
     id,
     kahootID,
-
     questionTitle,
   } = route.params;
   const kahootArr = useSelector(selectQuestions);
@@ -44,9 +45,14 @@ const ModalScreen = ({navigation, route}: Props) => {
   const dispatch = useAppDispatch();
   const valueQuestionDebounce = useDebounce(value, 150);
   const valueAnswerDebounce = useDebounce(valueTextAnswer, 150);
+  const firstUpdate = React.useRef(true);
 
   useEffect(() => {
-    if (valueQuestionDebounce) {
+    if (firstUpdate.current) {
+      firstUpdate.current = false;
+      return;
+    }
+    if (valueQuestionDebounce || valueQuestionDebounce === '') {
       dispatch(
         addTitleQuestion({
           kahootId: kahootID,
@@ -75,7 +81,11 @@ const ModalScreen = ({navigation, route}: Props) => {
   };
 
   useEffect(() => {
-    if (valueAnswerDebounce) {
+    if (firstUpdate.current) {
+      firstUpdate.current = false;
+      return;
+    }
+    if (valueAnswerDebounce || valueAnswerDebounce === '') {
       dispatch(
         addTextAnswerQuestion({
           kahootId: kahootID,
@@ -86,7 +96,21 @@ const ModalScreen = ({navigation, route}: Props) => {
       );
     }
   }, [valueAnswerDebounce, dispatch, kahootID, id, indexQuestion]);
-
+  const openGallery = () => {
+    launchImageLibrary({mediaType: 'photo'}, response => {
+      if (response.didCancel) {
+        return;
+      }
+      dispatch(
+        addImageAnswerQuestion({
+          kahootId: kahootID,
+          questionId: id,
+          index: indexQuestion,
+          image: response.assets![0].fileName as string,
+        }),
+      );
+    });
+  };
   return (
     <BlurView
       blurType="dark"
@@ -144,7 +168,9 @@ const ModalScreen = ({navigation, route}: Props) => {
                   ]}
                 />
                 <Pressable
-                  // onPress={() => console.log('add')}
+
+                  onPress={() => openGallery()}
+
                   style={{
                     width: 40,
                     height: 40,

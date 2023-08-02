@@ -13,7 +13,6 @@ import {
 } from '../../../navigation/AppNavigationContainer';
 import {FormAuth} from '../../../components/ui';
 import Spinner from 'react-native-loading-spinner-overlay';
-
 import {
   GoogleSignin,
   statusCodes,
@@ -43,7 +42,6 @@ export const LoginScreen = ({navigation}: Props) => {
       await GoogleSignin.hasPlayServices();
       await GoogleSignin.signOut();
       const userInfo = await GoogleSignin.signIn();
-
       //   Call API from backend
       if (userInfo) {
         dispatch(
@@ -70,10 +68,9 @@ export const LoginScreen = ({navigation}: Props) => {
     <SafeAreaView
       style={{
         flex: 1,
-        // paddingTop: StatusBar.currentHeight,
       }}>
       <Spinner
-        visible={loadingScreen ? true : false}
+        visible={loadingScreen}
         textContent={'Loading...'}
         textStyle={{
           color: '#FFF',

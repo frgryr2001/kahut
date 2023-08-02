@@ -1,83 +1,309 @@
 import React from 'react';
 import {StyleSheet, Text, TouchableWithoutFeedback, View} from 'react-native';
+import Spinner from 'react-native-loading-spinner-overlay';
 import {Question} from '../../../../types/question';
 import {useAppDispatch} from '../../../../redux/store';
 import {deleteKahoot} from '../../../../redux/slices/questionSlice/reducer';
 import {createKahoot} from '../../../../redux/slices/questionSlice/action';
+import {useTheme} from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/Ionicons';
+import {Button, ModalCustom} from '../../../../components/ui';
+import {useSelector} from 'react-redux';
+import {selectLoading} from '../../../../redux/slices/questionSlice/selector';
+import {selectStatus} from '../../../../redux/slices/authSlice/selector';
 
-interface Props {
+interface HeaderProps {
   completed: boolean;
   kahoot: Question | undefined;
   navigation: any;
 }
+function MessageCheckListQuestion({
+  kahoot,
+  colors,
+  checkCorrect,
+}: {
+  kahoot: Question | undefined;
+  colors: any;
+  checkCorrect: () => boolean;
+}) {
+  return (
+    <>
+      <View style={styles.checkContent}>
+        {kahoot?.title !== '' ? (
+          <Icon name="checkmark-circle" size={20} color={'green'} />
+        ) : (
+          <Icon name="alert-circle" size={20} color={'red'} />
+        )}
+        <Text style={[styles.textCheck, {color: colors.text}]}>
+          Please enter a title
+        </Text>
+      </View>
+      <View style={styles.checkContent}>
+        {kahoot?.questions.length! > 0 ? (
+          <Icon name="checkmark-circle" size={20} color={'green'} />
+        ) : (
+          <Icon name="alert-circle" size={20} color={'red'} />
+        )}
+        <Text style={[styles.textCheck, {color: colors.text}]}>
+          Please enter at least one question
+        </Text>
+      </View>
+      <View style={styles.checkContent}>
+        {checkCorrect() ? (
+          <Icon name="checkmark-circle" size={20} color={'green'} />
+        ) : (
+          <Icon name="alert-circle" size={20} color={'red'} />
+        )}
+        <Text style={[styles.textCheck, {color: colors.text}]}>
+          Complete the question and answers
+        </Text>
+      </View>
+    </>
+  );
+}
 
-const Header = ({navigation, completed, kahoot}: Props) => {
+const Header = ({navigation, completed, kahoot}: HeaderProps) => {
   const dispatch = useAppDispatch();
+  const {colors} = useTheme();
+  const loading = useSelector(selectLoading);
+  const status = useSelector(selectStatus);
+  const [modalVisible, setModalVisible] = React.useState(false);
+  const [isCancel, setIsCancel] = React.useState(false);
 
+  const onCloseModal = () => {
+    setModalVisible(false);
+  };
+  const checkCorrect = (): boolean => {
+    const check = kahoot?.questions.some(question => {
+      if (
+        question.type === 'trueorfalse' &&
+        question.question !== '' &&
+        kahoot?.title !== ''
+      ) {
+        return true;
+      }
+      if (
+        question.type === 'quiz' &&
+        question.question !== '' &&
+        kahoot?.title !== ''
+      ) {
+        return question.answers.some(answer => {
+          return answer.isCorrect;
+        });
+      }
+      return false;
+    });
+
+    return check!;
+  };
   const onSave = async () => {
-    dispatch(createKahoot(kahoot!))
-      .unwrap()
-      .then(() => {
-        dispatch(
-          deleteKahoot({
-            kahootId: kahoot?.idQuestion!,
-          }),
-        );
-        navigation.navigate('Library');
-      });
+    setIsCancel(false);
+    if (!checkCorrect()) {
+      setModalVisible(true);
+      return;
+    } else {
+      dispatch(createKahoot(kahoot!))
+        .unwrap()
+        .then(() => {
+          navigation.navigate('Library');
+        })
+        .then(() => {
+          dispatch(
+            deleteKahoot({
+              kahootId: kahoot?.idQuestion!,
+            }),
+          );
+        });
+    }
+  };
 
-    // try {
-    //   const config = {
-    //     method: 'POST',
-    //     headers: {
-    //       Authorization: `Bearer ${access_token}`,
-    //       Accept: 'application/json',
-    //       'Content-Type': 'multipart/form-data',
-    //     },
-    //     body: formData,
-    //   };
-    //   const res = await fetch(
-    //     'https://867b-14-169-89-177.ngrok-free.app/dacnnt2/api/v1/kahoots',
-    //     config,
-    //   );
+  const cancelEmptyQuestion = () => {
+    setIsCancel(true);
+    const checkKahootChange =
+      kahoot?.theme !== 'Standard' &&
+      kahoot?.coverImage !== '' &&
+      kahoot?.title !== '' &&
+      kahoot?.questions.length !== 0 &&
+      kahoot?.description !== '';
 
-    //   const data = await res.json();
-
-    //   console.log('data', data);
-    // } catch (error) {
-    //   console.log('error', error);
-    // }
+    if (!checkKahootChange) {
+      setModalVisible(true);
+    } else {
+      navigation.navigate('Library');
+    }
   };
 
   return (
-    <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        {
+          backgroundColor: colors.card,
+        },
+      ]}>
+      <Spinner
+        visible={loading}
+        textContent={'Loading...'}
+        textStyle={{
+          color: '#F5F5F5',
+        }}
+      />
+
       <View style={styles.headerContainer}>
         {/* Cancel */}
-        <TouchableWithoutFeedback>
-          <Text style={styles.headerAction}>Cancel</Text>
-        </TouchableWithoutFeedback>
-        {/* Title */}
-        <Text style={styles.headerTitle}>Create Question</Text>
-        {/* Save */}
-        <TouchableWithoutFeedback onPress={onSave}>
+        <TouchableWithoutFeedback onPress={cancelEmptyQuestion}>
           <Text
             style={[
               styles.headerAction,
               {
-                color: completed ? 'black' : '#C7C7CC',
+                color: colors.text,
+              },
+            ]}>
+            Cancel
+          </Text>
+        </TouchableWithoutFeedback>
+        {/* Title */}
+        <Text
+          style={[
+            styles.headerTitle,
+            {
+              color: colors.text,
+            },
+          ]}>
+          Create Question
+        </Text>
+        {/* Save */}
+        <TouchableWithoutFeedback onPress={onSave} disabled={!completed}>
+          <Text
+            style={[
+              styles.headerAction,
+              {
+                color: completed ? colors.text : '#C7C7CC',
               },
             ]}>
             Save
           </Text>
         </TouchableWithoutFeedback>
       </View>
+      <ModalCustom
+        modalVisible={modalVisible}
+        onCloseModal={onCloseModal}
+        title={
+          !isCancel
+            ? 'Please complete the question'
+            : 'Are you sure you want to cancel?'
+        }>
+        <View>
+          {!isCancel && (
+            <>
+              <MessageCheckListQuestion
+                kahoot={kahoot}
+                colors={colors}
+                checkCorrect={checkCorrect}
+              />
+              <View
+                style={[
+                  {
+                    flexDirection: 'row',
+                  },
+                  status === 'authenticated'
+                    ? {justifyContent: 'space-between'}
+                    : {
+                        justifyContent: 'center',
+                        columnGap: 10,
+                        rowGap: 15,
+                        flexWrap: 'wrap',
+                      },
+                ]}>
+                {status === 'authenticated' ? (
+                  <>
+                    <Button
+                      title="Cancel"
+                      size="medium"
+                      color={colors.background}
+                      onPress={onCloseModal}
+                    />
+                    <Button
+                      title="Save as draft"
+                      isActive
+                      size="medium"
+                      onPress={() => navigation.navigate('Library')}
+                    />
+                  </>
+                ) : (
+                  <>
+                    <Button
+                      title="Sign up"
+                      size="medium"
+                      color={colors.background}
+                      onPress={() => navigation.navigate('RegisterScreen')}
+                    />
+                    <Button
+                      title="Login"
+                      isActive
+                      size="medium"
+                      onPress={() => {
+                        navigation.navigate('LoginScreen');
+                        onCloseModal();
+                      }}
+                    />
+                    <Button
+                      as="text"
+                      title="Save as draft"
+                      onPress={() => navigation.navigate('Library')}
+                    />
+                  </>
+                )}
+              </View>
+            </>
+          )}
+          {isCancel && (
+            <View>
+              <View
+                style={[
+                  {
+                    flexDirection: 'row',
+                  },
+                  status === 'authenticated'
+                    ? {justifyContent: 'space-between'}
+                    : {
+                        justifyContent: 'center',
+                        columnGap: 10,
+                        rowGap: 15,
+                        flexWrap: 'wrap',
+                      },
+                ]}>
+                <Button
+                  title="Cancel"
+                  size="medium"
+                  color={colors.background}
+                  onPress={onCloseModal}
+                />
+                <Button
+                  title="OK"
+                  isActive
+                  size="medium"
+                  onPress={() => {
+                    dispatch(
+                      deleteKahoot({
+                        kahootId: kahoot?.idQuestion!,
+                      }),
+                    );
+                    navigation.navigate('Library');
+                  }}
+                />
+              </View>
+            </View>
+          )}
+        </View>
+      </ModalCustom>
     </View>
   );
 };
 const styles = StyleSheet.create({
   container: {
     height: 60,
-    backgroundColor: 'white',
+
     paddingHorizontal: 10,
     shadowColor: '#000',
     shadowOffset: {
@@ -96,12 +322,41 @@ const styles = StyleSheet.create({
   },
   headerAction: {
     fontFamily: 'Poppins-Bold',
-    color: 'black',
   },
   headerTitle: {
     fontFamily: 'Poppins-Bold',
-    color: 'black',
     fontSize: 16,
+  },
+  backdrop: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+  },
+  box: {
+    backgroundColor: 'white',
+    borderRadius: 3,
+    width: '95%',
+    alignSelf: 'center',
+    marginTop: 200,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+  },
+  boxContent: {},
+  checkContent: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    gap: 10,
+  },
+  textCheck: {
+    fontSize: 16,
+    textAlign: 'center',
+    fontFamily: 'Poppins-Regular',
+  },
+  titleModal: {
+    fontSize: 20,
+    textAlign: 'center',
+    fontWeight: 'bold',
+    marginVertical: 10,
   },
 });
 

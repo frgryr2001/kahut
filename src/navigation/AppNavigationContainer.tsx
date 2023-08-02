@@ -4,11 +4,14 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {
   CreateQuestionScreen,
+  ForgotPasswordScreen,
+  LoginScreen,
+  OtpScreen,
   QuestionScreen,
+  RegisterScreen,
+  ResetPasswordScreen,
   SettingQuestionScreen,
 } from '../screens';
-import {selectStatus} from '../redux/slices/authSlice/selector';
-import {useSelector} from 'react-redux';
 import {AppTabNavigator} from './AppTabNavigator';
 import ModalScreen from '../screens/main/create-question/modal';
 import {Question} from '../types/question';
@@ -54,8 +57,6 @@ const Stack = createNativeStackNavigator<RootStackParams>();
 
 export const AppNavigationContainer = () => {
   const scheme = useColorScheme();
-  const status = useSelector(selectStatus);
-
   return (
     <NavigationContainer theme={scheme === 'light' ? LightTheme : DarkTheme}>
       <Stack.Navigator
@@ -64,81 +65,87 @@ export const AppNavigationContainer = () => {
           animation: 'slide_from_right',
           headerShown: false,
         }}>
-        {status !== 'authenticated' ? (
-          <>
-            <Stack.Screen name="HomeScreen" component={AppTabNavigator} />
-            <Stack.Screen name="QuestionScreen" component={QuestionScreen} />
-            <Stack.Screen
-              name="SettingQuestionScreen"
-              component={SettingQuestionScreen}
-              options={{
-                headerShown: true,
-                headerTitle: 'Setting',
-                headerTitleAlign: 'center',
-                headerTitleStyle: {
-                  fontSize: 20,
-                  fontWeight: 'bold',
-                },
-                headerStyle: {
-                  backgroundColor: '#fff',
-                },
-              }}
-            />
-            <Stack.Screen
-              name="CreateQuestionScreen"
-              component={CreateQuestionScreen}
-              options={{
-                animation: 'slide_from_bottom',
-              }}
-            />
-            <Stack.Screen
-              name="ModalQuestionScreen"
-              component={ModalScreen}
-              options={{
-                headerShown: false,
-                presentation: 'transparentModal',
-                animation: 'fade',
-              }}
-            />
-          </>
-        ) : (
-          <>
-            <Stack.Screen name="HomeScreen" component={AppTabNavigator} />
-            <Stack.Screen name="QuestionScreen" component={QuestionScreen} />
-            <Stack.Screen
-              name="SettingQuestionScreen"
-              component={SettingQuestionScreen}
-              options={{
-                headerShown: true,
-                headerTitle: 'Setting',
-                headerTitleAlign: 'center',
-                headerTitleStyle: {
-                  fontSize: 20,
-                  fontWeight: 'bold',
-                },
-                headerStyle: {
-                  backgroundColor: '#fff',
-                },
-              }}
-            />
-            <Stack.Screen
-              name="CreateQuestionScreen"
-              component={CreateQuestionScreen}
-              options={{
-                animation: 'slide_from_bottom',
-              }}
-            />
-            <Stack.Screen
-              name="ModalQuestionScreen"
-              component={ModalScreen}
-              options={{
-                headerShown: false,
-                presentation: 'transparentModal',
-                animation: 'fade',
-              }}
-            />
-          </>
-        )}
+        <>
+          <Stack.Screen name="HomeScreen" component={AppTabNavigator} />
+          <Stack.Screen name="QuestionScreen" component={QuestionScreen} />
+          <Stack.Screen
+            name="SettingQuestionScreen"
+            component={SettingQuestionScreen}
+            options={{
+              headerShown: true,
+              headerTitle: 'Setting',
+              headerTitleAlign: 'center',
+              headerTitleStyle: {
+                fontSize: 20,
+                fontWeight: 'bold',
+              },
+              headerStyle: {
+                backgroundColor: '#fff',
+              },
+            }}
+          />
+          <Stack.Screen
+            name="CreateQuestionScreen"
+            component={CreateQuestionScreen}
+            options={{
+              animation: 'slide_from_bottom',
+            }}
+          />
+          <Stack.Screen
+            name="ModalQuestionScreen"
+            component={ModalScreen}
+            options={{
+              headerShown: false,
+              presentation: 'transparentModal',
+              animation: 'fade',
+            }}
+          />
+          <Stack.Screen
+            name="LoginScreen"
+            component={LoginScreen}
+            options={{
+              contentStyle: {
+                backgroundColor: '#fff',
+              },
+            }}
+          />
+          <Stack.Screen
+            name="RegisterScreen"
+            component={RegisterScreen}
+            options={{
+              contentStyle: {
+                backgroundColor: '#fff',
+              },
+            }}
+          />
+          <Stack.Screen
+            name="ForgotPasswordScreen"
+            component={ForgotPasswordScreen}
+            options={{
+              contentStyle: {
+                backgroundColor: '#fff',
+              },
+            }}
+          />
+          <Stack.Screen
+            name="OtpScreen"
+            component={OtpScreen}
+            options={{
+              contentStyle: {
+                backgroundColor: '#fff',
+              },
+            }}
+          />
+          <Stack.Screen
+            name="ResetPasswordScreen"
+            component={ResetPasswordScreen}
+            options={{
+              contentStyle: {
+                backgroundColor: '#fff',
+              },
+            }}
+          />
+        </>
       </Stack.Navigator>
     </NavigationContainer>
   );

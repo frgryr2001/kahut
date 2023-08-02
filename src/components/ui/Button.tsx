@@ -13,6 +13,7 @@ interface Props {
   loading?: boolean;
   disabled?: boolean;
   as?: 'text' | 'button';
+  isActive?: boolean;
   color?: string;
   width?: number;
 }
@@ -25,6 +26,7 @@ export const Button = ({
   size,
   color,
   width,
+  isActive,
 }: Props) => {
   return (
     <TouchableOpacity
@@ -39,8 +41,7 @@ export const Button = ({
         size === 'small' && {paddingVertical: 5, paddingHorizontal: 20},
         size === 'medium' && {paddingVertical: 10, paddingHorizontal: 30},
         size === 'large' && {paddingVertical: 20, paddingHorizontal: 40},
-        {backgroundColor: color},
-        {width},
+        {backgroundColor: isActive ? '#2886de' : color, width: width},
       ]}
       activeOpacity={0.7}>
       {loading ? (
@@ -53,7 +54,7 @@ export const Button = ({
                   color: 'black',
                   fontFamily: 'Poppins-Bold',
                 }
-              : {...styles.buttonText}
+              : {...styles.buttonText, color: isActive ? '#fff' : 'black'}
           }>
           {title}
         </Text>
@@ -65,13 +66,12 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: '#7C4DFF',
     paddingVertical: 15,
-    borderRadius: 10,
+    borderRadius: 3,
     alignItems: 'center',
     marginTop: 20,
   },
   buttonText: {
     fontFamily: 'Poppins-Bold',
     fontSize: 16,
-    color: 'white',
   },
 });
