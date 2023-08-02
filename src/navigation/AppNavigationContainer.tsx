@@ -64,6 +64,7 @@ const Stack = createNativeStackNavigator<RootStackParams>();
 
 export const AppNavigationContainer = () => {
   const scheme = useColorScheme();
+  const status = useSelector(selectStatus);
   return (
     <NavigationContainer theme={scheme === 'light' ? LightTheme : DarkTheme}>
       <Stack.Navigator

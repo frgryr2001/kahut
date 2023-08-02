@@ -1,7 +1,6 @@
 import {View, Text, ImageBackground, Image, Dimensions} from 'react-native';
 import React from 'react';
 import {useTheme} from '@react-navigation/native';
-
 import {SummaryKahoot} from '../../../types/kahoot.type';
 import styles from './KahootSummaryItem.style';
 
@@ -26,20 +25,22 @@ const KahootSummaryItem = ({isDraft = false, kahoot}: Props) => {
         },
         styles.container,
       ]}>
-      <ImageBackground
-        defaultSource={DefaultImage}
-        source={
-          kahoot.coverImage
-            ? {
-                uri: kahoot.coverImage,
-              }
-            : DefaultImage
-        }
-        style={styles.coverImage}>
-        <Text style={styles.numberOfQuestion}>
-          {kahoot.numberOfQuestion} Qs
-        </Text>
-      </ImageBackground>
+      {
+        <ImageBackground
+          defaultSource={DefaultImage}
+          source={
+            kahoot.coverImage
+              ? {
+                  uri: kahoot.coverImage,
+                }
+              : DefaultImage
+          }
+          style={styles.coverImage}>
+          <Text style={styles.numberOfQuestion}>
+            {kahoot.numberOfQuestion} Qs
+          </Text>
+        </ImageBackground>
+      }
 
       <View style={styles.bottomContainer}>
         <View style={styles.draftContainer}>
