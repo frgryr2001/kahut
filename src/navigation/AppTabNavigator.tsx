@@ -9,8 +9,9 @@ import CustomBottomTab from './CustomBottomTab';
 import {useAppDispatch, RootState} from '../redux/store';
 import {Question} from '../types/question';
 import {initQuestion} from '../redux/slices/questionSlice/reducer';
-import {DiscoverScreen, HomeScreen, LibraryScreen} from '../screens';
+import {DiscoverScreen, HomeScreen} from '../screens';
 import {AppBarIconButton} from '../components/ui';
+import LibraryStack from './LibraryStack';
 
 const Tab = createBottomTabNavigator();
 
@@ -117,8 +118,9 @@ export function AppTabNavigator() {
         options={{
           tabBarLabel: 'Library',
           tabBarActiveTintColor: '#7C4DFF',
+          headerShown: false,
         }}
-        component={LibraryScreen}
+        component={LibraryStack}
       />
     </Tab.Navigator>
   );

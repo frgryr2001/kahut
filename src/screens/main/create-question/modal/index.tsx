@@ -168,9 +168,7 @@ const ModalScreen = ({navigation, route}: Props) => {
                   ]}
                 />
                 <Pressable
-
                   onPress={() => openGallery()}
-
                   style={{
                     width: 40,
                     height: 40,

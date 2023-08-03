@@ -120,16 +120,21 @@ const Header = ({navigation, completed, kahoot}: HeaderProps) => {
   const cancelEmptyQuestion = () => {
     setIsCancel(true);
     const checkKahootChange =
-      kahoot?.theme !== 'Standard' &&
-      kahoot?.coverImage !== '' &&
-      kahoot?.title !== '' &&
-      kahoot?.questions.length !== 0 &&
+      kahoot?.theme !== 'Standard' ||
+      kahoot?.coverImage !== '' ||
+      kahoot?.title !== '' ||
+      kahoot?.questions.length !== 0 ||
       kahoot?.description !== '';
 
     if (!checkKahootChange) {
-      setModalVisible(true);
-    } else {
+      dispatch(
+        deleteKahoot({
+          kahootId: kahoot?.idQuestion!,
+        }),
+      );
       navigation.navigate('Library');
+    } else {
+      setModalVisible(true);
     }
   };
 

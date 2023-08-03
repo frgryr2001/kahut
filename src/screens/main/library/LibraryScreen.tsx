@@ -12,13 +12,13 @@ const SECTIONS = [
         id: 1,
         title: 'Kahoots',
         icon: 'account-outline',
-        onPress: () => {},
+        onPress: (navigation: any) => navigation.navigate('KahootsListScreen'),
       },
       {
         id: 2,
         title: 'Reports',
         icon: 'finance',
-        onPress: () => {},
+        onPress: (navigation: any) => navigation.navigate('ReportScreen'),
       },
     ],
   },
@@ -29,31 +29,31 @@ const SECTIONS = [
         id: 1,
         title: 'Study groups',
         icon: 'google-classroom',
-        onPress: () => {},
+        onPress: (navigation: any) => navigation.navigate('StudyGroupScreen'),
       },
       {
         id: 2,
         title: 'Courses',
         icon: 'certificate-outline',
-        onPress: () => {},
+        onPress: (navigation: any) => navigation.navigate('CoursesScreen'),
       },
       {
         id: 3,
         title: 'Groups',
         icon: 'account-group-outline',
-        onPress: () => {},
+        onPress: (navigation: any) => navigation.navigate('GroupsScreen'),
       },
       {
         id: 4,
         title: 'Study',
         icon: 'school-outline',
-        onPress: () => {},
+        onPress: (navigation: any) => navigation.navigate('StudyScreen'),
       },
     ],
   },
 ];
 
-const LibraryScreen = () => {
+const LibraryScreen = ({navigation}: any) => {
   const insets = useSafeAreaInsets();
   const {colors} = useTheme();
 
@@ -81,7 +81,7 @@ const LibraryScreen = () => {
             {section.items.map(item => (
               <Pressable
                 key={item.id}
-                onPress={() => {}}
+                onPress={() => item.onPress(navigation)}
                 style={{
                   flexDirection: 'row',
                   alignItems: 'center',
