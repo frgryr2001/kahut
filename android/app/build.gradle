@@ -2,7 +2,7 @@ apply plugin: "com.android.application"
 apply plugin: "com.facebook.react"
 
 project.ext.vectoricons = [
-    iconFontNames: [ 'Ionicons.ttf' ] // Name of the font files you want to copy
+    iconFontNames: [ 'Ionicons.ttf', 'MaterialCommunityIcons.ttf' ] // Name of the font files you want to copy
 ]
 
 
