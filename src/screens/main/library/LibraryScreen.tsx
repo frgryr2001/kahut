@@ -3,55 +3,8 @@ import React from 'react';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useTheme} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-
-const SECTIONS = [
-  {
-    id: 1,
-    items: [
-      {
-        id: 1,
-        title: 'Kahoots',
-        icon: 'account-outline',
-        onPress: (navigation: any) => navigation.navigate('KahootsListScreen'),
-      },
-      {
-        id: 2,
-        title: 'Reports',
-        icon: 'finance',
-        onPress: (navigation: any) => navigation.navigate('ReportScreen'),
-      },
-    ],
-  },
-  {
-    id: 2,
-    items: [
-      {
-        id: 1,
-        title: 'Study groups',
-        icon: 'google-classroom',
-        onPress: (navigation: any) => navigation.navigate('StudyGroupScreen'),
-      },
-      {
-        id: 2,
-        title: 'Courses',
-        icon: 'certificate-outline',
-        onPress: (navigation: any) => navigation.navigate('CoursesScreen'),
-      },
-      {
-        id: 3,
-        title: 'Groups',
-        icon: 'account-group-outline',
-        onPress: (navigation: any) => navigation.navigate('GroupsScreen'),
-      },
-      {
-        id: 4,
-        title: 'Study',
-        icon: 'school-outline',
-        onPress: (navigation: any) => navigation.navigate('StudyScreen'),
-      },
-    ],
-  },
-];
+import styles from './LibraryScreen.style';
+import LIBRARY_SECTIONS from '../../../constants/librarySections';
 
 const LibraryScreen = ({navigation}: any) => {
   const insets = useSafeAreaInsets();
@@ -66,32 +19,16 @@ const LibraryScreen = ({navigation}: any) => {
         paddingRight: insets.right,
       }}>
       <StatusBar barStyle="dark-content" backgroundColor="white" />
-      <View style={{padding: 16, gap: 16}}>
-        {SECTIONS.map(section => (
-          <View
-            key={section.id}
-            style={{
-              borderRadius: 4,
-              overflow: 'hidden',
-              shadowColor: '#00000040',
-              elevation: 2,
-              backgroundColor: '#ddd',
-              gap: 1,
-            }}>
+      <View style={styles.container}>
+        {LIBRARY_SECTIONS.map(section => (
+          <View key={section.id} style={styles.sectionContainer}>
             {section.items.map(item => (
               <Pressable
                 key={item.id}
                 onPress={() => item.onPress(navigation)}
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  gap: 16,
-                  padding: 16,
-                  backgroundColor: '#fff',
-                }}>
+                style={styles.itemContainer}>
                 <Icon name={item.icon} size={24} color={colors.text} />
-                <Text
-                  style={{color: colors.text, fontSize: 16, fontWeight: '700'}}>
+                <Text style={[{color: colors.text}, styles.itemTitle]}>
                   {item.title}
                 </Text>
               </Pressable>

@@ -55,7 +55,6 @@ function SocialSignIn({
             style={{
               flexDirection: 'row',
               alignItems: 'center',
-
               columnGap: 20,
             }}>
             <View style={{flex: 1, height: 1, backgroundColor: '#BDBDBD'}} />
@@ -72,7 +71,7 @@ function SocialSignIn({
             <ButtonIconSignIn
               nameIcon="logo-google"
               sizeIcon={20}
-              textIcon="Sign in with Google"
+              textIcon="Continue with Google"
               colorIcon={'#DB4437'}
               activeOpacity={0.7}
               onPress={signInSocialGoogle}
@@ -83,7 +82,9 @@ function SocialSignIn({
       {/* Sign up */}
       {formType === 'login' && (
         <View style={styles.signUpBtn}>
-          <Text style={styles.textTitle}>Don't you have an account ?</Text>
+          <Text style={{...styles.textTitle, color: '#7C4DFF'}}>
+            Don't you have an account ?
+          </Text>
           <TouchableOpacity
             onPress={() => gotoForm('RegisterScreen', () => reset())}>
             {/* 290498 */}
@@ -100,7 +101,15 @@ function SocialSignIn({
       {/* Sign up */}
       {formType === 'register' && (
         <View style={styles.signUpBtn}>
-          <Text style={styles.textTitle}>Have an account ?</Text>
+          <Text
+            style={[
+              styles.textTitle,
+              {
+                color: '#7C4DFF',
+              },
+            ]}>
+            Have an account ?
+          </Text>
           <TouchableOpacity
             onPress={() => gotoForm('LoginScreen', () => reset())}>
             {/* 290498 */}
