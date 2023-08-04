@@ -44,12 +44,13 @@ export const LoginScreen = ({navigation}: Props) => {
       const userInfo = await GoogleSignin.signIn();
       //   Call API from backend
       if (userInfo) {
-        dispatch(
+        await dispatch(
           signInWithGoogle({
             googleId: userInfo.user.id,
             googleToken: userInfo.idToken,
           }),
         ).unwrap();
+        navigation.goBack();
       }
     } catch (error: any) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
