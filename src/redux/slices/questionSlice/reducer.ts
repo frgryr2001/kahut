@@ -169,9 +169,14 @@ const questionSlice = createSlice({
         questionId: string;
         index: number;
         image: string; // name of image
+        file: {
+          uri: string;
+          type: string;
+          name: string;
+        };
       }>,
     ) {
-      const {kahootId, questionId, index, image} = action.payload;
+      const {kahootId, questionId, index, image, file} = action.payload;
       const kahoot = state.questions.find(k => k.idQuestion === kahootId);
       if (kahoot) {
         const question = kahoot.questions.find(q => q.id === questionId);
@@ -180,7 +185,7 @@ const questionSlice = createSlice({
             ...question.answers[index],
             image: image,
           };
-          kahoot.images?.push(image);
+          kahoot.images?.push(file);
         }
       }
     },
@@ -272,6 +277,20 @@ const questionSlice = createSlice({
         Object.assign(kahoot, fieldsToUpdate);
       }
     },
+    updateImagesKahoot(
+      state,
+      action: PayloadAction<{
+        kahootId: string;
+        image: string;
+      }>,
+    ) {
+      const {kahootId, image} = action.payload;
+      const kahoot = state.questions.find(k => k.idQuestion === kahootId);
+      if (kahoot) {
+        //  remove image in array images
+        kahoot.images = kahoot.images?.filter(img => img.name !== image);
+      }
+    },
     deleteKahoot(state, action: PayloadAction<{kahootId: string}>) {
       const {kahootId} = action.payload;
       const index = state.questions.findIndex(
@@ -340,6 +359,7 @@ export const {
   addTitleKahoot,
   updateKahoot,
   deleteKahoot,
+  updateImagesKahoot,
 } = questionSlice.actions;
 
 export default questionSlice.reducer;

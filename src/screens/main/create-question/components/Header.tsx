@@ -69,7 +69,11 @@ export const Header = ({
         <Icon name="chevron-down-outline" size={25} color={'black'} />
       </TouchableOpacity>
       {/* Type question */}
-      <DropdownCustom typeQuestion={typeQuestion} />
+      <DropdownCustom
+        typeQuestion={typeQuestion}
+        kahootId={kahootID!}
+        questionId={question?.id!}
+      />
       {/* icon option */}
       <PopupMenu
         handleGoBackScreen={handleGoBackScreen}

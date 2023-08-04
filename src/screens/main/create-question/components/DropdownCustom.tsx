@@ -1,25 +1,25 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {Dropdown} from 'react-native-element-dropdown';
-const data = [
+import {useAppDispatch} from '../../../../redux/store';
+import {updateFieldQuestion} from '../../../../redux/slices/questionSlice/reducer';
+
+type DataDropdown = {
+  label: string;
+  type: string;
+};
+const data: DataDropdown[] = [
   {label: 'Quiz', type: 'quiz'},
   {label: 'True or False', type: 'trueorfalse'},
 ];
 interface Props {
   typeQuestion: string;
+  kahootId: string;
+  questionId: string;
 }
-export const DropdownCustom = ({typeQuestion}: Props) => {
-  const [value, setValue] = useState(function () {
-    if (typeQuestion === 'quiz') {
-      return 'quiz';
-    }
-    return 'trueorfalse';
-  });
+export const DropdownCustom = ({typeQuestion, kahootId, questionId}: Props) => {
   const [isFocus, setIsFocus] = useState(false);
-
-  useEffect(() => {
-    setValue(typeQuestion);
-  }, [typeQuestion]);
+  const dispatch = useAppDispatch();
 
   return (
     <View style={styles.container}>
@@ -32,11 +32,19 @@ export const DropdownCustom = ({typeQuestion}: Props) => {
         maxHeight={300}
         labelField="label"
         valueField="type"
-        value={value}
+        value={typeQuestion === 'quiz' ? 'quiz' : 'trueorfalse'}
         onFocus={() => setIsFocus(true)}
         onBlur={() => setIsFocus(false)}
-        onChange={item => {
-          setValue(item.type);
+        onChange={(item: DataDropdown) => {
+          dispatch(
+            updateFieldQuestion({
+              kahootId: kahootId,
+              questionId: questionId,
+              fieldsToUpdate: {
+                type: item.type as 'quiz' | 'trueorfalse',
+              },
+            }),
+          );
           setIsFocus(false);
         }}
       />
@@ -46,7 +54,7 @@ export const DropdownCustom = ({typeQuestion}: Props) => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
-    flex: 0.4,
+    flex: 0.5,
   },
   dropdown: {
     height: 50,

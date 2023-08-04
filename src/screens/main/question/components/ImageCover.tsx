@@ -15,6 +15,7 @@ import {
   addImageCoverKahoot,
   addImageQuestion,
   deleteImageQuestion,
+  updateImagesKahoot,
   updateKahoot,
 } from '../../../../redux/slices/questionSlice/reducer';
 
@@ -141,6 +142,12 @@ const ImageCover = ({as, content, imageDefault, kahootID, id}: Props) => {
                       fieldsToUpdate: {
                         coverImage: '',
                       },
+                    }),
+                  );
+                  dispatch(
+                    updateImagesKahoot({
+                      kahootId: kahootID!,
+                      image: imageDefault,
                     }),
                   );
                 }
