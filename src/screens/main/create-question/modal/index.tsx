@@ -1,23 +1,18 @@
-import {BlurView} from '@react-native-community/blur';
 import React, {useEffect} from 'react';
-import {Pressable, StyleSheet, Text, TextInput, View} from 'react-native';
+import {Pressable, StyleSheet, TextInput, View} from 'react-native';
 import {RootStackParams} from '../../../../navigation/AppNavigationContainer';
 import {StackScreenProps} from '@react-navigation/stack';
-import {CustomSwitch} from './CustomSwitch';
-import Icon from 'react-native-vector-icons/Ionicons';
+
 import {useDebounce} from '../../../../hooks/useDebounce';
 import {useAppDispatch} from '../../../../redux/store';
 import {
-  addImageAnswerQuestion,
   addTextAnswerQuestion,
   addTitleQuestion,
   changeIsCorrectAnswerQuestion,
 } from '../../../../redux/slices/questionSlice/reducer';
-import {launchImageLibrary} from 'react-native-image-picker';
 import {useSelector} from 'react-redux';
 import {selectQuestions} from '../../../../redux/slices/questionSlice/selector';
-
-const color = ['#3273e3', '#e84357', '#b93ddb', '#d9db44'];
+import AnswerModal from './AnswerModal';
 
 interface Props
   extends StackScreenProps<RootStackParams, 'ModalQuestionScreen'> {}
@@ -96,32 +91,13 @@ const ModalScreen = ({navigation, route}: Props) => {
       );
     }
   }, [valueAnswerDebounce, dispatch, kahootID, id, indexQuestion]);
-  const openGallery = () => {
-    launchImageLibrary({mediaType: 'photo'}, response => {
-      if (response.didCancel) {
-        return;
-      }
-      dispatch(
-        addImageAnswerQuestion({
-          kahootId: kahootID,
-          questionId: id,
-          index: indexQuestion,
-          image: response.assets![0].fileName as string,
-        }),
-      );
-    });
-  };
+
   return (
-    <BlurView
-      blurType="dark"
-      blurAmount={5}
-      reducedTransparencyFallbackColor="white"
-      style={styles.container}>
+    <View style={styles.container}>
       <Pressable
-        onPress={() =>
-          // dispatch action to update answer
-          navigation.goBack()
-        }
+        onPress={() => {
+          navigation.goBack();
+        }}
         style={{
           flex: 1,
           alignItems: 'center',
@@ -145,60 +121,36 @@ const ModalScreen = ({navigation, route}: Props) => {
             />
           ) : (
             <>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: 10,
-                }}>
-                <TextInput
-                  value={valueTextAnswer}
-                  onChangeText={handleOnChangeTextAnswer}
-                  textAlignVertical="center"
-                  autoFocus
-                  autoCorrect={false}
-                  multiline={true}
-                  style={[
-                    styles.textInputQuestion,
-                    {
-                      width: '60%',
-                      backgroundColor: color[indexQuestion],
-                    },
-                  ]}
-                />
-                <Pressable
-                  onPress={() => openGallery()}
-                  style={{
-                    width: 40,
-                    height: 40,
-                    backgroundColor: 'white',
-                    borderRadius: 3,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}>
-                  <Icon name="image-outline" size={30} color={'black'} />
-                </Pressable>
-              </View>
-              <View style={styles.containerAnswer}>
-                <Text>Answer</Text>
-                <CustomSwitch
-                  isOn={isSwitchOn}
-                  handleOnPressSwitch={handleOnPressSwitch}
-                  color={color[indexQuestion]}
-                />
-              </View>
+              <AnswerModal
+                navigation={navigation}
+                valueTextAnswer={valueTextAnswer}
+                handleOnChangeTextAnswer={handleOnChangeTextAnswer}
+                indexQuestion={indexQuestion}
+                isSwitchOn={isSwitchOn}
+                kahootID={kahootID}
+                id={id}
+                handleOnPressSwitch={handleOnPressSwitch}
+                answers={answers}
+              />
             </>
           )}
         </View>
       </Pressable>
-    </BlurView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+
+  wrapper: {
+    width: '100%',
+    paddingHorizontal: 10,
+    position: 'relative',
+    top: 200,
   },
   textInputQuestion: {
     fontSize: 16,
@@ -217,22 +169,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.22,
     shadowRadius: 2.22,
     elevation: 1,
-  },
-  containerAnswer: {
-    width: '100%',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    padding: 15,
-    backgroundColor: 'white',
-    borderRadius: 8,
-    marginTop: 10,
-  },
-  wrapper: {
-    width: '100%',
-    paddingHorizontal: 10,
-    position: 'relative',
-    top: 200,
   },
   inputModal: {
     fontSize: 16,

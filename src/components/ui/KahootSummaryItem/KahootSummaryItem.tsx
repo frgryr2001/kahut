@@ -25,22 +25,29 @@ const KahootSummaryItem = ({isDraft = false, kahoot}: Props) => {
         },
         styles.container,
       ]}>
-      {
-        <ImageBackground
-          defaultSource={DefaultImage}
-          source={
-            kahoot.coverImage
-              ? {
-                  uri: kahoot.coverImage,
-                }
-              : DefaultImage
-          }
-          style={styles.coverImage}>
-          <Text style={styles.numberOfQuestion}>
-            {kahoot.numberOfQuestion} Qs
-          </Text>
-        </ImageBackground>
-      }
+      <ImageBackground
+        // defaultSource={{
+        //   uri: kahoot.coverImage!,
+        // }}
+        loadingIndicatorSource={
+          kahoot.coverImage
+            ? {
+                uri: kahoot.coverImage,
+              }
+            : DefaultImage
+        }
+        source={
+          kahoot.coverImage
+            ? {
+                uri: kahoot.coverImage,
+              }
+            : DefaultImage
+        }
+        style={styles.coverImage}>
+        <Text style={styles.numberOfQuestion}>
+          {kahoot.numberOfQuestion} Qs
+        </Text>
+      </ImageBackground>
 
       <View style={styles.bottomContainer}>
         <View style={styles.draftContainer}>

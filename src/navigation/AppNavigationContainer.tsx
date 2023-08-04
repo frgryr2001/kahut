@@ -54,7 +54,6 @@ export type RootStackParams = {
     isQuestionTitle?: boolean;
     questionTitle?: string;
     kahootID: string;
-    typeTf?: boolean;
     id: string;
   };
 };
