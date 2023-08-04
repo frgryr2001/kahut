@@ -13,30 +13,54 @@ function LibraryStack() {
         headerTitleAlign: 'center',
         animation: 'slide_from_right',
       }}>
-      <Stack.Screen name="LibraryScreen" component={LibraryScreen} />
+      <Stack.Screen
+        name="LibraryScreen"
+        component={LibraryScreen}
+        options={{
+          headerTitle: 'Library',
+        }}
+      />
       <Stack.Screen
         name="KahootsListScreen"
         component={libraryStackScreens.KahootsListScreen}
+        options={{
+          headerTitle: 'Kahoots',
+        }}
       />
       <Stack.Screen
         name="ReportScreen"
         component={libraryStackScreens.ReportScreen}
+        options={{
+          headerTitle: 'Reports',
+        }}
       />
       <Stack.Screen
         name="StudyGroupScreen"
         component={libraryStackScreens.StudyGroupScreen}
+        options={{
+          headerTitle: 'Study groups',
+        }}
       />
       <Stack.Screen
         name="CoursesScreen"
         component={libraryStackScreens.CoursesScreen}
+        options={{
+          headerTitle: 'Courses',
+        }}
       />
       <Stack.Screen
         name="GroupsScreen"
         component={libraryStackScreens.GroupsScreen}
+        options={{
+          headerTitle: 'Groups',
+        }}
       />
       <Stack.Screen
         name="StudyScreen"
         component={libraryStackScreens.StudyScreen}
+        options={{
+          headerTitle: 'Study',
+        }}
       />
     </Stack.Navigator>
   );
