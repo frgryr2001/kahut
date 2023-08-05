@@ -4,7 +4,6 @@ import {useSelector} from 'react-redux';
 
 import {HomeSection, HomeBannerSlider, HomeKahootList} from './components';
 import {selectStatus} from '../../../redux/slices/authSlice/selector';
-import {selectQuestions} from '../../../redux/slices/questionSlice/selector';
 import {SummaryKahoot} from '../../../types/kahoot.type';
 import {
   getKahootsList,
@@ -19,7 +18,6 @@ interface Props {
 
 const HomeScreen = ({navigation}: Props) => {
   const authStatus = useSelector(selectStatus);
-  const kahootListDraft = useSelector(selectQuestions);
   const [publicKahootsList, setPublicKahootsList] = useState<SummaryKahoot[]>();
   const [ownKahootsList, setOwnKahootsList] = useState<SummaryKahoot[]>([]);
   const [isFetchingPublicKahootsList, setIsFetchingPublicKahootsList] =
@@ -57,11 +55,6 @@ const HomeScreen = ({navigation}: Props) => {
     }, 2000);
   }, []);
 
-  const mergeKahootsList = React.useMemo(() => {
-    // return [...ownKahootsList!, ...kahootListDraft];
-    const final = [...ownKahootsList!, ...kahootListDraft];
-    return final;
-  }, [ownKahootsList, kahootListDraft]);
   return (
     <SafeAreaView>
       <ScrollView
@@ -94,7 +87,7 @@ const HomeScreen = ({navigation}: Props) => {
               onPressSeeAll={() => navigation.navigate('Library')}>
               {isFetchingOwnKahootsList && <HomeSkeleton />}
               {ownKahootsList && (
-                <HomeKahootList kahootsList={mergeKahootsList as any} />
+                <HomeKahootList kahootsList={ownKahootsList} />
               )}
             </HomeSection>
           )}
