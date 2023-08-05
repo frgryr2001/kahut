@@ -47,6 +47,7 @@ const HomeScreen = ({navigation}: Props) => {
         .catch(error => console.error(error));
     }
   }, [authStatus, refreshing]);
+
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     setTimeout(() => {

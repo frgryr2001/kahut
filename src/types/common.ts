@@ -1,5 +1,6 @@
-export type NewAccessToken = {
+export type ResetAccessTokenResponseData = {
   access_token: string;
+  refresh_token: string;
 };
 export interface RequestResponse<T> {
   code: number;
