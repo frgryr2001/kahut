@@ -78,14 +78,16 @@ const Header = ({navigation, completed, kahoot}: HeaderProps) => {
       if (
         question.type === 'trueorfalse' &&
         question.question !== '' &&
-        kahoot?.title !== ''
+        kahoot?.title !== '' &&
+        status === 'authenticated'
       ) {
         return true;
       }
       if (
         question.type === 'quiz' &&
         question.question !== '' &&
-        kahoot?.title !== ''
+        kahoot?.title !== '' &&
+        status === 'authenticated'
       ) {
         return question.answers.some(answer => {
           return answer.isCorrect;
@@ -100,7 +102,6 @@ const Header = ({navigation, completed, kahoot}: HeaderProps) => {
     setIsCancel(false);
     if (!checkCorrect()) {
       setModalVisible(true);
-      return;
     } else {
       dispatch(createKahoot(kahoot!))
         .unwrap()

@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {SafeAreaView, ScrollView, View} from 'react-native';
+import {SafeAreaView, ScrollView, View, RefreshControl} from 'react-native';
 import {useSelector} from 'react-redux';
 
 import {HomeSection, HomeBannerSlider, HomeKahootList} from './components';
@@ -24,6 +24,7 @@ const HomeScreen = ({navigation}: Props) => {
     useState<boolean>(true);
   const [isFetchingOwnKahootsList, setIsFetchingOwnKahootsList] =
     useState<boolean>(true);
+  const [refreshing, setRefreshing] = React.useState(false);
 
   // Get public kahoot
   useEffect(() => {
@@ -45,11 +46,21 @@ const HomeScreen = ({navigation}: Props) => {
         })
         .catch(error => console.error(error));
     }
-  }, [authStatus]);
+  }, [authStatus, refreshing]);
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
 
   return (
     <SafeAreaView>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }>
         <View style={styles.container}>
           <HomeSection
             title="Discover"
