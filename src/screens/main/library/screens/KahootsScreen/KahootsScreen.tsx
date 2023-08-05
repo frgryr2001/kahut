@@ -4,26 +4,26 @@ import {useSelector} from 'react-redux';
 import {useTheme} from '@react-navigation/native';
 
 import {selectStatus} from '../../../../../redux/slices/authSlice/selector';
-import styles from './KahootsListScreen.style';
+import styles from './KahootsScreen.style';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const SECTIONS = [
   {
     id: 1,
-    title: 'Study groups',
-    icon: 'google-classroom',
+    title: 'My kahoots',
+    icon: 'account-outline',
     onPress: (navigation: any) => navigation.navigate('StudyGroupScreen'),
   },
   {
     id: 2,
-    title: 'Courses',
-    icon: 'certificate-outline',
+    title: 'Favorites',
+    icon: 'heart-outline',
     onPress: (navigation: any) => navigation.navigate('CoursesScreen'),
   },
   {
     id: 3,
-    title: 'Groups',
-    icon: 'account-group-outline',
+    title: 'Shared',
+    icon: 'share-variant-outline',
     onPress: (navigation: any) => navigation.navigate('GroupsScreen'),
   },
 ];
@@ -69,14 +69,16 @@ export default function KahootsListScreen({navigation}: any) {
 
           <View style={styles.notAuthButtonGroup}>
             <Pressable
+              onPress={() => navigation.push('LoginScreen')}
               style={{
                 backgroundColor: '#2456bf',
                 ...styles.notAuthButtonContainer,
               }}>
-              <Text style={styles.notAuthButtonText}>Log in</Text>
+              <Text style={styles.notAuthButtonText}>Sign in</Text>
             </Pressable>
 
             <Pressable
+              onPress={() => navigation.push('RegisterScreen')}
               style={{
                 backgroundColor: '#10872a',
                 ...styles.notAuthButtonContainer,

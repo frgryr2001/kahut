@@ -9,6 +9,7 @@ import {RootStackParams} from '../../../navigation/AppNavigationContainer';
 import {selectStatus} from '../../../redux/slices/authSlice/selector';
 import {store} from '../../../redux/store';
 import {signOut} from '../../../redux/slices/authSlice/actions';
+import styles from './UserSettingScreen.style';
 
 interface Props
   extends StackScreenProps<RootStackParams, 'UserSettingScreen'> {}
@@ -40,58 +41,35 @@ const UserSettingScreen = ({navigation}: Props) => {
           <Text
             style={{
               color: colors.text,
-              fontSize: 20,
-              fontWeight: '700',
+              ...styles.notAuthTitle,
             }}>
             Log in for more
           </Text>
 
-          <Text
-            style={{
-              color: '#777',
-              fontSize: 16,
-            }}>
+          <Text style={styles.notAuthSubTitle}>
             Create and save kahoots, and access more features with a Kahoot!
             account.
           </Text>
 
-          <View style={{flexDirection: 'row', gap: 8}}>
+          <View style={styles.notAuthButtonGroup}>
             <TouchableHighlight
               underlayColor="#d8dce3"
               onPress={() => navigation.push('LoginScreen')}
               style={{
-                backgroundColor: '#e4e8ed',
-                paddingHorizontal: 24,
-                paddingVertical: 10,
-                borderRadius: 4,
+                backgroundColor: '#2456bf',
+                ...styles.notAuthButtonContainer,
               }}>
-              <Text
-                style={{
-                  color: '#000',
-                  fontSize: 16,
-                  fontWeight: '700',
-                }}>
-                Sign in
-              </Text>
+              <Text style={styles.notAuthButtonText}>Sign in</Text>
             </TouchableHighlight>
 
             <TouchableHighlight
               onPress={() => navigation.push('RegisterScreen')}
               underlayColor="#0e418a"
               style={{
-                backgroundColor: '#034aad',
-                paddingHorizontal: 24,
-                paddingVertical: 10,
-                borderRadius: 4,
+                backgroundColor: '#10872a',
+                ...styles.notAuthButtonContainer,
               }}>
-              <Text
-                style={{
-                  color: '#fff',
-                  fontSize: 16,
-                  fontWeight: '700',
-                }}>
-                Sign up
-              </Text>
+              <Text style={styles.notAuthButtonText}>Sign up</Text>
             </TouchableHighlight>
           </View>
         </View>

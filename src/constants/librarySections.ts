@@ -6,7 +6,7 @@ const LIBRARY_SECTIONS = [
         id: 1,
         title: 'Kahoots',
         icon: 'account-outline',
-        onPress: (navigation: any) => navigation.navigate('KahootsListScreen'),
+        onPress: (navigation: any) => navigation.navigate('KahootsScreen'),
       },
       {
         id: 2,

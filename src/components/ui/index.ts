@@ -7,3 +7,4 @@ export * from './ModalCustom';
 export {default as KahootSummaryItem} from './KahootSummaryItem/KahootSummaryItem';
 export {default as AppBarIconButton} from './AppBarIconButton/AppBarIconButton';
 export {default as Skeleton} from './Skeleton/Skeleton';
+export {default as KahootsList} from './KahootsList/KahootsList';
