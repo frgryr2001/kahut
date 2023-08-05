@@ -52,6 +52,7 @@ const setup = () => {
             dispatch(
               loginSuccessNewAccessTokenAction({
                 access_token: res.data.access_token,
+                refresh_token: res.data.refresh_token,
               }),
             );
 

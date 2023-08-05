@@ -27,7 +27,6 @@ export const CreateQuestionScreen = ({navigation, route}: Props) => {
   const kahootArr = useSelector(selectQuestions);
   const kahoot = kahootArr.find(item => item.idQuestion === kahootID);
   const question = kahoot?.questions.find(item => item.id === id);
-  console.log('question', JSON.stringify(question, null, 2));
 
   return (
     <SafeAreaView

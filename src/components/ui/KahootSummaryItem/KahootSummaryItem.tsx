@@ -1,4 +1,11 @@
-import {View, Text, ImageBackground, Image, Dimensions} from 'react-native';
+import {
+  View,
+  Text,
+  ImageBackground,
+  Image,
+  Dimensions,
+  TouchableOpacity,
+} from 'react-native';
 import React from 'react';
 import {useTheme} from '@react-navigation/native';
 import {SummaryKahoot} from '../../../types/kahoot.type';
@@ -8,16 +15,18 @@ const DefaultImage = require('../../../assets/images/default.png');
 
 interface Props {
   isDraft?: boolean;
-  kahoot: SummaryKahoot;
+  kahoot: SummaryKahoot & {questions?: []};
 }
 
 const WIDTH = Math.round((Dimensions.get('window').width - 40) / 2);
 
 const KahootSummaryItem = ({isDraft = false, kahoot}: Props) => {
   const {colors} = useTheme();
+  const numberOfQuestionLocal = kahoot.questions?.length;
 
   return (
-    <View
+    <TouchableOpacity
+      activeOpacity={0.8}
       style={[
         {
           width: WIDTH,
@@ -26,26 +35,19 @@ const KahootSummaryItem = ({isDraft = false, kahoot}: Props) => {
         styles.container,
       ]}>
       <ImageBackground
-        // defaultSource={{
-        //   uri: kahoot.coverImage!,
-        // }}
-        loadingIndicatorSource={
-          kahoot.coverImage
-            ? {
-                uri: kahoot.coverImage,
-              }
-            : DefaultImage
-        }
+        defaultSource={DefaultImage}
         source={
           kahoot.coverImage
             ? {
-                uri: kahoot.coverImage,
+                uri: isDraft
+                  ? `file:///data/user/0/com.kahut/cache/${kahoot.coverImage}`
+                  : kahoot.coverImage,
               }
             : DefaultImage
         }
         style={styles.coverImage}>
         <Text style={styles.numberOfQuestion}>
-          {kahoot.numberOfQuestion} Qs
+          {kahoot.numberOfQuestion || numberOfQuestionLocal} Qs
         </Text>
       </ImageBackground>
 
@@ -70,21 +72,26 @@ const KahootSummaryItem = ({isDraft = false, kahoot}: Props) => {
           </Text>
         </View>
 
-        <View style={styles.userInfoContainer}>
-          <Image
-            defaultSource={DefaultImage}
-            source={{
-              uri: kahoot.userImage,
-            }}
-            style={styles.userImage}
-          />
+        {!isDraft && kahoot.userImage && (
+          <View style={styles.userInfoContainer}>
+            <Image
+              defaultSource={DefaultImage}
+              source={{
+                uri: kahoot.userImage,
+              }}
+              style={styles.userImage}
+            />
 
-          <Text style={styles.username} numberOfLines={1} ellipsizeMode="tail">
-            {kahoot.username}
-          </Text>
-        </View>
+            <Text
+              style={styles.username}
+              numberOfLines={1}
+              ellipsizeMode="tail">
+              {kahoot.username}
+            </Text>
+          </View>
+        )}
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

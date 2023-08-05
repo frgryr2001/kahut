@@ -47,6 +47,7 @@ export type AuthRefreshToken = Pick<
 > & {
   data: {
     access_token: string;
+    refresh_token: string;
   };
 };
 export type AuthDataEmpty = Pick<

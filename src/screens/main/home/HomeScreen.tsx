@@ -4,6 +4,7 @@ import {useSelector} from 'react-redux';
 
 import {HomeSection, HomeBannerSlider, HomeKahootList} from './components';
 import {selectStatus} from '../../../redux/slices/authSlice/selector';
+import {selectQuestions} from '../../../redux/slices/questionSlice/selector';
 import {SummaryKahoot} from '../../../types/kahoot.type';
 import {
   getKahootsList,
@@ -18,8 +19,9 @@ interface Props {
 
 const HomeScreen = ({navigation}: Props) => {
   const authStatus = useSelector(selectStatus);
+  const kahootListDraft = useSelector(selectQuestions);
   const [publicKahootsList, setPublicKahootsList] = useState<SummaryKahoot[]>();
-  const [ownKahootsList, setOwnKahootsList] = useState<SummaryKahoot[]>();
+  const [ownKahootsList, setOwnKahootsList] = useState<SummaryKahoot[]>([]);
   const [isFetchingPublicKahootsList, setIsFetchingPublicKahootsList] =
     useState<boolean>(true);
   const [isFetchingOwnKahootsList, setIsFetchingOwnKahootsList] =
@@ -34,9 +36,9 @@ const HomeScreen = ({navigation}: Props) => {
         setIsFetchingPublicKahootsList(false);
       })
       .catch(error => console.error(error));
-  }, []);
+  }, [refreshing]);
 
-  // If logged in, get own kahoot
+  //   If logged in, get own kahoot
   useEffect(() => {
     if (authStatus === 'authenticated') {
       getOwnKahootsList()
@@ -47,6 +49,7 @@ const HomeScreen = ({navigation}: Props) => {
         .catch(error => console.error(error));
     }
   }, [authStatus, refreshing]);
+
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     setTimeout(() => {
@@ -54,6 +57,11 @@ const HomeScreen = ({navigation}: Props) => {
     }, 2000);
   }, []);
 
+  const mergeKahootsList = React.useMemo(() => {
+    // return [...ownKahootsList!, ...kahootListDraft];
+    const final = [...ownKahootsList!, ...kahootListDraft];
+    return final;
+  }, [ownKahootsList, kahootListDraft]);
   return (
     <SafeAreaView>
       <ScrollView
@@ -86,7 +94,7 @@ const HomeScreen = ({navigation}: Props) => {
               onPressSeeAll={() => navigation.navigate('Library')}>
               {isFetchingOwnKahootsList && <HomeSkeleton />}
               {ownKahootsList && (
-                <HomeKahootList kahootsList={ownKahootsList} />
+                <HomeKahootList kahootsList={mergeKahootsList as any} />
               )}
             </HomeSection>
           )}
