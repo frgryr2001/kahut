@@ -7365,9 +7365,9 @@ react-addons-shallow-compare@15.6.2:
     object-assign "^4.1.0"
 
 react-devtools-core@^4.27.2:
-  version "4.25.0"
-  resolved "https://registry.npmjs.org/react-devtools-core/-/react-devtools-core-4.25.0.tgz"
-  integrity sha512-iewRrnu0ZnmfL+jJayKphXj04CFh6i3ezVnpCtcnZbTPSQgN09XqHAzXbKbqNDl7aTg9QLNkQRP6M3DvdrinWA==
+  version "4.28.0"
+  resolved "https://registry.npmjs.org/react-devtools-core/-/react-devtools-core-4.28.0.tgz"
+  integrity sha512-E3C3X1skWBdBzwpOUbmXG8SgH6BtsluSMe+s6rRcujNKG1DGi8uIfhdhszkgDpAsMoE55hwqRUzeXCmETDBpTg==
   dependencies:
     shell-quote "^1.6.1"
     ws "^7"

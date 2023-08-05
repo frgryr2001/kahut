@@ -9,7 +9,7 @@ import {
 import React from 'react';
 import {useTheme} from '@react-navigation/native';
 import {SummaryKahoot} from '../../../types/kahoot.type';
-import styles from './KahootSummaryItem.style';
+import styles from './KahootSliderItem.style';
 
 const DefaultImage = require('../../../assets/images/default.png');
 
@@ -20,7 +20,7 @@ interface Props {
 
 const WIDTH = Math.round((Dimensions.get('window').width - 40) / 2);
 
-const KahootSummaryItem = ({isDraft = false, kahoot}: Props) => {
+const KahootSliderItem = ({isDraft = false, kahoot}: Props) => {
   const {colors} = useTheme();
   const numberOfQuestionLocal = kahoot.questions?.length;
 
@@ -95,4 +95,4 @@ const KahootSummaryItem = ({isDraft = false, kahoot}: Props) => {
   );
 };
 
-export default KahootSummaryItem;
+export default KahootSliderItem;

@@ -2,6 +2,7 @@ import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {LibraryScreen} from '../screens';
 import * as libraryStackScreens from '../screens/main/library/screens';
+import * as libraryKahootsScreens from '../screens/main/library/screens/KahootsScreen/screens';
 
 const Stack = createNativeStackNavigator();
 
@@ -60,6 +61,27 @@ function LibraryStack() {
         component={libraryStackScreens.StudyScreen}
         options={{
           headerTitle: 'Study',
+        }}
+      />
+      <Stack.Screen
+        name="LibraryMyKahootsScreen"
+        component={libraryKahootsScreens.MyKahootsScreen}
+        options={{
+          headerTitle: 'My kahoots',
+        }}
+      />
+      <Stack.Screen
+        name="LibraryFavoritesScreen"
+        component={libraryKahootsScreens.FavoritesScreen}
+        options={{
+          headerTitle: 'Favorites',
+        }}
+      />
+      <Stack.Screen
+        name="LibrarySharedScreen"
+        component={libraryKahootsScreens.SharedScreen}
+        options={{
+          headerTitle: 'Shared',
         }}
       />
     </Stack.Navigator>

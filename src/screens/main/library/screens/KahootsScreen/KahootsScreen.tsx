@@ -12,19 +12,19 @@ const SECTIONS = [
     id: 1,
     title: 'My kahoots',
     icon: 'account-outline',
-    onPress: (navigation: any) => navigation.navigate('StudyGroupScreen'),
+    onPress: (navigation: any) => navigation.navigate('LibraryMyKahootsScreen'),
   },
   {
     id: 2,
     title: 'Favorites',
     icon: 'heart-outline',
-    onPress: (navigation: any) => navigation.navigate('CoursesScreen'),
+    onPress: (navigation: any) => navigation.navigate('LibraryFavoritesScreen'),
   },
   {
     id: 3,
     title: 'Shared',
     icon: 'share-variant-outline',
-    onPress: (navigation: any) => navigation.navigate('GroupsScreen'),
+    onPress: (navigation: any) => navigation.navigate('LibrarySharedScreen'),
   },
 ];
 
