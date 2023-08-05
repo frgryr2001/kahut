@@ -31,7 +31,7 @@ export function AppTabNavigator() {
       title: '',
       description: '',
       theme: 'Standard',
-      coverImage: '',
+      coverImage: null,
       media: '',
       visibleScope: 'public',
       images: [],

@@ -7,6 +7,7 @@ interface SummaryKahoot {
   numberOfQuestion: number;
   createdAt?: number;
   visibleScope?: string;
+  isDraft?: boolean;
 }
 
 export type {SummaryKahoot};

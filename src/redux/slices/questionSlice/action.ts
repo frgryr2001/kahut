@@ -1,6 +1,6 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import httpClient from '../../../services/utils/httpClient';
-import {ResponseData} from '../../../types/common';
+import {RequestResponse} from '../../../types/common';
 import {Question} from '../../../types/question';
 
 export const createKahoot = createAsyncThunk(
@@ -25,7 +25,7 @@ export const createKahoot = createAsyncThunk(
       data.images!.forEach(image => {
         formData.append('images', image);
       });
-      const response = await httpClient.post<ResponseData>({
+      const response = await httpClient.post<RequestResponse<any>>({
         url: '/kahoots',
         data: formData,
         config: {

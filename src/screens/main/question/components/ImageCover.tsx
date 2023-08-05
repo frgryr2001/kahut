@@ -45,6 +45,7 @@ const ImageCover = ({as, content, imageDefault, kahootID, id}: Props) => {
       if (response.didCancel) {
         return;
       }
+
       if (kahootID && id) {
         dispatch(
           addImageQuestion({

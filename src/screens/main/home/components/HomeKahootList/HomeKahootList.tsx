@@ -16,8 +16,12 @@ const HomeKahootList = ({kahootsList}: Props) => {
       showsHorizontalScrollIndicator={false}
       contentContainerStyle={styles.contentContainer}>
       <View style={styles.viewContainer}>
-        {kahootsList.map(kahootItem => (
-          <KahootSummaryItem key={kahootItem.id} kahoot={kahootItem} />
+        {kahootsList.map((kahootItem: any) => (
+          <KahootSummaryItem
+            key={kahootItem.id ?? kahootItem.idQuestion}
+            kahoot={kahootItem}
+            isDraft={kahootItem.isDraft}
+          />
         ))}
       </View>
     </ScrollView>

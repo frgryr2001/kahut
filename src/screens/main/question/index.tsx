@@ -37,12 +37,8 @@ interface Props extends StackScreenProps<RootStackParams, 'QuestionScreen'> {}
 
 export const QuestionScreen = ({navigation, route}: Props) => {
   const {idQuestion} = route.params.question;
-
   const kahootArray = useSelector(selectQuestions);
   const kahoot = kahootArray.find(item => item.idQuestion === idQuestion);
-
-  console.log('kahoot', JSON.stringify(kahoot, null, 2));
-
   const [isClickShowTheme, setIsClickShowTheme] = useState<boolean>(false);
   const isFocus = useIsFocused();
   // ref

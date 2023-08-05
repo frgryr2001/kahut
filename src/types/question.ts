@@ -27,7 +27,7 @@ export type QuestionKahoot = {
 export type Question = {
   idQuestion?: string;
   userId: number;
-  coverImage: string;
+  coverImage: string | null;
   title: string;
   theme: theme;
   description: string;

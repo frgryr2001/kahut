@@ -7,7 +7,6 @@ import {
 import {User} from '../../../types/user';
 import {
   signOut,
-  refreshToken,
   resendCodeOtp,
   signIn,
   signInWithGoogle,
@@ -52,6 +51,7 @@ const authSlice = createSlice({
     ) => {
       if (state.user) {
         state.user.access_token = action.payload.access_token;
+        state.user.refresh_token = action.payload.access_token;
       }
     },
   },
@@ -73,12 +73,6 @@ const authSlice = createSlice({
         state.status = 'not-authenticated';
         state.currentRequestId = undefined;
         state.loading = false;
-      })
-      .addCase(refreshToken.fulfilled, (state, action) => {
-        if (state.user) {
-          state.user.access_token = action.payload?.access_token;
-          state.status = 'authenticated';
-        }
       })
       .addCase(signIn.fulfilled, (state, action) => {
         state.user = action.payload;
