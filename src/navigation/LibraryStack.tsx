@@ -2,7 +2,7 @@ import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {LibraryScreen} from '../screens';
 import * as libraryStackScreens from '../screens/main/library/screens';
-import * as libraryKahootsScreens from '../screens/main/library/screens/KahootsScreen/screens';
+import * as libraryKahootsScreens from '../screens/main/library/screens/kahoots-screen/screens';
 
 const Stack = createNativeStackNavigator();
 

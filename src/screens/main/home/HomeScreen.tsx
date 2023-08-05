@@ -11,7 +11,7 @@ import {
   getOwnKahootsList,
 } from '../../../services/kahoot/kahoot.service';
 import styles from './HomeScreen.style';
-import HomeSkeleton from './components/HomeSkeleton/HomeSkeleton';
+import HomeSkeleton from './components/home-skeleton/HomeSkeleton';
 
 interface Props {
   navigation: any;
