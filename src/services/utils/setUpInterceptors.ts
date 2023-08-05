@@ -29,7 +29,7 @@ const setup = () => {
 
       if (
         (originalConfig.url as string).endsWith('/auth/sign-out') ||
-        ((originalConfig.url as string).endsWith('/kahoots') && err.response)
+        ((originalConfig.url as string).includes('/kahoots') && err.response)
       ) {
         const refresh_token = getState().auth.user?.refresh_token;
 

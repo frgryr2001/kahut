@@ -76,7 +76,12 @@ export const QuestionScreen = ({navigation, route}: Props) => {
     ),
     [],
   );
-  const hasUnsavedChanges = Boolean(kahoot?.isDraft);
+  const hasUnsavedChanges = Boolean(
+    kahoot?.title !== '' ||
+      (kahoot?.questions ?? []).length > 0 ||
+      kahoot?.theme !== 'Standard' ||
+      kahoot?.description !== '',
+  );
 
   React.useEffect(
     () =>
