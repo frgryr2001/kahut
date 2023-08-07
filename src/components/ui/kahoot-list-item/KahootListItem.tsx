@@ -31,7 +31,6 @@ const KahootListItem = ({isDraft = false, kahoot, navigation}: Props) => {
   };
 
   return (
-
     <Pressable
       onPress={() => handleEditWithDraftKaHoot()}
       style={[
@@ -57,59 +56,57 @@ const KahootListItem = ({isDraft = false, kahoot, navigation}: Props) => {
         </Text>
       </ImageBackground>
 
-
-        <View style={styles.rightContainer}>
-          <View>
-            <View style={styles.draftContainer}>
-              {isDraft && (
-                <Text
-                  style={[
-                    {
-                      backgroundColor: colors.notification,
-                    },
-                    styles.draft,
-                  ]}>
-                  Draft
-                </Text>
-              )}
+      <View style={styles.rightContainer}>
+        <View>
+          <View style={styles.draftContainer}>
+            {isDraft && (
               <Text
-                style={[{color: colors.text}, styles.title]}
-                numberOfLines={2}
-                ellipsizeMode="tail">
-                {kahoot.title}
+                style={[
+                  {
+                    backgroundColor: colors.notification,
+                  },
+                  styles.draft,
+                ]}>
+                Draft
               </Text>
-            </View>
-
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                gap: 2,
-              }}>
-              <Text style={{color: '#777', fontSize: 12}}>
-                {new Date(kahoot.createdAt!).toLocaleDateString()}
-              </Text>
-              <Text style={{color: '#777', fontSize: 20}}>&#183;</Text>
-              <Text style={{color: '#777', fontSize: 12}}>0 plays</Text>
-            </View>
-          </View>
-
-          <View style={styles.visibleScopeContainer}>
-            <Icon
-              name={
-                kahoot.visibleScope === 'private' ? 'account-outline' : 'earth'
-              }
-              size={20}
-              color="#777"
-            />
+            )}
             <Text
-              style={{
-                color: '#777',
-              }}>
-              {kahoot.visibleScope!.charAt(0).toUpperCase() +
-                kahoot.visibleScope!.slice(1)}
+              style={[{color: colors.text}, styles.title]}
+              numberOfLines={2}
+              ellipsizeMode="tail">
+              {kahoot.title}
             </Text>
           </View>
+
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              gap: 2,
+            }}>
+            <Text style={{color: '#777', fontSize: 12}}>
+              {new Date(kahoot.createdAt!).toLocaleDateString()}
+            </Text>
+            <Text style={{color: '#777', fontSize: 20}}>&#183;</Text>
+            <Text style={{color: '#777', fontSize: 12}}>0 plays</Text>
+          </View>
+        </View>
+
+        <View style={styles.visibleScopeContainer}>
+          <Icon
+            name={
+              kahoot.visibleScope === 'private' ? 'account-outline' : 'earth'
+            }
+            size={20}
+            color="#777"
+          />
+          <Text
+            style={{
+              color: '#777',
+            }}>
+            {kahoot.visibleScope!.charAt(0).toUpperCase() +
+              kahoot.visibleScope!.slice(1)}
+          </Text>
         </View>
       </View>
     </Pressable>
