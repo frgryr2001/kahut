@@ -1,11 +1,11 @@
-import {View, Text} from 'react-native';
 import React from 'react';
+import {EmptyMessage} from '../../../../../../../components/ui';
 
 const SharedScreen = () => {
   return (
-    <View>
-      <Text style={{color: '#000'}}>SharedScreen</Text>
-    </View>
+    <EmptyMessage
+      messages={['Looks empty here... No one shared any kahoots with you yet.']}
+    />
   );
 };
 

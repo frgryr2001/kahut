@@ -3,6 +3,7 @@ import {View, ScrollView, SafeAreaView, RefreshControl} from 'react-native';
 import {useSelector} from 'react-redux';
 
 import {
+  EmptyMessage,
   KahootListItem,
   KahootListItemSkeleton,
 } from '../../../../../../../components/ui';
@@ -38,7 +39,7 @@ const MyKahootsScreen = () => {
   return (
     <SafeAreaView
       style={{
-        padding: 16,
+        padding: 8,
       }}>
       <ScrollView
         showsVerticalScrollIndicator={false}
@@ -56,8 +57,15 @@ const MyKahootsScreen = () => {
               <KahootListItemSkeleton />
             </>
           )}
+          {ownKahootsList && ownKahootsList.length === 0 && (
+            <EmptyMessage messages={['Looks empty here...']} />
+          )}
+
           {ownKahootsList &&
-            ownKahootsList.map(kahoot => <KahootListItem kahoot={kahoot} />)}
+            ownKahootsList.length > 0 &&
+            ownKahootsList.map(kahoot => (
+              <KahootListItem key={kahoot.id} kahoot={kahoot} />
+            ))}
         </View>
       </ScrollView>
     </SafeAreaView>

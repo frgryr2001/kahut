@@ -15,7 +15,9 @@ const styles = StyleSheet.create({
   },
   itemTitle: {
     height: 40,
-    alignItems: 'center',
+    // alignItems: 'center',
+    textAlignVertical: 'center',
+    // justifyContent: 'center',
     fontWeight: '700',
   },
   itemImage: {
