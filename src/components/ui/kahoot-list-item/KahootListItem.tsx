@@ -70,13 +70,15 @@ const KahootListItem = ({isDraft = false, kahoot}: Props) => {
                 alignItems: 'center',
                 gap: 2,
               }}>
-              <Text style={{color: '#777', fontSize: 12}}>1 month ago</Text>
+              <Text style={{color: '#777', fontSize: 12}}>
+                {new Date(kahoot.createdAt!).toLocaleDateString()}
+              </Text>
               <Text style={{color: '#777', fontSize: 20}}>&#183;</Text>
               <Text style={{color: '#777', fontSize: 12}}>0 plays</Text>
             </View>
           </View>
 
-          <View style={{flexDirection: 'row', gap: 2, alignItems: 'center'}}>
+          <View style={styles.visibleScopeContainer}>
             <Icon
               name={
                 kahoot.visibleScope === 'private' ? 'account-outline' : 'earth'
@@ -88,16 +90,8 @@ const KahootListItem = ({isDraft = false, kahoot}: Props) => {
               style={{
                 color: '#777',
               }}>
-              {kahoot
-                .visibleScope!.replace(
-                  /(?:^\w|[A-Z]|\b\w)/g,
-                  function (word, index) {
-                    return index === 0
-                      ? word.toLowerCase()
-                      : word.toUpperCase();
-                  },
-                )
-                .replace(/\s+/g, '')}
+              {kahoot.visibleScope!.charAt(0).toUpperCase() +
+                kahoot.visibleScope!.slice(1)}
             </Text>
           </View>
         </View>
