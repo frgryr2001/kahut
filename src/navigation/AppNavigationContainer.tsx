@@ -42,6 +42,7 @@ export type RootStackParams = {
   };
   SettingQuestionScreen: {
     kahoot: Question;
+    isDraft?: boolean;
   };
   CreateQuestionScreen: {
     type?: 'quiz' | 'tf';

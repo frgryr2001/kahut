@@ -24,7 +24,7 @@ const windowHeight = Dimensions.get('window').height;
 interface Props {
   as: 'image' | 'media';
   content: string;
-  imageDefault?: string;
+  imageDefault?: string | null;
   kahootID?: string;
   id?: string;
 }

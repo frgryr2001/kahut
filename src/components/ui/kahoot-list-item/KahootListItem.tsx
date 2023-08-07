@@ -1,4 +1,4 @@
-import {View, Text, ImageBackground} from 'react-native';
+import {View, Text, ImageBackground, Pressable} from 'react-native';
 import React from 'react';
 import {useTheme} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -10,37 +10,53 @@ const DefaultImage = require('../../../assets/images/default.png');
 interface Props {
   isDraft?: boolean;
   kahoot: SummaryKahoot;
+  navigation?: any;
 }
 
-const KahootListItem = ({isDraft = false, kahoot}: Props) => {
+const KahootListItem = ({isDraft = false, kahoot, navigation}: Props) => {
   const {colors} = useTheme();
+  const numberOfQuestionInLocal = (kahoot as any).questions.length;
+
+  const handleEditWithDraftKaHoot = () => {
+    if (isDraft) {
+      console.log(
+        'KahootListItem.tsx: handleEditWithDraftKaHoot: isDraft: ',
+        isDraft,
+      );
+
+      navigation.navigate('QuestionScreen', {
+        question: kahoot,
+      });
+    }
+  };
 
   return (
-    <View
-      style={{
-        padding: 8,
-      }}>
-      <View
-        style={[
-          {
-            backgroundColor: colors.card,
-          },
-          styles.container,
-        ]}>
-        <ImageBackground
-          defaultSource={DefaultImage}
-          source={
-            kahoot.coverImage
-              ? {
-                  uri: kahoot.coverImage,
-                }
-              : DefaultImage
-          }
-          style={styles.coverImage}>
-          <Text style={styles.numberOfQuestion}>
-            {kahoot.numberOfQuestion} Qs
-          </Text>
-        </ImageBackground>
+
+    <Pressable
+      onPress={() => handleEditWithDraftKaHoot()}
+      style={[
+        {
+          backgroundColor: colors.card,
+        },
+        styles.container,
+      ]}>
+      <ImageBackground
+        defaultSource={DefaultImage}
+        source={
+          kahoot.coverImage
+            ? {
+                uri: kahoot.coverImage.startsWith('http')
+                  ? kahoot.coverImage
+                  : `file:///data/user/0/com.kahut/cache/${kahoot.coverImage}`,
+              }
+            : DefaultImage
+        }
+        style={styles.coverImage}>
+        <Text style={styles.numberOfQuestion}>
+          {kahoot.numberOfQuestion || numberOfQuestionInLocal} Qs
+        </Text>
+      </ImageBackground>
+
 
         <View style={styles.rightContainer}>
           <View>
@@ -96,7 +112,7 @@ const KahootListItem = ({isDraft = false, kahoot}: Props) => {
           </View>
         </View>
       </View>
-    </View>
+    </Pressable>
   );
 };
 

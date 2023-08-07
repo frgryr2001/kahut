@@ -1,5 +1,5 @@
 import {View, Text, Dimensions, Image} from 'react-native';
-import React from 'react';
+import React, {memo} from 'react';
 import {useTheme} from '@react-navigation/native';
 import Carousel from 'react-native-snap-carousel';
 
@@ -75,4 +75,4 @@ const HomeBannerSlider = () => {
   );
 };
 
-export default HomeBannerSlider;
+export default memo(HomeBannerSlider);

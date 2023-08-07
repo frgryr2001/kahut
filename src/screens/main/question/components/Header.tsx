@@ -16,6 +16,7 @@ interface HeaderProps {
   completed: boolean;
   kahoot: Question | undefined;
   navigation: any;
+  isDraft?: boolean;
 }
 function MessageCheckListQuestion({
   kahoot,
@@ -62,7 +63,7 @@ function MessageCheckListQuestion({
   );
 }
 
-const Header = ({navigation, completed, kahoot}: HeaderProps) => {
+const Header = ({navigation, completed, kahoot, isDraft}: HeaderProps) => {
   const dispatch = useAppDispatch();
   const {colors} = useTheme();
   const loading = useSelector(selectLoading);
@@ -119,6 +120,10 @@ const Header = ({navigation, completed, kahoot}: HeaderProps) => {
   };
 
   const cancelEmptyQuestion = () => {
+    if (isDraft) {
+      navigation.navigate('Library');
+      return;
+    }
     setIsCancel(true);
     const checkKahootChange =
       kahoot?.theme !== 'Standard' ||

@@ -10,6 +10,22 @@ interface Props {
 }
 
 const ListQuestion = ({questions, navigation, idQuestion}: Props) => {
+  const validateQuestionInList = (index: number) => {
+    if (questions[index].answers.length === 0) {
+      return false;
+    }
+    if (questions[index].question === '') {
+      return false;
+    }
+    const check = questions[index].answers.some(
+      item => item.isCorrect && item.text,
+    );
+    if (!check) {
+      return false;
+    }
+    return true;
+  };
+
   return (
     <View
       style={{
@@ -24,6 +40,7 @@ const ListQuestion = ({questions, navigation, idQuestion}: Props) => {
           index={index}
           navigation={navigation}
           idQuestion={idQuestion}
+          validateQuestionInList={validateQuestionInList}
         />
       ))}
     </View>
