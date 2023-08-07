@@ -1,11 +1,14 @@
-import {View, Text} from 'react-native';
 import React from 'react';
+import {EmptyMessage} from '../../../../../../../components/ui';
 
 const FavoritesScreen = () => {
   return (
-    <View>
-      <Text style={{color: '#000'}}>FavoritesScreen</Text>
-    </View>
+    <EmptyMessage
+      messages={[
+        'Looks empty here... Keep track of all your favorite kahoots!',
+        "Favorite a kahoot by tapping the heart icon and it'll be added here",
+      ]}
+    />
   );
 };
 

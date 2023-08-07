@@ -10,3 +10,4 @@ export {default as AppBarIconButton} from './app-bar-icon-button/AppBarIconButto
 export {default as Skeleton} from './Skeleton/Skeleton';
 export {default as KahootListItemSkeleton} from './kahoot-list-item-skeleton/KahootListItemSkeleton';
 export {default as KahootSliderItemSkeleton} from './kahoot-slider-item-skeleton/KahootSliderItemSkeleton';
+export {default as EmptyMessage} from './empty-message/EmptyMessage';

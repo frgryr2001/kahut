@@ -12,56 +12,61 @@ const KahootListItemSkeleton = () => {
 
   return (
     <View
-      style={[
-        {
-          width: WIDTH,
-          backgroundColor: colors.card,
-        },
-        styles.container,
-      ]}>
-      <Skeleton width={150} height={100} />
+      style={{
+        padding: 8,
+      }}>
+      <View
+        style={[
+          {
+            width: WIDTH,
+            backgroundColor: colors.card,
+          },
+          styles.container,
+        ]}>
+        <Skeleton width={150} height={100} />
 
-      <View style={styles.rightContainer}>
-        <View style={{gap: 8}}>
-          <Skeleton
-            width={WIDTH - 150 - 16}
-            height={8}
-            style={{
-              borderRadius: 8,
-            }}
-          />
+        <View style={styles.rightContainer}>
+          <View style={{gap: 8}}>
+            <Skeleton
+              width={WIDTH - 150 - 16}
+              height={8}
+              style={{
+                borderRadius: 8,
+              }}
+            />
 
-          <Skeleton
-            width={WIDTH - 150 - 16}
-            height={8}
-            style={{
-              borderRadius: 8,
-            }}
-          />
-        </View>
+            <Skeleton
+              width={WIDTH - 150 - 16}
+              height={8}
+              style={{
+                borderRadius: 8,
+              }}
+            />
+          </View>
 
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            gap: 8,
-          }}>
-          <Skeleton
-            width={20}
-            height={20}
+          <View
             style={{
-              borderRadius: 999,
-            }}
-          />
+              flexDirection: 'row',
+              alignItems: 'center',
+              gap: 8,
+            }}>
+            <Skeleton
+              width={20}
+              height={20}
+              style={{
+                borderRadius: 999,
+              }}
+            />
 
-          <Skeleton
-            width={WIDTH - 32}
-            height={8}
-            style={{
-              borderRadius: 8,
-              flex: 1,
-            }}
-          />
+            <Skeleton
+              width={WIDTH - 32}
+              height={8}
+              style={{
+                borderRadius: 8,
+                flex: 1,
+              }}
+            />
+          </View>
         </View>
       </View>
     </View>

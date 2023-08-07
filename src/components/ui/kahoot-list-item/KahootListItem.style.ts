@@ -49,4 +49,9 @@ export default StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
   },
+  visibleScopeContainer: {
+    flexDirection: 'row',
+    gap: 4,
+    alignItems: 'center',
+  },
 });
