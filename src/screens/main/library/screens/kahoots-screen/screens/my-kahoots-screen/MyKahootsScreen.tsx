@@ -57,7 +57,9 @@ const MyKahootsScreen = () => {
             </>
           )}
           {ownKahootsList &&
-            ownKahootsList.map(kahoot => <KahootListItem kahoot={kahoot} />)}
+            ownKahootsList.map(kahoot => (
+              <KahootListItem kahoot={kahoot} key={kahoot.id} />
+            ))}
         </View>
       </ScrollView>
     </SafeAreaView>

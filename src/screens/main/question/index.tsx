@@ -36,9 +36,11 @@ import {useIsFocused} from '@react-navigation/native';
 interface Props extends StackScreenProps<RootStackParams, 'QuestionScreen'> {}
 
 export const QuestionScreen = ({navigation, route}: Props) => {
-  const {idQuestion} = route.params.question;
+  const {idQuestion, isDraft} = route.params.question;
   const kahootArray = useSelector(selectQuestions);
   const kahoot = kahootArray.find(item => item.idQuestion === idQuestion);
+  console.log('kahoot', JSON.stringify(kahoot, null, 2));
+
   const [isClickShowTheme, setIsClickShowTheme] = useState<boolean>(false);
   const isFocus = useIsFocused();
   // ref
@@ -136,13 +138,14 @@ export const QuestionScreen = ({navigation, route}: Props) => {
               completed={validateValueBeforeSave()}
               kahoot={kahoot}
               navigation={navigation}
+              isDraft={isDraft}
             />
             <ScrollView automaticallyAdjustKeyboardInsets>
               <View style={[globalStyles.globalPadding10, styles.container]}>
                 <ImageCover
                   as="image"
                   content="Tap me to add cover image"
-                  imageDefault={kahoot?.coverImage}
+                  imageDefault={kahoot?.coverImage ?? ''}
                   kahootID={idQuestion}
                 />
                 <View style={styles.containerTitle}>

@@ -8,9 +8,16 @@ interface Props {
   index: number;
   navigation: any;
   idQuestion: string;
+  validateQuestionInList: (index: number) => boolean;
 }
 
-const Question = ({question, index, navigation, idQuestion}: Props) => {
+const Question = ({
+  question,
+  index,
+  navigation,
+  idQuestion,
+  validateQuestionInList,
+}: Props) => {
   const handleClickQuestion = () => {
     navigation.navigate('CreateQuestionScreen', {
       type: question.type,
@@ -18,6 +25,7 @@ const Question = ({question, index, navigation, idQuestion}: Props) => {
       id: question.id,
     });
   };
+  const check = validateQuestionInList!(index);
 
   return (
     <TouchableOpacity activeOpacity={0.9} onPress={handleClickQuestion}>
@@ -46,7 +54,9 @@ const Question = ({question, index, navigation, idQuestion}: Props) => {
             : question.type.toLocaleUpperCase()}
         </Text>
         {/* icon warning ! */}
-        <Icon name="alert-circle-outline" size={25} color="#f55742" />
+        {check ? null : (
+          <Icon name="alert-circle-outline" size={25} color="#f55742" />
+        )}
       </View>
     </TouchableOpacity>
   );

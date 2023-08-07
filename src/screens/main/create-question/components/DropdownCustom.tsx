@@ -36,6 +36,19 @@ export const DropdownCustom = ({typeQuestion, kahootId, questionId}: Props) => {
         onFocus={() => setIsFocus(true)}
         onBlur={() => setIsFocus(false)}
         onChange={(item: DataDropdown) => {
+          if (item.type === 'trueorfalse') {
+            dispatch(
+              updateFieldQuestion({
+                kahootId: kahootId,
+                questionId: questionId,
+                fieldsToUpdate: {
+                  type: item.type as 'quiz' | 'trueorfalse',
+                  answer: false,
+                },
+              }),
+            );
+            return;
+          }
           dispatch(
             updateFieldQuestion({
               kahootId: kahootId,

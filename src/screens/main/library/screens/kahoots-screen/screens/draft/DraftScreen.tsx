@@ -1,11 +1,36 @@
-import {View, Text} from 'react-native';
 import React from 'react';
+import {View, ScrollView, SafeAreaView} from 'react-native';
+import {useSelector} from 'react-redux';
+import {KahootListItem} from '../../../../../../../components/ui';
+import {selectStatus} from '../../../../../../../redux/slices/authSlice/selector';
+import {selectQuestions} from '../../../../../../../redux/slices/questionSlice/selector';
 
-const DraftScreen = () => {
+const DraftScreen = ({navigation}: any) => {
+  const authStatus = useSelector(selectStatus);
+  const kahoot = useSelector(selectQuestions);
+
   return (
-    <View>
-      <Text style={{color: '#000'}}>DraftScreen</Text>
-    </View>
+    <SafeAreaView
+      style={{
+        padding: 16,
+      }}>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View
+          style={{
+            gap: 16,
+          }}>
+          {kahoot &&
+            kahoot.map(kh => (
+              <KahootListItem
+                kahoot={kh as any}
+                key={kh.idQuestion}
+                navigation={navigation}
+                isDraft={kh.isDraft}
+              />
+            ))}
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
