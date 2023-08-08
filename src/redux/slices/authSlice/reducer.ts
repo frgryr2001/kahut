@@ -51,7 +51,7 @@ const authSlice = createSlice({
     ) => {
       if (state.user) {
         state.user.access_token = action.payload.access_token;
-        state.user.refresh_token = action.payload.access_token;
+        state.user.refresh_token = action.payload.refresh_token;
       }
     },
   },

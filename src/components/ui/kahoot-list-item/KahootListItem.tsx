@@ -9,30 +9,24 @@ const DefaultImage = require('../../../assets/images/default.png');
 
 interface Props {
   isDraft?: boolean;
-  kahoot: SummaryKahoot;
-  navigation?: any;
+  kahoot: SummaryKahoot & {
+    idQuestion: string;
+  };
+  handleEditWithDraftKaHoot?: (isDraft: boolean, kahootIdDraft: any) => void;
+  numberOfQuestionInLocal?: number;
 }
 
-const KahootListItem = ({isDraft = false, kahoot, navigation}: Props) => {
+const KahootListItem = ({
+  isDraft = false,
+  kahoot,
+  numberOfQuestionInLocal,
+  handleEditWithDraftKaHoot,
+}: Props) => {
   const {colors} = useTheme();
-  const numberOfQuestionInLocal = (kahoot as any).questions.length;
-
-  const handleEditWithDraftKaHoot = () => {
-    if (isDraft) {
-      console.log(
-        'KahootListItem.tsx: handleEditWithDraftKaHoot: isDraft: ',
-        isDraft,
-      );
-
-      navigation.navigate('QuestionScreen', {
-        question: kahoot,
-      });
-    }
-  };
 
   return (
     <Pressable
-      onPress={() => handleEditWithDraftKaHoot()}
+      onPress={() => handleEditWithDraftKaHoot!(isDraft, kahoot.idQuestion)}
       style={[
         {
           backgroundColor: colors.card,

@@ -7,25 +7,33 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import React from 'react';
-import {useTheme} from '@react-navigation/native';
+import {useNavigation, useTheme} from '@react-navigation/native';
 import {SummaryKahoot} from '../../../types/kahoot.type';
 import styles from './KahootSliderItem.style';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {RootStackParams} from '../../../navigation/AppNavigationContainer';
 
 const DefaultImage = require('../../../assets/images/default.png');
 
 interface Props {
   isDraft?: boolean;
-  kahoot: SummaryKahoot & {questions?: []};
+  kahoot: SummaryKahoot;
 }
 
 const WIDTH = Math.round((Dimensions.get('window').width - 40) / 2);
 
 const KahootSliderItem = ({isDraft = false, kahoot}: Props) => {
   const {colors} = useTheme();
-  const numberOfQuestionLocal = kahoot.questions?.length;
+
+  const navigation = useNavigation<StackNavigationProp<RootStackParams>>();
 
   return (
     <TouchableOpacity
+      onPress={() =>
+        navigation.navigate('QuestionScreen', {
+          kahootID: kahoot.id,
+        })
+      }
       activeOpacity={0.8}
       style={[
         {
@@ -39,15 +47,13 @@ const KahootSliderItem = ({isDraft = false, kahoot}: Props) => {
         source={
           kahoot.coverImage
             ? {
-                uri: isDraft
-                  ? `file:///data/user/0/com.kahut/cache/${kahoot.coverImage}`
-                  : kahoot.coverImage,
+                uri: kahoot.coverImage,
               }
             : DefaultImage
         }
         style={styles.coverImage}>
         <Text style={styles.numberOfQuestion}>
-          {kahoot.numberOfQuestion || numberOfQuestionLocal} Qs
+          {kahoot.numberOfQuestion} Qs
         </Text>
       </ImageBackground>
 
