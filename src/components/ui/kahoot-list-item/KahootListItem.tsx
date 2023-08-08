@@ -46,7 +46,7 @@ const KahootListItem = ({
         }
         style={styles.coverImage}>
         <Text style={styles.numberOfQuestion}>
-          {kahoot.numberOfQuestion || 0} Qs
+          {kahoot.numberOfQuestion || numberOfQuestionInLocal} Qs
         </Text>
       </ImageBackground>
 
