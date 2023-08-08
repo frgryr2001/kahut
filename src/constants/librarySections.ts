@@ -10,6 +10,12 @@ const LIBRARY_SECTIONS = [
       },
       {
         id: 2,
+        title: 'Draft',
+        icon: 'note-outline',
+        onPress: (navigation: any) => navigation.navigate('LibraryDraftScreen'),
+      },
+      {
+        id: 3,
         title: 'Reports',
         icon: 'finance',
         onPress: (navigation: any) => navigation.navigate('ReportScreen'),

@@ -15,7 +15,7 @@ interface Props {
 
 const KahootListItem = ({isDraft = false, kahoot, navigation}: Props) => {
   const {colors} = useTheme();
-  const numberOfQuestionInLocal = (kahoot as any).questions.length;
+  // const numberOfQuestionInLocal = (kahoot as any).questions.length;
 
   const handleEditWithDraftKaHoot = () => {
     if (isDraft) {
@@ -52,7 +52,7 @@ const KahootListItem = ({isDraft = false, kahoot, navigation}: Props) => {
         }
         style={styles.coverImage}>
         <Text style={styles.numberOfQuestion}>
-          {kahoot.numberOfQuestion || numberOfQuestionInLocal} Qs
+          {kahoot.numberOfQuestion || 0} Qs
         </Text>
       </ImageBackground>
 

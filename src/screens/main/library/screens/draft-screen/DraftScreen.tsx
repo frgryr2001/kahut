@@ -1,9 +1,9 @@
 import React from 'react';
 import {View, ScrollView, SafeAreaView} from 'react-native';
 import {useSelector} from 'react-redux';
-import {KahootListItem} from '../../../../../../../components/ui';
-import {selectStatus} from '../../../../../../../redux/slices/authSlice/selector';
-import {selectQuestions} from '../../../../../../../redux/slices/questionSlice/selector';
+import {KahootListItem} from '../../../../../components/ui';
+import {selectStatus} from '../../../../../redux/slices/authSlice/selector';
+import {selectQuestions} from '../../../../../redux/slices/questionSlice/selector';
 
 const DraftScreen = ({navigation}: any) => {
   const authStatus = useSelector(selectStatus);

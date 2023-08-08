@@ -29,6 +29,13 @@ function LibraryStack() {
         }}
       />
       <Stack.Screen
+        name="LibraryDraftScreen"
+        component={libraryStackScreens.DraftScreen}
+        options={{
+          headerTitle: 'Draft',
+        }}
+      />
+      <Stack.Screen
         name="ReportScreen"
         component={libraryStackScreens.ReportScreen}
         options={{
@@ -68,13 +75,6 @@ function LibraryStack() {
         component={libraryKahootsScreens.MyKahootsScreen}
         options={{
           headerTitle: 'My kahoots',
-        }}
-      />
-      <Stack.Screen
-        name="LibraryDraftScreen"
-        component={libraryKahootsScreens.DraftScreen}
-        options={{
-          headerTitle: 'Draft',
         }}
       />
       <Stack.Screen

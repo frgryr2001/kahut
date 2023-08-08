@@ -16,18 +16,12 @@ const SECTIONS = [
   },
   {
     id: 2,
-    title: 'Draft',
-    icon: 'note-outline',
-    onPress: (navigation: any) => navigation.navigate('LibraryDraftScreen'),
-  },
-  {
-    id: 3,
     title: 'Favorites',
     icon: 'heart-outline',
     onPress: (navigation: any) => navigation.navigate('LibraryFavoritesScreen'),
   },
   {
-    id: 4,
+    id: 3,
     title: 'Shared',
     icon: 'share-variant-outline',
     onPress: (navigation: any) => navigation.navigate('LibrarySharedScreen'),
