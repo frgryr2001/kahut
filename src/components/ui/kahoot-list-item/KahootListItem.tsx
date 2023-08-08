@@ -3,13 +3,13 @@ import React from 'react';
 import {useTheme} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import styles from './KahootListItem.style';
-import {SummaryKahoot} from '../../../types/kahoot.type';
+import {KahootSummary} from '../../../types/kahoot.type';
 
 const DefaultImage = require('../../../assets/images/default.png');
 
 interface Props {
   isDraft?: boolean;
-  kahoot: SummaryKahoot;
+  kahoot: KahootSummary;
   navigation?: any;
 }
 

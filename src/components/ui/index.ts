@@ -11,3 +11,6 @@ export {default as Skeleton} from './skeleton/Skeleton';
 export {default as KahootListItemSkeleton} from './kahoot-list-item-skeleton/KahootListItemSkeleton';
 export {default as KahootSliderItemSkeleton} from './kahoot-slider-item-skeleton/KahootSliderItemSkeleton';
 export {default as EmptyMessage} from './empty-message/EmptyMessage';
+export {default as BannerSlider} from './banner-slider/BannerSlider';
+export {default as SectionContainer} from './section-container/SectionContainer';
+export {default as KahootSlider} from './kahoot-slider/KahootSlider';

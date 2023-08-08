@@ -7,13 +7,13 @@ import {
   KahootListItem,
   KahootListItemSkeleton,
 } from '../../../../../../../components/ui';
-import {SummaryKahoot} from '../../../../../../../types/kahoot.type';
+import {KahootSummary} from '../../../../../../../types/kahoot.type';
 import {selectStatus} from '../../../../../../../redux/slices/authSlice/selector';
 import {getOwnKahootsList} from '../../../../../../../services/kahoot/kahoot.service';
 
 const MyKahootsScreen = () => {
   const authStatus = useSelector(selectStatus);
-  const [ownKahootsList, setOwnKahootsList] = useState<SummaryKahoot[]>();
+  const [ownKahootsList, setOwnKahootsList] = useState<KahootSummary[]>();
   const [isFetchingOwnKahootsList, setIsFetchingOwnKahootsList] =
     useState<boolean>(true);
   const [refreshing, setRefreshing] = useState<boolean>(false);
@@ -62,11 +62,9 @@ const MyKahootsScreen = () => {
           )}
 
           {ownKahootsList &&
-
             ownKahootsList.length > 0 &&
             ownKahootsList.map(kahoot => (
               <KahootListItem key={kahoot.id} kahoot={kahoot} />
-
             ))}
         </View>
       </ScrollView>

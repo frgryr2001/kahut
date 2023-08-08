@@ -1,4 +1,4 @@
-interface SummaryKahoot {
+interface KahootSummary {
   id: number;
   title: string;
   coverImage: string | null;
@@ -10,4 +10,4 @@ interface SummaryKahoot {
   isDraft?: boolean;
 }
 
-export type {SummaryKahoot};
+export type {KahootSummary};

@@ -5,7 +5,7 @@ import {useTheme} from '@react-navigation/native';
 import {Skeleton} from '../';
 import styles from './KahootSliderItemSkeleton.style';
 
-const WIDTH = Math.round((Dimensions.get('window').width - 40) / 2);
+const WIDTH = Math.round((Dimensions.get('window').width - 42) / 2);
 
 const KahootSliderItemSkeleton = () => {
   const {colors} = useTheme();

@@ -1,14 +1,15 @@
-import {FlatList, View} from 'react-native';
 import React from 'react';
-import {KahootSliderItem} from '../../../../../components/ui';
-import styles from './HomeKahootList.style';
-import {SummaryKahoot} from '../../../../../types/kahoot.type';
+import {FlatList, View} from 'react-native';
+
+import {KahootSliderItem} from '../';
+import {KahootSummary} from '../../../types/kahoot.type';
+import styles from './KahootSlider.style';
 
 interface Props {
-  kahootsList: SummaryKahoot[];
+  kahootsList: KahootSummary[];
 }
 
-const HomeKahootList = ({kahootsList}: Props) => {
+const KahootSlider = ({kahootsList}: Props) => {
   const itemSeparatorItem = () => (
     <View
       style={{
@@ -16,7 +17,7 @@ const HomeKahootList = ({kahootsList}: Props) => {
       }}
     />
   );
-  const renderItem = ({item}: {item: SummaryKahoot}) => {
+  const renderItem = ({item}: {item: KahootSummary}) => {
     return (
       <KahootSliderItem key={item.id} kahoot={item} isDraft={item.isDraft} />
     );
@@ -35,4 +36,4 @@ const HomeKahootList = ({kahootsList}: Props) => {
   );
 };
 
-export default HomeKahootList;
+export default KahootSlider;

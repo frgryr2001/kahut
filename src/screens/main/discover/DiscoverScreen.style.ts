@@ -1,11 +1,11 @@
 import {StyleSheet} from 'react-native';
 
-const styles = StyleSheet.create({
+export default StyleSheet.create({
   container: {
     flex: 1,
-    paddingVertical: 24,
     gap: 28,
   },
+  loading: {
+    paddingBottom: 44,
+  },
 });
-
-export default styles;

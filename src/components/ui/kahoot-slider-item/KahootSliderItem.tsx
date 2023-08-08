@@ -8,14 +8,14 @@ import {
 } from 'react-native';
 import React from 'react';
 import {useTheme} from '@react-navigation/native';
-import {SummaryKahoot} from '../../../types/kahoot.type';
+import {KahootSummary} from '../../../types/kahoot.type';
 import styles from './KahootSliderItem.style';
 
 const DefaultImage = require('../../../assets/images/default.png');
 
 interface Props {
   isDraft?: boolean;
-  kahoot: SummaryKahoot & {questions?: []};
+  kahoot: KahootSummary & {questions?: []};
 }
 
 const WIDTH = Math.round((Dimensions.get('window').width - 40) / 2);
