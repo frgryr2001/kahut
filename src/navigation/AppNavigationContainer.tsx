@@ -4,17 +4,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {useSelector} from 'react-redux';
 
-import {
-  CreateQuestionScreen,
-  ForgotPasswordScreen,
-  LoginScreen,
-  OtpScreen,
-  QuestionScreen,
-  RegisterScreen,
-  ResetPasswordScreen,
-  SettingQuestionScreen,
-  UserSettingScreen,
-} from '../screens';
+import * as mainScreens from '../screens';
 import {AppTabNavigator} from './AppTabNavigator';
 import ModalScreen from '../screens/main/create-question/modal';
 import {Question} from '../types/question';
@@ -29,6 +19,10 @@ export type RootStackParams = {
   RegisterScreen: undefined;
   ForgotPasswordScreen: undefined;
   UserSettingScreen: undefined;
+  UserDetailScreen: {
+    id: number;
+    name: string;
+  };
   OtpScreen: {
     email: string;
     password: string;
@@ -75,7 +69,7 @@ export const AppNavigationContainer = () => {
         }}>
         <Stack.Screen
           name="LoginScreen"
-          component={LoginScreen}
+          component={mainScreens.LoginScreen}
           options={{
             contentStyle: {
               backgroundColor: '#fff',
@@ -84,7 +78,7 @@ export const AppNavigationContainer = () => {
         />
         <Stack.Screen
           name="RegisterScreen"
-          component={RegisterScreen}
+          component={mainScreens.RegisterScreen}
           options={{
             contentStyle: {
               backgroundColor: '#fff',
@@ -93,7 +87,7 @@ export const AppNavigationContainer = () => {
         />
         <Stack.Screen
           name="ForgotPasswordScreen"
-          component={ForgotPasswordScreen}
+          component={mainScreens.ForgotPasswordScreen}
           options={{
             contentStyle: {
               backgroundColor: '#fff',
@@ -102,7 +96,7 @@ export const AppNavigationContainer = () => {
         />
         <Stack.Screen
           name="OtpScreen"
-          component={OtpScreen}
+          component={mainScreens.OtpScreen}
           options={{
             contentStyle: {
               backgroundColor: '#fff',
@@ -111,7 +105,7 @@ export const AppNavigationContainer = () => {
         />
         <Stack.Screen
           name="ResetPasswordScreen"
-          component={ResetPasswordScreen}
+          component={mainScreens.ResetPasswordScreen}
           options={{
             contentStyle: {
               backgroundColor: '#fff',
@@ -121,7 +115,7 @@ export const AppNavigationContainer = () => {
         <Stack.Screen name="HomeScreen" component={AppTabNavigator} />
         <Stack.Screen
           name="UserSettingScreen"
-          component={UserSettingScreen}
+          component={mainScreens.UserSettingScreen}
           options={{
             headerShown: true,
             headerTitle: '',
@@ -140,10 +134,13 @@ export const AppNavigationContainer = () => {
                 : undefined,
           }}
         />
-        <Stack.Screen name="QuestionScreen" component={QuestionScreen} />
+        <Stack.Screen
+          name="QuestionScreen"
+          component={mainScreens.QuestionScreen}
+        />
         <Stack.Screen
           name="SettingQuestionScreen"
-          component={SettingQuestionScreen}
+          component={mainScreens.SettingQuestionScreen}
           options={{
             headerShown: true,
             headerTitle: 'Setting',
@@ -159,7 +156,7 @@ export const AppNavigationContainer = () => {
         />
         <Stack.Screen
           name="CreateQuestionScreen"
-          component={CreateQuestionScreen}
+          component={mainScreens.CreateQuestionScreen}
           options={{
             animation: 'slide_from_bottom',
           }}
@@ -172,6 +169,19 @@ export const AppNavigationContainer = () => {
             presentation: 'transparentModal',
             animation: 'fade',
           }}
+        />
+        <Stack.Screen
+          name="UserDetailScreen"
+          component={mainScreens.UserDetailScreen}
+          options={({route}) => ({
+            headerShown: true,
+            headerTitle: route.params.name,
+            headerTitleAlign: 'center',
+            headerStyle: {
+              backgroundColor: '#fff',
+            },
+            headerShadowVisible: false,
+          })}
         />
       </Stack.Navigator>
     </NavigationContainer>

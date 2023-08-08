@@ -54,8 +54,9 @@ const HomeScreen = ({navigation}: Props) => {
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    setTimeout(() => {
+    const timerId: NodeJS.Timeout = setTimeout(() => {
       setRefreshing(false);
+      return clearTimeout(timerId);
     }, 2000);
   }, []);
 
