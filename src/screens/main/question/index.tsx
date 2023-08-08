@@ -36,24 +36,21 @@ import {useIsFocused} from '@react-navigation/native';
 interface Props extends StackScreenProps<RootStackParams, 'QuestionScreen'> {}
 
 export const QuestionScreen = ({navigation, route}: Props) => {
-  const {idQuestion, isDraft} = route.params.question;
-  const kahootArray = useSelector(selectQuestions);
-  const kahoot = kahootArray.find(item => item.idQuestion === idQuestion);
-  console.log('kahoot', JSON.stringify(kahoot, null, 2));
+  const {idQuestion, kahootID, isEdit} = route.params;
 
+  const kahootArray = useSelector(selectQuestions);
+  let kahoot = kahootArray.find(item => item.idQuestion === idQuestion);
+
+  if (!kahoot) {
+    // console.log('khong co kahoot', question);
+  }
   const [isClickShowTheme, setIsClickShowTheme] = useState<boolean>(false);
   const isFocus = useIsFocused();
-  // ref
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-
-  // variables
   const snapPoints = useMemo(() => ['50%', '100%'], []);
-
-  // callbacks
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
   }, []);
-
   const handleCloseModalPress = useCallback(() => {
     bottomSheetModalRef.current?.close();
   }, []);
@@ -138,7 +135,7 @@ export const QuestionScreen = ({navigation, route}: Props) => {
               completed={validateValueBeforeSave()}
               kahoot={kahoot}
               navigation={navigation}
-              isDraft={isDraft}
+              isEdit={isEdit}
             />
             <ScrollView automaticallyAdjustKeyboardInsets>
               <View style={[globalStyles.globalPadding10, styles.container]}>

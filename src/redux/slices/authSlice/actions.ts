@@ -182,6 +182,9 @@ export const signInWithGoogle = createAsyncThunk(
           },
         },
       });
+
+      console.log('Lỗi', response.data);
+
       return response.data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.response.data);

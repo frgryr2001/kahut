@@ -38,7 +38,9 @@ export type RootStackParams = {
     email: string;
   };
   QuestionScreen: {
-    question: Question;
+    idQuestion?: string;
+    kahootID?: number;
+    isEdit?: boolean;
   };
   SettingQuestionScreen: {
     kahoot: Question;

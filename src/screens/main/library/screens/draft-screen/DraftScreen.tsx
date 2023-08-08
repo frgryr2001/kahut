@@ -9,6 +9,17 @@ const DraftScreen = ({navigation}: any) => {
   const authStatus = useSelector(selectStatus);
   const kahoot = useSelector(selectQuestions);
 
+  const handleEditWithDraftKaHoot = (
+    isDraft: boolean,
+    kahootIdDraft: string,
+  ) => {
+    if (isDraft) {
+      navigation.navigate('QuestionScreen', {
+        idQuestion: kahootIdDraft,
+        isEdit: true,
+      });
+    }
+  };
   return (
     <SafeAreaView
       style={{
@@ -24,8 +35,9 @@ const DraftScreen = ({navigation}: any) => {
               <KahootListItem
                 kahoot={kh as any}
                 key={kh.idQuestion}
-                navigation={navigation}
                 isDraft={kh.isDraft}
+                numberOfQuestionInLocal={kh.questions.length}
+                handleEditWithDraftKaHoot={handleEditWithDraftKaHoot}
               />
             ))}
         </View>
