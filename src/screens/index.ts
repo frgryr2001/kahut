@@ -2,6 +2,7 @@ export {default as HomeScreen} from './main/home';
 export {default as UserSettingScreen} from './main/user-setting/UserSettingScreen';
 export {default as DiscoverScreen} from './main/discover/DiscoverScreen';
 export {default as LibraryScreen} from './main/library/LibraryScreen';
+export {default as UserDetailScreen} from './main/user-detail-screen/UserDetailScreen';
 
 export * from './main/question';
 export * from './main/setting-question';

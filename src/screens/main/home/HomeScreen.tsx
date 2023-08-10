@@ -2,15 +2,19 @@ import React, {useState, useEffect, useRef} from 'react';
 import {SafeAreaView, ScrollView, View, RefreshControl} from 'react-native';
 import {useSelector} from 'react-redux';
 
-import {HomeSection, HomeBannerSlider, HomeKahootList} from './components';
+import {
+  BannerSlider,
+  SectionContainer,
+  KahootSlider,
+} from '../../../components/ui/';
+import {HomeSkeleton} from './components';
 import {selectStatus} from '../../../redux/slices/authSlice/selector';
-import {SummaryKahoot} from '../../../types/kahoot.type';
+import {KahootSummary} from '../../../types/kahoot.type';
 import {
   getKahootsList,
   getOwnKahootsList,
 } from '../../../services/kahoot/kahoot.service';
 import styles from './HomeScreen.style';
-import HomeSkeleton from './components/home-skeleton/HomeSkeleton';
 
 interface Props {
   navigation: any;
@@ -18,9 +22,9 @@ interface Props {
 
 const HomeScreen = ({navigation}: Props) => {
   const authStatus = useSelector(selectStatus);
-  const [publicKahootsList, setPublicKahootsList] = useState<SummaryKahoot[]>();
+  const [publicKahootsList, setPublicKahootsList] = useState<KahootSummary[]>();
   const [isOver, setIsOver] = useState<boolean>(false);
-  const [ownKahootsList, setOwnKahootsList] = useState<SummaryKahoot[]>([]);
+  const [ownKahootsList, setOwnKahootsList] = useState<KahootSummary[]>([]);
   const [isFetchingPublicKahootsList, setIsFetchingPublicKahootsList] =
     useState<boolean>(true);
   const [isFetchingOwnKahootsList, setIsFetchingOwnKahootsList] =
@@ -54,8 +58,9 @@ const HomeScreen = ({navigation}: Props) => {
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    setTimeout(() => {
+    const timerId: NodeJS.Timeout = setTimeout(() => {
       setRefreshing(false);
+      return clearTimeout(timerId);
     }, 2000);
   }, []);
 
@@ -82,36 +87,36 @@ const HomeScreen = ({navigation}: Props) => {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }>
         <View style={styles.container}>
-          <HomeSection
+          <SectionContainer
             title="Discover"
             icon="compass-outline"
             onPressSeeAll={() => navigation.navigate('Discover')}>
-            <HomeBannerSlider />
-          </HomeSection>
+            <BannerSlider />
+          </SectionContainer>
 
-          <HomeSection
+          <SectionContainer
             title="Public kahoots"
             icon="earth-outline"
             onPressSeeAll={() => navigation.navigate('Discover')}>
             {isFetchingPublicKahootsList && <HomeSkeleton />}
             {publicKahootsList && (
-              <HomeKahootList kahootsList={publicKahootsList} />
+              <KahootSlider kahootsList={publicKahootsList} />
             )}
-          </HomeSection>
+          </SectionContainer>
 
           {authStatus === 'authenticated' && (
-            <HomeSection
+            <SectionContainer
               title="My kahoots"
               icon="person-outline"
               onPressSeeAll={() => navigation.navigate('Library')}>
               {isFetchingOwnKahootsList && <HomeSkeleton />}
               {ownKahootsList && (
-                <HomeKahootList
+                <KahootSlider
                   kahootsList={ownKahootsList}
                   loadMore={loadMore}
                 />
               )}
-            </HomeSection>
+            </SectionContainer>
           )}
         </View>
       </ScrollView>

@@ -3,33 +3,35 @@ import React, {ReactNode} from 'react';
 import {useTheme} from '@react-navigation/native';
 import Icons from 'react-native-vector-icons/Ionicons';
 
-import styles from './HomeSection.style';
+import styles from './SectionContainer.style';
 
 interface Props {
   children: ReactNode;
   title: string;
-  icon: string;
-  onPressSeeAll: () => void;
+  icon?: string;
+  onPressSeeAll: (() => void) | null;
 }
 
-const HomeSection = ({children, title, icon, onPressSeeAll}: Props) => {
+const SectionContainer = ({children, title, icon, onPressSeeAll}: Props) => {
   const {colors} = useTheme();
 
   return (
     <View style={styles.container}>
       <View style={styles.headingContainer}>
         <View style={styles.heading}>
-          <Icons name={icon} size={24} color={colors.text} />
+          {icon && <Icons name={icon} size={24} color={colors.text} />}
           <Text style={[styles.text, {color: colors.text}]}>{title}</Text>
         </View>
 
-        <TouchableOpacity onPress={onPressSeeAll}>
-          <Text style={{color: colors.text, fontSize: 18}}>See all</Text>
-        </TouchableOpacity>
+        {onPressSeeAll && (
+          <TouchableOpacity onPress={onPressSeeAll}>
+            <Text style={{color: colors.text, fontSize: 18}}>See all</Text>
+          </TouchableOpacity>
+        )}
       </View>
       {children}
     </View>
   );
 };
 
-export default HomeSection;
+export default SectionContainer;

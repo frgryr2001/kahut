@@ -1,15 +1,16 @@
-import {FlatList, View} from 'react-native';
 import React from 'react';
-import {KahootSliderItem} from '../../../../../components/ui';
-import styles from './HomeKahootList.style';
-import {SummaryKahoot} from '../../../../../types/kahoot.type';
+import {FlatList, View} from 'react-native';
+
+import {KahootSliderItem} from '../';
+import {KahootSummary} from '../../../types/kahoot.type';
+import styles from './KahootSlider.style';
 
 interface Props {
-  kahootsList: SummaryKahoot[];
+  kahootsList: KahootSummary[];
   loadMore?: () => void;
 }
 
-function FlatListItemKahoot({kahootsList, loadMore}: Props) {
+const KahootSlider = ({kahootsList, loadMore}: Props) => {
   const itemSeparatorItem = () => (
     <View
       style={{
@@ -17,7 +18,7 @@ function FlatListItemKahoot({kahootsList, loadMore}: Props) {
       }}
     />
   );
-  const renderItem = ({item}: {item: SummaryKahoot}) => {
+  const renderItem = ({item}: {item: KahootSummary}) => {
     return (
       <KahootSliderItem key={item.id} kahoot={item} isDraft={item.isDraft} />
     );
@@ -41,10 +42,10 @@ function FlatListItemKahoot({kahootsList, loadMore}: Props) {
       }}
     />
   );
-}
-
-const HomeKahootList = ({kahootsList, loadMore}: Props) => {
-  return <FlatListItemKahoot kahootsList={kahootsList} loadMore={loadMore} />;
 };
 
-export default HomeKahootList;
+// const HomeKahootList = ({kahootsList, loadMore}: Props) => {
+//   return <FlatListItemKahoot kahootsList={kahootsList} loadMore={loadMore} />;
+// };
+
+export default KahootSlider;

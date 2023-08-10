@@ -1,23 +1,24 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {View, ScrollView, SafeAreaView, RefreshControl} from 'react-native';
 import {useSelector} from 'react-redux';
+import {useNavigation} from '@react-navigation/native';
+import {StackNavigationProp} from '@react-navigation/stack';
+
 import {
   EmptyMessage,
   KahootListItem,
   KahootListItemSkeleton,
 } from '../../../../../../../components/ui';
-import {SummaryKahoot} from '../../../../../../../types/kahoot.type';
+import {KahootSummary} from '../../../../../../../types/kahoot.type';
 import {selectStatus} from '../../../../../../../redux/slices/authSlice/selector';
 import {getOwnKahootsList} from '../../../../../../../services/kahoot/kahoot.service';
-import {useNavigation} from '@react-navigation/native';
-import {StackNavigationProp} from '@react-navigation/stack';
 import {RootStackParams} from '../../../../../../../navigation/AppNavigationContainer';
 
 const MyKahootsScreen = () => {
   const navigation = useNavigation<StackNavigationProp<RootStackParams>>();
 
   const authStatus = useSelector(selectStatus);
-  const [ownKahootsList, setOwnKahootsList] = useState<SummaryKahoot[]>();
+  const [ownKahootsList, setOwnKahootsList] = useState<KahootSummary[]>();
   const [isFetchingOwnKahootsList, setIsFetchingOwnKahootsList] =
     useState<boolean>(true);
   const [refreshing, setRefreshing] = useState<boolean>(false);
@@ -41,10 +42,10 @@ const MyKahootsScreen = () => {
   }, []);
 
   const handleTransferIdEdit = (kahootId: number) => {
-    navigation.navigate('QuestionScreen', {
-      kahootID: kahootId,
-      isEdit: true,
-    });
+    // navigation.navigate('QuestionScreen', {
+    //   kahootID: kahootId,
+    //   isEdit: true,
+    // });
   };
 
   return (
