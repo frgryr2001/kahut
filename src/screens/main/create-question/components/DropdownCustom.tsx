@@ -14,8 +14,8 @@ const data: DataDropdown[] = [
 ];
 interface Props {
   typeQuestion: string;
-  kahootId: string;
-  questionId: string;
+  kahootId: string | number;
+  questionId: string | number;
 }
 export const DropdownCustom = ({typeQuestion, kahootId, questionId}: Props) => {
   const [isFocus, setIsFocus] = useState(false);

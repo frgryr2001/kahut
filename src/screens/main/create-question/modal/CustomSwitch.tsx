@@ -11,6 +11,7 @@ export const CustomSwitch: FC<Props> = ({isOn, color, handleOnPressSwitch}) => {
   const toggleSwitch = () => {
     handleOnPressSwitch();
   };
+  console.log('isOn', isOn);
 
   return (
     <Switch

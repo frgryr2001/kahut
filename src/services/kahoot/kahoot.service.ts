@@ -1,23 +1,26 @@
 import httpClient from '../utils/httpClient';
 import {RequestResponse} from '../../types/common';
-import {IKahootDetail, SummaryKahoot} from '../../types/kahoot.type';
+import {
+  IKahootDetail,
+  IGetKaHootsListResponseData,
+} from '../../types/kahoot.type';
 
 const getKahootsList = async () => {
   try {
-    const response = await httpClient.get<RequestResponse<SummaryKahoot[]>>(
-      '/kahoots/list',
-    );
+    const response = await httpClient.get<
+      RequestResponse<IGetKaHootsListResponseData>
+    >('/kahoots/list');
     return response.data;
   } catch (error) {
     throw error;
   }
 };
 
-const getOwnKahootsList = async () => {
+const getOwnKahootsList = async (page: number) => {
   try {
-    const response = await httpClient.get<RequestResponse<SummaryKahoot[]>>(
-      '/kahoots/list/own',
-    );
+    const response = await httpClient.get<
+      RequestResponse<IGetKaHootsListResponseData>
+    >(`/kahoots/list/own?page=${page}`);
     return response.data;
   } catch (error) {
     throw error;

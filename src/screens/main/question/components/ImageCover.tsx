@@ -25,8 +25,8 @@ interface Props {
   as: 'image' | 'media';
   content: string;
   imageDefault?: string | null;
-  kahootID?: string;
-  id?: string;
+  kahootID?: string | number;
+  id?: string | number;
 }
 
 const ImageCover = ({as, content, imageDefault, kahootID, id}: Props) => {
@@ -120,13 +120,17 @@ const ImageCover = ({as, content, imageDefault, kahootID, id}: Props) => {
         {/* image-outline */}
         {imageDefault ? (
           <>
-            <Image
-              source={{
-                uri: `file:///data/user/0/com.kahut/cache/${imageDefault}`,
-              }}
-              resizeMode="contain"
-              style={styles.image}
-            />
+            {imageDefault !== '' ? (
+              <Image
+                source={{
+                  uri: imageDefault.startsWith('http')
+                    ? imageDefault
+                    : `file:///data/user/0/com.kahut/cache/${imageDefault}`,
+                }}
+                resizeMode="contain"
+                style={styles.image}
+              />
+            ) : null}
 
             {/* delete image */}
             <Pressable

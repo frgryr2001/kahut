@@ -86,7 +86,7 @@ export const CreateQuestionScreen = ({navigation, route}: Props) => {
                 navigation={navigation}
                 kahootID={kahootID}
                 id={id}
-                answers={question.answers}
+                answers={question.answers ?? []}
               />
             )}
             {question?.type === 'trueorfalse' && (

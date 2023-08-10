@@ -1,7 +1,6 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {View, ScrollView, SafeAreaView, RefreshControl} from 'react-native';
 import {useSelector} from 'react-redux';
-
 import {
   EmptyMessage,
   KahootListItem,
@@ -10,8 +9,13 @@ import {
 import {SummaryKahoot} from '../../../../../../../types/kahoot.type';
 import {selectStatus} from '../../../../../../../redux/slices/authSlice/selector';
 import {getOwnKahootsList} from '../../../../../../../services/kahoot/kahoot.service';
+import {useNavigation} from '@react-navigation/native';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {RootStackParams} from '../../../../../../../navigation/AppNavigationContainer';
 
 const MyKahootsScreen = () => {
+  const navigation = useNavigation<StackNavigationProp<RootStackParams>>();
+
   const authStatus = useSelector(selectStatus);
   const [ownKahootsList, setOwnKahootsList] = useState<SummaryKahoot[]>();
   const [isFetchingOwnKahootsList, setIsFetchingOwnKahootsList] =
@@ -20,9 +24,9 @@ const MyKahootsScreen = () => {
 
   useEffect(() => {
     if (authStatus === 'authenticated') {
-      getOwnKahootsList()
+      getOwnKahootsList(1)
         .then(response => {
-          setOwnKahootsList(response);
+          setOwnKahootsList(response.kahoots);
           setIsFetchingOwnKahootsList(false);
         })
         .catch(error => console.error(error));
@@ -35,6 +39,13 @@ const MyKahootsScreen = () => {
       setRefreshing(false);
     }, 2000);
   }, []);
+
+  const handleTransferIdEdit = (kahootId: number) => {
+    navigation.navigate('QuestionScreen', {
+      kahootID: kahootId,
+      isEdit: true,
+    });
+  };
 
   return (
     <SafeAreaView
@@ -62,11 +73,13 @@ const MyKahootsScreen = () => {
           )}
 
           {ownKahootsList &&
-
             ownKahootsList.length > 0 &&
             ownKahootsList.map(kahoot => (
-              <KahootListItem key={kahoot.id} kahoot={kahoot} />
-
+              <KahootListItem
+                key={kahoot.id}
+                kahoot={kahoot}
+                handleTransferIdEdit={handleTransferIdEdit}
+              />
             ))}
         </View>
       </ScrollView>

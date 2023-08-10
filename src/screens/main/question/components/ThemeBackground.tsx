@@ -1,6 +1,7 @@
 import React, {useCallback} from 'react';
 import {Dimensions, ImageBackground, StyleSheet, View} from 'react-native';
 import {theme as Theme} from '../../../../types/question';
+import {useTheme} from '@react-navigation/native';
 
 const height = Dimensions.get('window').height;
 const heightNotHeader = height + 60;
@@ -10,6 +11,7 @@ interface Props {
 }
 
 const ThemeBackground = ({theme}: Props) => {
+  const {colors} = useTheme();
   const getBackground = useCallback(() => {
     switch (theme) {
       case 'Spring':
@@ -26,13 +28,19 @@ const ThemeBackground = ({theme}: Props) => {
         return null;
     }
   }, [theme]);
+
   return (
     <>
       {theme !== 'Standard' && (
         <ImageBackground
           source={getBackground()}
           resizeMode="cover"
-          style={styles.container}>
+          style={[
+            styles.container,
+            {
+              backgroundColor: colors.background,
+            },
+          ]}>
           <View style={styles.overlay} />
         </ImageBackground>
       )}
@@ -45,12 +53,10 @@ const styles = StyleSheet.create({
     width: '100%',
     height: heightNotHeader,
     position: 'absolute',
-    backgroundColor: 'red',
   },
   overlay: {
     width: '100%',
     height: heightNotHeader,
-    backgroundColor: 'rgba(0,0,0,0.4)',
   },
 });
 

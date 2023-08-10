@@ -7,8 +7,8 @@ import {useAppDispatch} from '../../../../redux/store';
 import {updateFieldQuestion} from '../../../../redux/slices/questionSlice/reducer';
 
 interface Props {
-  kahootID: string;
-  id: string;
+  kahootID: string | number;
+  id: string | number;
   question: QuestionKahoot | undefined;
 }
 

@@ -37,6 +37,7 @@ export function AppTabNavigator() {
       images: [],
       questions: [],
       isDraft: true,
+      createdAt: new Date().toISOString(),
     };
     dispatch(initQuestion(question));
     return question;
@@ -101,7 +102,9 @@ export function AppTabNavigator() {
           tabPress: e => {
             e.preventDefault();
             handleInitQuestion().then(question => {
-              navigation.navigate('QuestionScreen', {question});
+              navigation.navigate('QuestionScreen', {
+                idQuestion: question.idQuestion,
+              });
             });
           },
         })}

@@ -11,7 +11,7 @@ import {v4 as uuidv4} from 'uuid';
 interface Props {
   navigation: StackNavigationProp<RootStackParams, 'QuestionScreen', undefined>;
   handleCloseModalPress: () => void;
-  idQuestion: string;
+  idQuestion: string | number;
 }
 
 const ListTypeQuestion = ({
@@ -34,7 +34,6 @@ const ListTypeQuestion = ({
     if (type === 'trueorfalse') {
       questionInit.answer = false;
     }
-
     dispatch(addQuestion({idQuestion: idQuestion, question: questionInit}));
     return questionInit;
   };
@@ -44,7 +43,6 @@ const ListTypeQuestion = ({
       style={{
         flexDirection: 'row',
         justifyContent: 'center',
-
         gap: 10,
         width: '100%',
       }}>

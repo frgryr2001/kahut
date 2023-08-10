@@ -15,8 +15,11 @@ import {selectStatus} from '../../../../redux/slices/authSlice/selector';
 interface HeaderProps {
   completed: boolean;
   kahoot: Question | undefined;
+
   navigation: any;
+  validateDiffBetweenObjEdit: () => boolean;
   isEdit?: boolean;
+  handleDiscardChanges: () => void;
 }
 function MessageCheckListQuestion({
   kahoot,
@@ -68,6 +71,8 @@ const Header = ({
   completed,
   kahoot,
   isEdit = false,
+  validateDiffBetweenObjEdit,
+  handleDiscardChanges,
 }: HeaderProps) => {
   const dispatch = useAppDispatch();
   const {colors} = useTheme();
@@ -125,10 +130,6 @@ const Header = ({
   };
 
   const cancelEmptyQuestion = () => {
-    if (isEdit) {
-      navigation.navigate('Library');
-      return;
-    }
     setIsCancel(true);
     const checkKahootChange =
       kahoot?.theme !== 'Standard' ||
@@ -146,6 +147,17 @@ const Header = ({
       navigation.navigate('Library');
     } else {
       setModalVisible(true);
+    }
+  };
+
+  const cancelEditQuestion = () => {
+    const checkChanged = validateDiffBetweenObjEdit();
+    if (isEdit && checkChanged) {
+      // Changed
+      setIsCancel(true);
+      setModalVisible(true);
+    } else {
+      navigation.goBack();
     }
   };
 
@@ -167,7 +179,8 @@ const Header = ({
 
       <View style={styles.headerContainer}>
         {/* Cancel */}
-        <TouchableWithoutFeedback onPress={cancelEmptyQuestion}>
+        <TouchableWithoutFeedback
+          onPress={isEdit ? cancelEditQuestion : cancelEmptyQuestion}>
           <Text
             style={[
               styles.headerAction,
@@ -279,15 +292,12 @@ const Header = ({
                 style={[
                   {
                     flexDirection: 'row',
+                    gap: 10,
+                    justifyContent: 'center',
+                    columnGap: 15,
+                    rowGap: 15,
+                    flexWrap: 'wrap',
                   },
-                  status === 'authenticated'
-                    ? {justifyContent: 'space-between'}
-                    : {
-                        justifyContent: 'center',
-                        columnGap: 10,
-                        rowGap: 15,
-                        flexWrap: 'wrap',
-                      },
                 ]}>
                 <Button
                   title="Cancel"
@@ -300,11 +310,18 @@ const Header = ({
                   isActive
                   size="medium"
                   onPress={() => {
-                    dispatch(
-                      deleteKahoot({
-                        kahootId: kahoot?.idQuestion!,
-                      }),
-                    );
+                    if (isEdit) {
+                      handleDiscardChanges();
+                      navigation.navigate('Library');
+                      onCloseModal();
+                    }
+                    if (!isEdit) {
+                      dispatch(
+                        deleteKahoot({
+                          kahootId: kahoot?.idQuestion!,
+                        }),
+                      );
+                    }
                     navigation.navigate('Library');
                   }}
                 />

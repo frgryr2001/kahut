@@ -16,7 +16,7 @@ const nameTheme = [
 
 interface Props {
   onCloseBottomModal: () => void;
-  idQuestion: string | undefined;
+  idQuestion: string | number;
 }
 
 export const ListTheme = ({onCloseBottomModal, idQuestion}: Props) => {

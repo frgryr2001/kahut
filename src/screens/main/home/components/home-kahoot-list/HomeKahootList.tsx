@@ -6,9 +6,10 @@ import {SummaryKahoot} from '../../../../../types/kahoot.type';
 
 interface Props {
   kahootsList: SummaryKahoot[];
+  loadMore?: () => void;
 }
 
-const HomeKahootList = ({kahootsList}: Props) => {
+function FlatListItemKahoot({kahootsList, loadMore}: Props) {
   const itemSeparatorItem = () => (
     <View
       style={{
@@ -31,8 +32,19 @@ const HomeKahootList = ({kahootsList}: Props) => {
       horizontal
       showsHorizontalScrollIndicator={false}
       contentContainerStyle={styles.contentContainer}
+      onEndReached={loadMore}
+      onEndReachedThreshold={-0.5}
+      onMomentumScrollBegin={() => {
+        if (loadMore) {
+          loadMore();
+        }
+      }}
     />
   );
+}
+
+const HomeKahootList = ({kahootsList, loadMore}: Props) => {
+  return <FlatListItemKahoot kahootsList={kahootsList} loadMore={loadMore} />;
 };
 
 export default HomeKahootList;

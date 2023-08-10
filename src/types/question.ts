@@ -7,16 +7,17 @@ export type theme =
   | 'Pride';
 
 export type QuestionKahoot = {
-  id?: string;
+  id?: string | number;
   type: 'quiz' | 'trueorfalse';
   media: string;
   timeLimit: number;
   point: 0 | 1000 | 2000;
   question: string;
-  answer?: boolean;
+  answer?: boolean | null;
   answers:
     | [
         {
+          id?: number;
           text?: string;
           isCorrect: boolean;
           image?: string;
@@ -25,8 +26,8 @@ export type QuestionKahoot = {
     | [];
 };
 export type Question = {
-  idQuestion?: string;
-  userId: number;
+  idQuestion?: string | number;
+  userId?: number;
   coverImage: string | null;
   title: string;
   theme: theme;
@@ -36,6 +37,7 @@ export type Question = {
   questions: QuestionKahoot[] | [];
   isDraft?: boolean;
   images?: any[];
+  createdAt?: string;
 };
 
 export type QuestionKahootType = keyof Question;

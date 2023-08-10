@@ -10,9 +10,9 @@ const typeAnswer = ['TRUE', 'FALSE'];
 
 interface Props {
   navigation: any;
-  kahootID: string;
-  id: string;
-  answer?: boolean;
+  kahootID: string | number;
+  id: string | number;
+  answer?: boolean | null;
   answers?:
     | []
     | [
@@ -33,6 +33,9 @@ export const AnswerBox = ({
 }: Props) => {
   const dispatch = useAppDispatch();
   const [indexChoice, setIndexChoice] = React.useState<number>(answer ? 0 : 1);
+  console.log('answer', answer);
+  console.log('answers', answers);
+
   const handleChoiceAnswer = (index: number) => {
     setIndexChoice(index);
     dispatch(
