@@ -104,7 +104,11 @@ const AnswerModal = ({
             }}>
             <ImageBackground
               source={{
-                uri: `file:///data/user/0/com.kahut/cache/${answers[indexQuestion]?.image}`,
+                uri: (answers[indexQuestion]?.image as string).startsWith(
+                  'http',
+                )
+                  ? answers[indexQuestion]?.image
+                  : `file:///data/user/0/com.kahut/cache/${answers[indexQuestion]?.image}`,
               }}
               resizeMode="contain"
               style={[

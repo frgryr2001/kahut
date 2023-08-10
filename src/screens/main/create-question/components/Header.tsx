@@ -15,7 +15,7 @@ import {QuestionKahoot} from '../../../../types/question';
 interface Props {
   navigation: any;
   typeQuestion: string;
-  kahootID?: string;
+  kahootID?: string | number;
   question?: QuestionKahoot;
 }
 

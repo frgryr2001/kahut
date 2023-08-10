@@ -10,7 +10,7 @@ interface Props {
   onChangeText?: (text: string) => void;
   secureTextEntry?: boolean;
   flex?: boolean;
-  idQuestion?: string;
+  idQuestion?: string | number;
   keyboardType?:
     | 'default'
     | 'number-pad'
@@ -22,7 +22,15 @@ interface Props {
 
 const InputTitle = ({placeholder, flex, value, idQuestion}: Props) => {
   const dispatch = useAppDispatch();
-  const [valueInput, setValueInput] = React.useState<string>(value ?? '');
+
+  const [valueInput, setValueInput] = React.useState<string | undefined>(
+    function () {
+      if (value) {
+        return value;
+      }
+      return '';
+    },
+  );
   const valueDebounce = useDebounce(valueInput, 500);
   const firstUpdate = React.useRef(true);
 

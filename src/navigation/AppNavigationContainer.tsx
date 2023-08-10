@@ -38,8 +38,8 @@ export type RootStackParams = {
     email: string;
   };
   QuestionScreen: {
-    idQuestion?: string;
-    kahootID?: number;
+    idQuestion?: string | number;
+    isEditAPI?: boolean;
     isEdit?: boolean;
   };
   SettingQuestionScreen: {
@@ -48,16 +48,16 @@ export type RootStackParams = {
   };
   CreateQuestionScreen: {
     type?: 'quiz' | 'tf';
-    kahootID: string;
-    id: string;
+    kahootID: string | number;
+    id: string | number;
   };
 
   ModalQuestionScreen: {
     indexQuestion?: number;
     isQuestionTitle?: boolean;
     questionTitle?: string;
-    kahootID: string;
-    id: string;
+    kahootID: string | number;
+    id: string | number;
   };
 };
 export type ScreenName = keyof RootStackParams;

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {SafeAreaView, ScrollView, View, RefreshControl} from 'react-native';
 import {useSelector} from 'react-redux';
 
@@ -19,18 +19,20 @@ interface Props {
 const HomeScreen = ({navigation}: Props) => {
   const authStatus = useSelector(selectStatus);
   const [publicKahootsList, setPublicKahootsList] = useState<SummaryKahoot[]>();
+  const [isOver, setIsOver] = useState<boolean>(false);
   const [ownKahootsList, setOwnKahootsList] = useState<SummaryKahoot[]>([]);
   const [isFetchingPublicKahootsList, setIsFetchingPublicKahootsList] =
     useState<boolean>(true);
   const [isFetchingOwnKahootsList, setIsFetchingOwnKahootsList] =
     useState<boolean>(true);
   const [refreshing, setRefreshing] = React.useState(false);
+  const page = useRef<number>(1);
 
   // Get public kahoot
   useEffect(() => {
     getKahootsList()
       .then(response => {
-        setPublicKahootsList(response);
+        setPublicKahootsList(response.kahoots);
         setIsFetchingPublicKahootsList(false);
       })
       .catch(error => console.error(error));
@@ -38,13 +40,15 @@ const HomeScreen = ({navigation}: Props) => {
 
   //   If logged in, get own kahoot
   useEffect(() => {
-    if (authStatus === 'authenticated') {
-      getOwnKahootsList()
-        .then(response => {
-          setOwnKahootsList(response);
-          setIsFetchingOwnKahootsList(false);
-        })
-        .catch(error => console.error(error));
+    if (page.current === 1) {
+      if (authStatus === 'authenticated') {
+        getOwnKahootsList(page.current)
+          .then(response => {
+            setOwnKahootsList(response.kahoots);
+            setIsFetchingOwnKahootsList(false);
+          })
+          .catch(error => console.error(error));
+      }
     }
   }, [authStatus, refreshing]);
 
@@ -54,6 +58,21 @@ const HomeScreen = ({navigation}: Props) => {
       setRefreshing(false);
     }, 2000);
   }, []);
+
+  const loadMore = () => {
+    if (isOver) {
+      return;
+    }
+    page.current++;
+    getOwnKahootsList(page.current)
+      .then(response => {
+        setTimeout(() => {
+          setOwnKahootsList(prev => [...prev, ...response.kahoots]);
+        }, 1000);
+        setIsOver(response.is_over);
+      })
+      .catch(error => console.error(error));
+  };
 
   return (
     <SafeAreaView>
@@ -87,7 +106,10 @@ const HomeScreen = ({navigation}: Props) => {
               onPressSeeAll={() => navigation.navigate('Library')}>
               {isFetchingOwnKahootsList && <HomeSkeleton />}
               {ownKahootsList && (
-                <HomeKahootList kahootsList={ownKahootsList} />
+                <HomeKahootList
+                  kahootsList={ownKahootsList}
+                  loadMore={loadMore}
+                />
               )}
             </HomeSection>
           )}

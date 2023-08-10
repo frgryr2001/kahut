@@ -27,26 +27,40 @@ import {
 import {StackScreenProps} from '@react-navigation/stack';
 import {RootStackParams} from '../../../navigation/AppNavigationContainer';
 import {ListTheme} from './components/ListTheme';
-
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {useSelector} from 'react-redux';
+import {Question} from '../../../types/question';
 import {selectQuestions} from '../../../redux/slices/questionSlice/selector';
 import {useIsFocused} from '@react-navigation/native';
+import {useAppDispatch} from '../../../redux/store';
+import {
+  deleteKahoot,
+  addKahoot,
+} from '../../../redux/slices/questionSlice/reducer';
 
 interface Props extends StackScreenProps<RootStackParams, 'QuestionScreen'> {}
 
 export const QuestionScreen = ({navigation, route}: Props) => {
-  const {idQuestion, kahootID, isEdit} = route.params;
-
-  const kahootArray = useSelector(selectQuestions);
-  let kahoot = kahootArray.find(item => item.idQuestion === idQuestion);
-
-  if (!kahoot) {
-    // console.log('khong co kahoot', question);
-  }
+  const {idQuestion, isEditAPI, isEdit} = route.params;
   const [isClickShowTheme, setIsClickShowTheme] = useState<boolean>(false);
   const isFocus = useIsFocused();
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+  const dispatch = useAppDispatch();
+  const kahootArray = useSelector(selectQuestions);
+  const kahoot = kahootArray.find(item => item.idQuestion === idQuestion);
+  console.log('[DEBUG] , ', JSON.stringify(kahoot, null, 2));
+
+  const indexOfKahoot = kahootArray.findIndex(
+    item => item.idQuestion === idQuestion,
+  );
+  const copyKahootWhenEdit = useMemo(() => {
+    if (isEdit || isEditAPI) {
+      return {...kahoot};
+    }
+    return undefined;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const snapPoints = useMemo(() => ['50%', '100%'], []);
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
@@ -75,46 +89,121 @@ export const QuestionScreen = ({navigation, route}: Props) => {
     kahoot?.title !== '' ||
       (kahoot?.questions ?? []).length > 0 ||
       kahoot?.theme !== 'Standard' ||
-      kahoot?.description !== '',
+      kahoot?.description !== '' ||
+      kahoot?.coverImage !== '',
   );
 
-  React.useEffect(
-    () =>
-      navigation.addListener('beforeRemove', e => {
-        if (!hasUnsavedChanges || !isFocus) {
-          // If we don't have unsaved changes, then we don't need to do anything
-          return;
-        }
-
-        // Prevent default behavior of leaving the screen
-        e.preventDefault();
-
-        // Prompt the user before leaving the screen
-        Alert.alert(
-          'Discard changes?',
-          'You have unsaved changes. Are you sure to discard them and leave the screen?',
-          [
-            {text: "Don't leave", style: 'cancel', onPress: () => {}},
-            {
-              text: 'Discard',
-              style: 'destructive',
-              // If the user confirmed, then we dispatch the action we blocked earlier
-              // This will continue the action that had triggered the removal of the screen
-              onPress: () => navigation.dispatch(e.data.action),
-            },
-          ],
-        );
+  const handleDiscardChanges = useCallback(() => {
+    dispatch(
+      deleteKahoot({
+        kahootId: idQuestion!,
       }),
-    [navigation, hasUnsavedChanges, isFocus],
-  );
+    );
+    if (isEdit) {
+      dispatch(
+        addKahoot({
+          kahoot: copyKahootWhenEdit as Question,
+          indexOfKahootInEdit: indexOfKahoot!,
+        }),
+      );
+    }
+  }, [dispatch, copyKahootWhenEdit, indexOfKahoot, idQuestion, isEdit]);
+  const validateDiffBetweenObjEdit = useCallback(() => {
+    if (copyKahootWhenEdit) {
+      if (
+        copyKahootWhenEdit.title !== kahoot?.title ||
+        copyKahootWhenEdit.theme !== kahoot?.theme ||
+        copyKahootWhenEdit.description !== kahoot?.description ||
+        copyKahootWhenEdit.coverImage !== kahoot?.coverImage ||
+        copyKahootWhenEdit.visibleScope !== kahoot?.visibleScope ||
+        copyKahootWhenEdit.questions?.length !== kahoot?.questions.length
+      ) {
+        return true;
+      }
+      return false;
+    }
+    return false;
+  }, [copyKahootWhenEdit, kahoot]);
 
+  const checkNoChangeValue =
+    kahoot?.title === '' &&
+    (kahoot?.questions ?? []).length === 0 &&
+    kahoot?.theme === 'Standard' &&
+    kahoot?.description === '' &&
+    !isEdit;
+
+  React.useEffect(() => {
+    navigation.addListener('beforeRemove', e => {
+      if (checkNoChangeValue) {
+        dispatch(
+          deleteKahoot({
+            kahootId: kahoot?.idQuestion!,
+          }),
+        );
+
+        return;
+      }
+      if (
+        (!hasUnsavedChanges && !validateDiffBetweenObjEdit()) ||
+        !isFocus ||
+        !validateDiffBetweenObjEdit()
+      ) {
+        // If we don't have unsaved changes, then we don't need to do anything
+        if (isEditAPI) {
+          dispatch(
+            deleteKahoot({
+              kahootId: kahoot?.idQuestion!,
+            }),
+          );
+        }
+        return;
+      }
+
+      // Prevent default behavior of leaving the screen
+      e.preventDefault();
+
+      // Prompt the user before leaving the screen
+      Alert.alert(
+        'Discard changes?',
+        'You have unsaved changes. Are you sure to discard them and leave the screen?',
+        [
+          {text: "Don't leave", style: 'cancel', onPress: () => {}},
+          {
+            text: 'Discard',
+            style: 'destructive',
+            // If the user confirmed, then we dispatch the action we blocked earlier
+            // This will continue the action that had triggered the removal of the screen
+            onPress: () => {
+              if (isEdit) {
+                handleDiscardChanges();
+              }
+              navigation.dispatch(e.data.action);
+            },
+          },
+        ],
+      );
+    });
+    return () => {
+      navigation.removeListener('beforeRemove', () => {});
+    };
+  }, [
+    navigation,
+    hasUnsavedChanges,
+    isFocus,
+    kahoot,
+    dispatch,
+    handleDiscardChanges,
+    isEdit,
+    validateDiffBetweenObjEdit,
+    checkNoChangeValue,
+    isEditAPI,
+  ]);
   const validateValueBeforeSave = useCallback(() => {
-    //   Least 1 title and  question and 2 answer and 1 correct answer
-    if (kahoot?.title !== '' || (kahoot?.questions ?? []).length > 0) {
+    if (hasUnsavedChanges) {
       return true;
     }
     return false;
-  }, [kahoot]);
+  }, [hasUnsavedChanges]);
 
   return (
     <GestureHandlerRootView style={{flex: 1}}>
@@ -129,20 +218,22 @@ export const QuestionScreen = ({navigation, route}: Props) => {
               backgroundColor: '#F5F5F5',
             }}>
             {/* <ThemeBackground /> */}
-            <ThemeBackground theme={kahoot?.theme} />
+            <ThemeBackground theme={kahoot?.theme!} />
             {/* Header  */}
             <Header
               completed={validateValueBeforeSave()}
               kahoot={kahoot}
+              handleDiscardChanges={handleDiscardChanges}
               navigation={navigation}
-              isEdit={isEdit}
+              isEdit={isEdit || isEditAPI}
+              validateDiffBetweenObjEdit={validateDiffBetweenObjEdit}
             />
             <ScrollView automaticallyAdjustKeyboardInsets>
               <View style={[globalStyles.globalPadding10, styles.container]}>
                 <ImageCover
                   as="image"
                   content="Tap me to add cover image"
-                  imageDefault={kahoot?.coverImage ?? ''}
+                  imageDefault={kahoot?.coverImage}
                   kahootID={idQuestion}
                 />
                 <View style={styles.containerTitle}>
@@ -150,7 +241,7 @@ export const QuestionScreen = ({navigation, route}: Props) => {
                     style={[
                       styles.title,
                       {
-                        color: kahoot?.theme === 'Standard' ? 'black' : 'white',
+                        color: 'black',
                       },
                     ]}>
                     Title
@@ -169,13 +260,13 @@ export const QuestionScreen = ({navigation, route}: Props) => {
                     style={[
                       styles.title,
                       {
-                        color: kahoot?.theme === 'Standard' ? 'black' : 'white',
+                        color: 'black',
                       },
                     ]}>
                     Theme
                   </Text>
                   <ThemeSetting
-                    theme={kahoot?.theme}
+                    theme={kahoot?.theme!}
                     onPress={() => {
                       setIsClickShowTheme(true);
                       handlePresentModalPress();
@@ -185,7 +276,7 @@ export const QuestionScreen = ({navigation, route}: Props) => {
                     style={[
                       styles.title,
                       {
-                        color: kahoot?.theme === 'Standard' ? 'black' : 'white',
+                        color: 'black',
                       },
                     ]}>
                     Question ({kahoot?.questions.length ?? 0})
@@ -233,7 +324,7 @@ export const QuestionScreen = ({navigation, route}: Props) => {
               {isClickShowTheme && (
                 <ListTheme
                   onCloseBottomModal={handleCloseModalPress}
-                  idQuestion={idQuestion}
+                  idQuestion={idQuestion!}
                 />
               )}
             </BottomSheetModal>

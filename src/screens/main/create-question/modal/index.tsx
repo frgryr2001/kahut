@@ -32,9 +32,12 @@ const ModalScreen = ({navigation, route}: Props) => {
   const [valueTextAnswer, setValueTextAnswer] = React.useState(
     answers[indexQuestion]?.text ?? '',
   );
-  const [isSwitchOn, setIsSwitchOn] = React.useState(
-    answers[indexQuestion]?.isCorrect ?? false,
-  );
+  const [isSwitchOn, setIsSwitchOn] = React.useState(function () {
+    if (answers[indexQuestion]?.isCorrect) {
+      return answers[indexQuestion]?.isCorrect;
+    }
+    return false;
+  });
 
   const ref = React.useRef<TextInput>(null);
   const dispatch = useAppDispatch();

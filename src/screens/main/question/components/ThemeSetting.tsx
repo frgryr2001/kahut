@@ -1,14 +1,16 @@
 import React, {useCallback} from 'react';
-import {Pressable, StyleSheet, Text, View, Image} from 'react-native';
+import {Pressable, StyleSheet, Text, View, Image, LogBox} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {theme as Theme} from '../../../../types/question';
 
+LogBox.ignoreAllLogs(); // Ignore log notification by message
 interface Props {
   onPress: () => void;
   theme: Theme | undefined;
 }
 
 const ThemeSetting = ({onPress, theme}: Props) => {
+  const checkTheme = Boolean(theme !== 'Standard' && theme !== null && theme);
   const getBackground = useCallback(() => {
     switch (theme) {
       case 'Spring':
@@ -27,7 +29,7 @@ const ThemeSetting = ({onPress, theme}: Props) => {
   }, [theme]);
   return (
     <Pressable style={styles.themeSetting} onPress={onPress}>
-      {theme !== 'Standard' ? (
+      {checkTheme ? (
         <Image source={getBackground()} style={styles.imageTheme} />
       ) : (
         <View style={styles.imageTheme} />

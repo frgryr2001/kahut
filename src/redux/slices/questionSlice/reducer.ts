@@ -9,7 +9,7 @@ import {
   QuestionKahoot,
   theme as Theme,
 } from '../../../types/question';
-import {createKahoot} from './action';
+
 type GenericAsyncThunk = AsyncThunk<unknown, unknown, any>;
 
 type PendingAction = ReturnType<GenericAsyncThunk['pending']>;
@@ -37,7 +37,7 @@ const questionSlice = createSlice({
     },
     changeTheme(
       state,
-      action: PayloadAction<{idQuestion: string; theme: Theme}>,
+      action: PayloadAction<{idQuestion: string | number; theme: Theme}>,
     ) {
       const {idQuestion, theme} = action.payload;
       const question = state.questions.find(
@@ -49,7 +49,10 @@ const questionSlice = createSlice({
     },
     addQuestion(
       state,
-      action: PayloadAction<{idQuestion: string; question: QuestionKahoot}>,
+      action: PayloadAction<{
+        idQuestion: string | number;
+        question: QuestionKahoot;
+      }>,
     ) {
       const {idQuestion, question} = action.payload;
       const ques = state.questions.find(q => q.idQuestion === idQuestion);
@@ -60,8 +63,8 @@ const questionSlice = createSlice({
     addTitleQuestion(
       state,
       action: PayloadAction<{
-        kahootId: string;
-        questionId: string;
+        kahootId: string | number;
+        questionId: string | number;
         titleQuestion: string;
       }>,
     ) {
@@ -77,8 +80,8 @@ const questionSlice = createSlice({
     addImageQuestion(
       state,
       action: PayloadAction<{
-        kahootId: string;
-        questionId: string;
+        kahootId: string | number;
+        questionId: string | number;
         imageQuestion: string;
         file: {
           uri: string;
@@ -100,8 +103,8 @@ const questionSlice = createSlice({
     deleteImageQuestion(
       state,
       action: PayloadAction<{
-        kahootId: string;
-        questionId: string;
+        kahootId: string | number;
+        questionId: string | number;
       }>,
     ) {
       const {kahootId, questionId} = action.payload;
@@ -116,8 +119,8 @@ const questionSlice = createSlice({
     addTextAnswerQuestion(
       state,
       action: PayloadAction<{
-        kahootId: string;
-        questionId: string;
+        kahootId: string | number;
+        questionId: string | number;
         answer: string;
         index: number;
       }>,
@@ -144,8 +147,8 @@ const questionSlice = createSlice({
     changeIsCorrectAnswerQuestion(
       state,
       action: PayloadAction<{
-        kahootId: string;
-        questionId: string;
+        kahootId: string | number;
+        questionId: string | number;
         index: number;
         isCorrect: boolean;
       }>,
@@ -165,8 +168,8 @@ const questionSlice = createSlice({
     addImageAnswerQuestion(
       state,
       action: PayloadAction<{
-        kahootId: string;
-        questionId: string;
+        kahootId: string | number;
+        questionId: string | number;
         index: number;
         image: string; // name of image
         file: {
@@ -193,8 +196,8 @@ const questionSlice = createSlice({
     updateFieldQuestion(
       state,
       action: PayloadAction<{
-        kahootId: string;
-        questionId: string;
+        kahootId: string | number;
+        questionId: string | number;
         fieldsToUpdate: Partial<QuestionKahoot>;
       }>,
     ) {
@@ -210,8 +213,8 @@ const questionSlice = createSlice({
     deleteQuestion(
       state,
       action: PayloadAction<{
-        kahootId: string;
-        questionId: string;
+        kahootId: string | number;
+        questionId: string | number;
       }>,
     ) {
       const {kahootId, questionId} = action.payload;
@@ -228,7 +231,7 @@ const questionSlice = createSlice({
     addImageCoverKahoot(
       state,
       action: PayloadAction<{
-        kahootId: string;
+        kahootId: string | number;
         imageCover: string;
         file: {
           uri: string;
@@ -244,7 +247,10 @@ const questionSlice = createSlice({
         kahoot.images?.push(file);
       }
     },
-    deleteImageCoverKahoot(state, action: PayloadAction<{kahootId: string}>) {
+    deleteImageCoverKahoot(
+      state,
+      action: PayloadAction<{kahootId: string | number}>,
+    ) {
       const {kahootId} = action.payload;
       const kahoot = state.questions.find(k => k.idQuestion === kahootId);
       if (kahoot) {
@@ -254,7 +260,7 @@ const questionSlice = createSlice({
     addTitleKahoot(
       state,
       action: PayloadAction<{
-        kahootId: string;
+        kahootId: string | number;
         titleKahoot: string;
       }>,
     ) {
@@ -267,7 +273,7 @@ const questionSlice = createSlice({
     updateKahoot(
       state,
       action: PayloadAction<{
-        kahootId: string;
+        kahootId: string | number;
         fieldsToUpdate: Partial<Question>;
       }>,
     ) {
@@ -280,7 +286,7 @@ const questionSlice = createSlice({
     updateImagesKahoot(
       state,
       action: PayloadAction<{
-        kahootId: string;
+        kahootId: string | number;
         image: string;
       }>,
     ) {
@@ -291,7 +297,7 @@ const questionSlice = createSlice({
         kahoot.images = kahoot.images?.filter(img => img.name !== image);
       }
     },
-    deleteKahoot(state, action: PayloadAction<{kahootId: string}>) {
+    deleteKahoot(state, action: PayloadAction<{kahootId: string | number}>) {
       const {kahootId} = action.payload;
       const index = state.questions.findIndex(
         kahoot => kahoot.idQuestion === kahootId,
@@ -300,12 +306,19 @@ const questionSlice = createSlice({
         state.questions.splice(index, 1);
       }
     },
+    addKahoot(
+      state,
+      action: PayloadAction<{
+        kahoot: Question;
+        indexOfKahootInEdit: number;
+      }>,
+    ) {
+      const {kahoot, indexOfKahootInEdit} = action.payload;
+      state.questions.splice(indexOfKahootInEdit, 0, kahoot);
+    },
   },
   extraReducers: builder => {
     builder
-      .addCase(createKahoot.fulfilled, (state, action) => {
-        state.questions.push(action.payload);
-      })
       .addMatcher<PendingAction>(
         (action: AnyAction): action is PendingAction =>
           action.type.endsWith('/pending'),
@@ -359,6 +372,7 @@ export const {
   addTitleKahoot,
   updateKahoot,
   deleteKahoot,
+  addKahoot,
   updateImagesKahoot,
 } = questionSlice.actions;
 

@@ -11,9 +11,8 @@ interface Props {
   image?: string;
   isFocus?: boolean;
   index?: number;
-  kahootID?: string;
-  id?: string;
-
+  kahootID?: string | number;
+  id?: string | number;
   typeTf?: boolean;
   hidePlaceHoder?: boolean;
   handleOnChangeTextAnswer?: (text: string) => void;
@@ -59,7 +58,9 @@ export const Answer = ({
       {image ? (
         <ImageBackground
           source={{
-            uri: `file:///data/user/0/com.kahut/cache/${image}`,
+            uri: image.startsWith('http')
+              ? image
+              : `file:///data/user/0/com.kahut/cache/${image}`,
           }}
           style={{
             width: '100%',

@@ -7,7 +7,7 @@ interface Props {
   question: QuestionKahoot;
   index: number;
   navigation: any;
-  idQuestion: string;
+  idQuestion: string | number;
   validateQuestionInList: (index: number) => boolean;
 }
 
@@ -31,13 +31,14 @@ const Question = ({
     <TouchableOpacity activeOpacity={0.9} onPress={handleClickQuestion}>
       <View style={styles.questionContainer}>
         <View style={styles.imageQuestion}>
-          {/* <Icon name="image-outline" size={30} color="#BDBDBD" /> */}
           {question.media === '' ? (
-            <Icon name="image-outline" size={30} color="#BDBDBD" />
+            <Icon name="image-outline" size={25} color="#BDBDBD" />
           ) : (
             <Image
               source={{
-                uri: `file:///data/user/0/com.kahut/cache/${question.media}`,
+                uri: question.media.startsWith('http')
+                  ? question.media
+                  : `file:///data/user/0/com.kahut/cache/${question.media}`,
               }}
               resizeMode="cover"
               style={{
@@ -54,17 +55,26 @@ const Question = ({
             : question.type.toLocaleUpperCase()}
         </Text>
         {/* icon warning ! */}
-        {check ? null : (
-          <Icon name="alert-circle-outline" size={25} color="#f55742" />
-        )}
       </View>
+      {check ? null : (
+        <Icon
+          name="alert-circle-outline"
+          size={25}
+          style={{
+            position: 'absolute',
+            top: 0,
+            right: 0,
+          }}
+          color="#f55742"
+        />
+      )}
     </TouchableOpacity>
   );
 };
 const styles = StyleSheet.create({
   questionContainer: {
     flexDirection: 'row',
-    alignItems: 'flex-start',
+    // alignItems: 'flex-start',
     backgroundColor: 'white',
     height: 80,
     borderRadius: 3,
