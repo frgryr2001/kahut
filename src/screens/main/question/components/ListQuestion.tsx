@@ -21,6 +21,10 @@ const ListQuestion = ({questions, navigation, idQuestion}: Props) => {
     const check = questions[index]?.answers?.some(
       item => item.isCorrect && item.text,
     );
+
+    if (!check && questions[index]?.answer !== null) {
+      return true;
+    }
     if (!check) {
       return false;
     }

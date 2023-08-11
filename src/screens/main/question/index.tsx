@@ -90,10 +90,13 @@ export const QuestionScreen = ({navigation, route}: Props) => {
       (kahoot?.questions ?? []).length > 0 ||
       kahoot?.theme !== 'Standard' ||
       kahoot?.description !== '' ||
-      kahoot?.coverImage !== '',
+      kahoot?.coverImage !== '' ||
+      kahoot?.visibleScope !== 'public',
   );
 
   const handleDiscardChanges = useCallback(() => {
+    console.log('Goi 1 lan');
+
     dispatch(
       deleteKahoot({
         kahootId: idQuestion!,
@@ -134,6 +137,9 @@ export const QuestionScreen = ({navigation, route}: Props) => {
 
   React.useEffect(() => {
     navigation.addListener('beforeRemove', e => {
+      if (validateDiffBetweenObjEdit()) {
+        return;
+      }
       if (checkNoChangeValue) {
         dispatch(
           deleteKahoot({
@@ -143,8 +149,9 @@ export const QuestionScreen = ({navigation, route}: Props) => {
 
         return;
       }
+
       if (
-        (!hasUnsavedChanges && !validateDiffBetweenObjEdit()) ||
+        (!hasUnsavedChanges && validateDiffBetweenObjEdit()) ||
         !isFocus ||
         !validateDiffBetweenObjEdit()
       ) {
@@ -174,7 +181,7 @@ export const QuestionScreen = ({navigation, route}: Props) => {
             // If the user confirmed, then we dispatch the action we blocked earlier
             // This will continue the action that had triggered the removal of the screen
             onPress: () => {
-              if (isEdit) {
+              if (isEdit || isEditAPI) {
                 handleDiscardChanges();
               }
               navigation.dispatch(e.data.action);
@@ -225,7 +232,8 @@ export const QuestionScreen = ({navigation, route}: Props) => {
               kahoot={kahoot}
               handleDiscardChanges={handleDiscardChanges}
               navigation={navigation}
-              isEdit={isEdit || isEditAPI}
+              isEdit={isEdit}
+              isEditAPI={isEditAPI}
               validateDiffBetweenObjEdit={validateDiffBetweenObjEdit}
             />
             <ScrollView automaticallyAdjustKeyboardInsets>

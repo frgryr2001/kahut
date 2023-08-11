@@ -32,9 +32,7 @@ export const AnswerBox = ({
   answer,
 }: Props) => {
   const dispatch = useAppDispatch();
-  const [indexChoice, setIndexChoice] = React.useState<number>(answer ? 0 : 1);
-  console.log('answer', answer);
-  console.log('answers', answers);
+  const [indexChoice, setIndexChoice] = React.useState<number>(Number(answer));
 
   const handleChoiceAnswer = (index: number) => {
     setIndexChoice(index);
@@ -43,7 +41,7 @@ export const AnswerBox = ({
         kahootId: kahootID,
         questionId: id,
         fieldsToUpdate: {
-          answer: index === 0 ? true : false,
+          answer: Boolean(index),
         },
       }),
     );

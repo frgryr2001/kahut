@@ -13,6 +13,7 @@ export type QuestionKahoot = {
   timeLimit: number;
   point: 0 | 1000 | 2000;
   question: string;
+  flag?: string;
   answer?: boolean | null;
   answers:
     | [
@@ -21,6 +22,7 @@ export type QuestionKahoot = {
           text?: string;
           isCorrect: boolean;
           image?: string;
+          flag?: string;
         },
       ]
     | [];
@@ -36,7 +38,10 @@ export type Question = {
   visibleScope: 'public' | 'private';
   questions: QuestionKahoot[] | [];
   isDraft?: boolean;
+  flag?: string;
   images?: any[];
+  deletedQuestionIds?: number[];
+  deletedAnswerIds?: number[];
   createdAt?: string;
 };
 

@@ -22,6 +22,7 @@ interface Props {
 
 const HomeScreen = ({navigation}: Props) => {
   const authStatus = useSelector(selectStatus);
+
   const [publicKahootsList, setPublicKahootsList] = useState<KahootSummary[]>();
   const [isOver, setIsOver] = useState<boolean>(false);
   const [ownKahootsList, setOwnKahootsList] = useState<KahootSummary[]>([]);
@@ -63,6 +64,7 @@ const HomeScreen = ({navigation}: Props) => {
       return clearTimeout(timerId);
     }, 2000);
   }, []);
+  console.log('render');
 
   const loadMore = () => {
     if (isOver) {

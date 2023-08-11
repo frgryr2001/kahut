@@ -11,6 +11,7 @@ import {Button, ModalCustom} from '../../../../components/ui';
 import {useSelector} from 'react-redux';
 import {selectLoading} from '../../../../redux/slices/questionSlice/selector';
 import {selectStatus} from '../../../../redux/slices/authSlice/selector';
+import httpClient from '../../../../services/utils/httpClient';
 
 interface HeaderProps {
   completed: boolean;
@@ -19,6 +20,7 @@ interface HeaderProps {
   navigation: any;
   validateDiffBetweenObjEdit: () => boolean;
   isEdit?: boolean;
+  isEditAPI?: boolean;
   handleDiscardChanges: () => void;
 }
 function MessageCheckListQuestion({
@@ -70,7 +72,8 @@ const Header = ({
   navigation,
   completed,
   kahoot,
-  isEdit = false,
+  isEdit,
+  isEditAPI,
   validateDiffBetweenObjEdit,
   handleDiscardChanges,
 }: HeaderProps) => {
@@ -113,6 +116,74 @@ const Header = ({
     setIsCancel(false);
     if (!checkCorrect()) {
       setModalVisible(true);
+    }
+    if (isEditAPI) {
+      async function test() {
+        const formData = new FormData();
+        const convertDataValid = kahoot?.questions?.map(question => {
+          if (question.answer) {
+            return {
+              ...question,
+              answer: Boolean(question.answer),
+            };
+          }
+          if (question.answers) {
+            return {
+              ...question,
+              answers: question.answers.map(answer => {
+                return {
+                  ...answer,
+                  isCorrect: Boolean(answer.isCorrect),
+                };
+              }),
+            };
+          }
+          return question;
+        });
+
+        formData.append(
+          'kahoot',
+          JSON.stringify({
+            ...kahoot,
+            id: kahoot?.idQuestion,
+            theme: kahoot?.theme.toLocaleLowerCase(),
+            questions: convertDataValid,
+          }),
+        );
+        kahoot?.images!.forEach(image => {
+          formData.append('images', image);
+        });
+        formData.append(
+          'deletedQuestionIds',
+          JSON.stringify(kahoot?.deletedQuestionIds),
+        );
+        formData.append(
+          'deletedAnswerIds',
+          JSON.stringify(kahoot?.deletedAnswerIds),
+        );
+
+        console.log('formData', formData);
+
+        const res = await httpClient.put<any>('/kahoots', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+
+        console.log('res', res.code);
+
+        if (res.code === 200) {
+          dispatch(
+            deleteKahoot({
+              kahootId: kahoot?.idQuestion!,
+            }),
+          );
+          navigation.goBack();
+        }
+      }
+      test().catch(err => {
+        console.log('err', JSON.stringify(err, null, 2));
+      });
     } else {
       dispatch(createKahoot(kahoot!))
         .unwrap()
@@ -138,13 +209,24 @@ const Header = ({
       kahoot?.questions.length !== 0 ||
       kahoot?.description !== '';
 
-    if (!checkKahootChange) {
+    if (isEditAPI && !validateDiffBetweenObjEdit()) {
       dispatch(
         deleteKahoot({
           kahootId: kahoot?.idQuestion!,
         }),
       );
-      navigation.navigate('Library');
+      navigation.goBack();
+
+      return;
+    }
+
+    if (!checkKahootChange && !isEdit) {
+      dispatch(
+        deleteKahoot({
+          kahootId: kahoot?.idQuestion!,
+        }),
+      );
+      navigation.goBack();
     } else {
       setModalVisible(true);
     }
@@ -312,7 +394,7 @@ const Header = ({
                   onPress={() => {
                     if (isEdit) {
                       handleDiscardChanges();
-                      navigation.navigate('Library');
+                      navigation.goBack();
                       onCloseModal();
                     }
                     if (!isEdit) {
@@ -321,8 +403,8 @@ const Header = ({
                           kahootId: kahoot?.idQuestion!,
                         }),
                       );
+                      navigation.goBack();
                     }
-                    navigation.navigate('Library');
                   }}
                 />
               </View>

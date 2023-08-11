@@ -47,6 +47,8 @@ const KahootSliderItem = ({isDraft = false, kahoot}: Props) => {
         visibleScope: response.visibleScope as 'public' | 'private',
         questions: response.questions as any,
         images: [],
+        deletedQuestionIds: [],
+        deletedAnswerIds: [],
       };
       dispatch(initQuestion(initQuestionData));
       return initQuestionData;

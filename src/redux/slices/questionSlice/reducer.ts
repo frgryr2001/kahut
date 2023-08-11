@@ -45,6 +45,7 @@ const questionSlice = createSlice({
       );
       if (question) {
         question.theme = theme;
+        question.flag = 'edited';
       }
     },
     addQuestion(
@@ -57,6 +58,7 @@ const questionSlice = createSlice({
       const {idQuestion, question} = action.payload;
       const ques = state.questions.find(q => q.idQuestion === idQuestion);
       if (ques) {
+        question.flag = 'added';
         ques.questions.push(question as never);
       }
     },
@@ -74,6 +76,9 @@ const questionSlice = createSlice({
         const question = kahoot.questions.find(q => q.id === questionId);
         if (question) {
           question.question = titleQuestion;
+          if (question.flag === 'added') {
+            question.flag = 'added';
+          }
         }
       }
     },
@@ -96,6 +101,7 @@ const questionSlice = createSlice({
         const question = kahoot.questions.find(q => q.id === questionId);
         if (question) {
           question.media = imageQuestion;
+          question.flag = 'edited';
           kahoot.images?.push(file);
         }
       }
@@ -158,10 +164,21 @@ const questionSlice = createSlice({
       if (kahoot) {
         const question = kahoot.questions.find(q => q.id === questionId);
         if (question) {
-          question.answers[index] = {
-            ...question.answers[index],
-            isCorrect,
-          };
+          if (question.flag === 'added') {
+            question.answers[index] = {
+              ...question.answers[index],
+              isCorrect,
+              flag: 'added',
+            };
+            question.flag = 'added';
+          } else {
+            question.answers[index] = {
+              ...question.answers[index],
+              isCorrect,
+              flag: 'edited',
+            };
+            question.flag = 'edited';
+          }
         }
       }
     },
@@ -207,6 +224,7 @@ const questionSlice = createSlice({
         const question = kahoot.questions.find(q => q.id === questionId);
         if (question) {
           Object.assign(question, fieldsToUpdate);
+          question.flag = 'edited';
         }
       }
     },
@@ -223,6 +241,7 @@ const questionSlice = createSlice({
         const question = kahoot.questions.find(q => q.id === questionId);
         if (question) {
           kahoot.questions = kahoot.questions.filter(q => q.id !== questionId);
+          kahoot.deletedQuestionIds?.push(questionId as number);
         }
       }
     },
@@ -244,6 +263,7 @@ const questionSlice = createSlice({
       const kahoot = state.questions.find(k => k.idQuestion === kahootId);
       if (kahoot) {
         kahoot.coverImage = imageCover;
+        kahoot.flag = 'edited';
         kahoot.images?.push(file);
       }
     },
@@ -268,6 +288,7 @@ const questionSlice = createSlice({
       const kahoot = state.questions.find(k => k.idQuestion === kahootId);
       if (kahoot) {
         kahoot.title = titleKahoot;
+        kahoot.flag = 'edited';
       }
     },
     updateKahoot(
@@ -281,6 +302,7 @@ const questionSlice = createSlice({
       const kahoot = state.questions.find(k => k.idQuestion === kahootId);
       if (kahoot) {
         Object.assign(kahoot, fieldsToUpdate);
+        kahoot.flag = 'edited';
       }
     },
     updateImagesKahoot(
@@ -314,6 +336,14 @@ const questionSlice = createSlice({
       }>,
     ) {
       const {kahoot, indexOfKahootInEdit} = action.payload;
+      if (indexOfKahootInEdit === -1) {
+        state.questions.push(kahoot);
+        return;
+      }
+      if (state.questions.length === 0) {
+        state.questions.push(kahoot);
+        return;
+      }
       state.questions.splice(indexOfKahootInEdit, 0, kahoot);
     },
   },
