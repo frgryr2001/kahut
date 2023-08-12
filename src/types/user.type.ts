@@ -6,4 +6,13 @@ interface UserSummary {
   kahoots: KahootSummary[];
 }
 
-export type {UserSummary};
+interface UserDetail {
+  id: number;
+  name: string;
+  image: string;
+  numberOfKahoots: number;
+  numberOfPlays: number;
+  numberOfPlayers: number;
+}
+
+export type {UserSummary, UserDetail};

@@ -35,7 +35,7 @@ const HomeScreen = ({navigation}: Props) => {
 
   // Get public kahoot
   useEffect(() => {
-    getKahootsList()
+    getKahootsList({})
       .then(response => {
         setPublicKahootsList(response.kahoots);
         setIsFetchingPublicKahootsList(false);
@@ -64,7 +64,6 @@ const HomeScreen = ({navigation}: Props) => {
       return clearTimeout(timerId);
     }, 2000);
   }, []);
-  console.log('render');
 
   const loadMore = () => {
     if (isOver) {
