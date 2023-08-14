@@ -1,6 +1,8 @@
 import React from 'react';
 import {StyleSheet, TextInput, Pressable, ImageBackground} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {useAppDispatch} from '../../../../redux/store';
+import {deleteAnswerQuestion} from '../../../../redux/slices/questionSlice/reducer';
 
 interface Props {
   color: string;
@@ -8,6 +10,7 @@ interface Props {
   isAnswer?: boolean;
   isOptional?: boolean;
   isEdit?: boolean;
+  idAnswer?: string | number;
   image?: string;
   isFocus?: boolean;
   index?: number;
@@ -28,6 +31,7 @@ export const Answer = ({
   isFocus = false,
   hidePlaceHoder = false,
   isOptional,
+  idAnswer,
   image,
   index,
   typeTf,
@@ -37,6 +41,9 @@ export const Answer = ({
   id,
   navigation,
 }: Props) => {
+  const dispatch = useAppDispatch();
+  const [showDeleteIcon, setShowDeleteIcon] = React.useState(false);
+
   return (
     <Pressable
       style={[
@@ -44,6 +51,9 @@ export const Answer = ({
         {backgroundColor: color},
         {height: typeTf ? 200 : 100},
       ]}
+      onLongPress={() => {
+        setShowDeleteIcon(true);
+      }}
       onPress={() => {
         if (!typeTf) {
           navigation.navigate('ModalQuestionScreen', {
@@ -86,6 +96,34 @@ export const Answer = ({
             isOptional ? 'rgba(255,255,255,0.5)' : 'rgba(255,255,255,0.8)'
           }
         />
+      )}
+
+      {showDeleteIcon && (
+        <Pressable
+          onPress={() => {
+            dispatch(
+              deleteAnswerQuestion({
+                kahootId: kahootID!,
+                questionId: id!,
+                idAnswer: idAnswer! as number,
+                index: index!,
+              }),
+            );
+            setShowDeleteIcon(false);
+          }}
+          style={{
+            position: 'absolute',
+            left: 0,
+          }}>
+          <Icon
+            name="close-circle"
+            size={25}
+            color={'#fff'}
+            style={{
+              opacity: showDeleteIcon ? 1 : 0,
+            }}
+          />
+        </Pressable>
       )}
 
       <Icon

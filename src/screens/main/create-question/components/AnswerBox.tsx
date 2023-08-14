@@ -17,6 +17,7 @@ interface Props {
     | []
     | [
         {
+          id: string | number;
           text?: string;
           isCorrect: boolean;
           image?: string;
@@ -62,6 +63,7 @@ export const AnswerBox = ({
               navigation={navigation}
               kahootID={kahootID}
               id={id}
+              idAnswer={answers[index]?.id}
             />
           );
         })}

@@ -14,3 +14,5 @@ export {default as EmptyMessage} from './empty-message/EmptyMessage';
 export {default as BannerSlider} from './banner-slider/BannerSlider';
 export {default as SectionContainer} from './section-container/SectionContainer';
 export {default as KahootSlider} from './kahoot-slider/KahootSlider';
+export {default as KahootBottomSheet} from './kahoot-bottom-sheet/KahootBottomSheet';
+export {default as PopupMenu} from './popup-menu/PopupMenu';

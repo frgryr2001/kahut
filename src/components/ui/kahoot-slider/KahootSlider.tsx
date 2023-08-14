@@ -1,6 +1,5 @@
 import React from 'react';
 import {FlatList, View} from 'react-native';
-
 import {KahootSliderItem} from '../';
 import {KahootSummary} from '../../../types/kahoot.type';
 import styles from './KahootSlider.style';
@@ -8,9 +7,16 @@ import styles from './KahootSlider.style';
 interface Props {
   kahootsList: KahootSummary[];
   loadMore?: () => void;
+  onItemPress?: (kahootID: number, isMyKahoot: boolean) => void;
+  isMyKahoot?: boolean;
 }
 
-const KahootSlider = ({kahootsList, loadMore}: Props) => {
+const KahootSlider = ({
+  kahootsList,
+  loadMore,
+  onItemPress,
+  isMyKahoot,
+}: Props) => {
   const itemSeparatorItem = () => (
     <View
       style={{
@@ -20,7 +26,13 @@ const KahootSlider = ({kahootsList, loadMore}: Props) => {
   );
   const renderItem = ({item}: {item: KahootSummary}) => {
     return (
-      <KahootSliderItem key={item.id} kahoot={item} isDraft={item.isDraft} />
+      <KahootSliderItem
+        key={item.id}
+        kahoot={item}
+        isDraft={item.isDraft}
+        onItemPress={onItemPress}
+        isMyKahoot={isMyKahoot}
+      />
     );
   };
 

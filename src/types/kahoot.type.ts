@@ -25,6 +25,8 @@ export interface IKahootDetail {
 export interface KahootDetailData {
   id: number;
   userId: number;
+  username: string;
+  userImage: string;
   coverImage: string;
   title: string;
   theme: string;
@@ -32,6 +34,7 @@ export interface KahootDetailData {
   media: string;
   visibleScope: string;
   questions: Question[];
+  isMyKahoot?: boolean;
 }
 
 export interface Question {

@@ -83,6 +83,7 @@ const Header = ({
   const status = useSelector(selectStatus);
   const [modalVisible, setModalVisible] = React.useState(false);
   const [isCancel, setIsCancel] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(false);
 
   const onCloseModal = () => {
     setModalVisible(false);
@@ -116,9 +117,11 @@ const Header = ({
     setIsCancel(false);
     if (!checkCorrect()) {
       setModalVisible(true);
+      return;
     }
     if (isEditAPI) {
-      async function test() {
+      async function update() {
+        setIsLoading(true);
         const formData = new FormData();
         const convertDataValid = kahoot?.questions?.map(question => {
           if (question.answer) {
@@ -162,15 +165,11 @@ const Header = ({
           JSON.stringify(kahoot?.deletedAnswerIds),
         );
 
-        console.log('formData', formData);
-
         const res = await httpClient.put<any>('/kahoots', formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
         });
-
-        console.log('res', res.code);
 
         if (res.code === 200) {
           dispatch(
@@ -178,17 +177,18 @@ const Header = ({
               kahootId: kahoot?.idQuestion!,
             }),
           );
+          setIsLoading(false);
           navigation.goBack();
         }
       }
-      test().catch(err => {
+      update().catch(err => {
         console.log('err', JSON.stringify(err, null, 2));
       });
     } else {
       dispatch(createKahoot(kahoot!))
         .unwrap()
         .then(() => {
-          navigation.navigate('Library');
+          navigation.goBack();
         })
         .then(() => {
           dispatch(
@@ -252,7 +252,7 @@ const Header = ({
         },
       ]}>
       <Spinner
-        visible={loading}
+        visible={loading || isLoading}
         textContent={'Loading...'}
         textStyle={{
           color: '#F5F5F5',

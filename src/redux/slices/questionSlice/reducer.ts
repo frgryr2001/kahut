@@ -137,17 +137,36 @@ const questionSlice = createSlice({
         const question = kahoot.questions.find(q => q.id === questionId);
 
         if (question) {
-          question.answers[index] = {
-            ...question.answers[index],
-            text: answer,
-          };
+          if (question.answers[index] !== undefined) {
+            if (question.answers[index].flag === 'added') {
+              question.answers[index] = {
+                ...question.answers[index],
+                text: answer,
+                flag: 'added',
+              };
+            } else {
+              question.answers[index] = {
+                ...question.answers[index],
+                text: answer,
+                flag: 'edited',
+              };
+            }
+          } else {
+            question.answers[index] = {
+              text: answer,
+              flag: 'added',
+              isCorrect: false,
+            };
+          }
         }
-        if (question?.answers[index].isCorrect === undefined) {
-          question!.answers[index] = {
-            ...question?.answers[index],
-            isCorrect: false,
-          };
-        }
+
+        // if (question?.answers[index].isCorrect === undefined) {
+        //   question!.answers[index] = {
+        //     ...question?.answers[index],
+        //     isCorrect: false,
+        //     flag: 'edited',
+        //   };
+        // }
       }
     },
     changeIsCorrectAnswerQuestion(
@@ -172,13 +191,40 @@ const questionSlice = createSlice({
             };
             question.flag = 'added';
           } else {
-            question.answers[index] = {
-              ...question.answers[index],
-              isCorrect,
-              flag: 'edited',
-            };
+            if (question.answers[index].flag === 'added') {
+              question.answers[index] = {
+                ...question.answers[index],
+                isCorrect,
+                flag: 'added',
+              };
+            } else {
+              question.answers[index] = {
+                ...question.answers[index],
+                isCorrect,
+                flag: 'edited',
+              };
+            }
             question.flag = 'edited';
           }
+        }
+      }
+    },
+    deleteAnswerQuestion(
+      state,
+      action: PayloadAction<{
+        kahootId: string | number;
+        questionId: string | number;
+        index: number;
+        idAnswer: number;
+      }>,
+    ) {
+      const {kahootId, questionId, index, idAnswer} = action.payload;
+      const kahoot = state.questions.find(k => k.idQuestion === kahootId);
+      if (kahoot) {
+        const question = kahoot.questions.find(q => q.id === questionId);
+        if (question) {
+          question.answers.splice(index, 1);
+          kahoot?.deletedAnswerIds?.push(idAnswer);
         }
       }
     },
@@ -396,6 +442,7 @@ export const {
   addImageAnswerQuestion,
   updateFieldQuestion,
   deleteQuestion,
+  deleteAnswerQuestion,
   // Kahoot
   addImageCoverKahoot,
   deleteImageCoverKahoot,

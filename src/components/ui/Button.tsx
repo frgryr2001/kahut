@@ -16,6 +16,7 @@ interface Props {
   isActive?: boolean;
   color?: string;
   width?: number;
+  style?: any;
 }
 export const Button = ({
   title,
@@ -27,6 +28,7 @@ export const Button = ({
   color,
   width,
   isActive,
+  style,
 }: Props) => {
   return (
     <TouchableOpacity
@@ -42,6 +44,9 @@ export const Button = ({
         size === 'medium' && {paddingVertical: 10, paddingHorizontal: 30},
         size === 'large' && {paddingVertical: 20, paddingHorizontal: 40},
         {backgroundColor: isActive ? '#2886de' : color, width: width},
+        {
+          ...style,
+        },
       ]}
       activeOpacity={0.7}>
       {loading ? (
