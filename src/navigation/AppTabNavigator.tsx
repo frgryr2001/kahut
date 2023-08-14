@@ -4,7 +4,7 @@ import {useSelector} from 'react-redux';
 import {v4 as uuidv4} from 'uuid';
 import {Image} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import CustomBottomTab from './CustomBottomTab';
 import {useAppDispatch, RootState} from '../redux/store';
 import {Question} from '../types/question';
@@ -12,6 +12,7 @@ import {initQuestion} from '../redux/slices/questionSlice/reducer';
 import {DiscoverScreen, HomeScreen} from '../screens';
 import {AppBarIconButton} from '../components/ui';
 import LibraryStack from './LibraryStack';
+import {BottomSheetModalProvider} from '@gorhom/bottom-sheet';
 
 const Tab = createBottomTabNavigator();
 
@@ -42,7 +43,6 @@ export function AppTabNavigator() {
     dispatch(initQuestion(question));
     return question;
   };
-
   const getAppBarLogo = () => {
     return (
       <Image
@@ -54,77 +54,84 @@ export function AppTabNavigator() {
   };
 
   return (
-    <Tab.Navigator
-      tabBar={tabBar}
-      screenOptions={{
-        headerTitleAlign: 'center',
+    <GestureHandlerRootView
+      style={{
+        flex: 1,
       }}>
-      <Tab.Screen
-        name="Home"
-        options={({navigation}) => ({
-          tabBarLabel: 'Home',
-          tabBarActiveTintColor: '#7C4DFF',
-          headerTitle: () => getAppBarLogo(),
-          headerLeftContainerStyle: {
-            paddingHorizontal: 8,
-          },
-          headerLeft: () =>
-            AppBarIconButton({
-              type: 'normal',
-              onPress: () => navigation.push('UserSettingScreen'),
-              icon: 'person-circle-outline',
-            }),
-          headerRight: () =>
-            AppBarIconButton({
-              type: 'normal',
-              onPress: () => navigation.push('UserSettingScreen'),
-              icon: 'notifications-outline',
-            }),
-          headerRightContainerStyle: {
-            paddingHorizontal: 8,
-          },
-          headerShadowVisible: true,
-        })}
-        component={HomeScreen}
-      />
-      <Tab.Screen
-        name="Discover"
-        options={{
-          tabBarLabel: 'Discover',
-          tabBarActiveTintColor: '#7C4DFF',
-        }}
-        component={DiscoverScreen}
-      />
+      <BottomSheetModalProvider>
+        <Tab.Navigator
+          tabBar={tabBar}
+          screenOptions={{
+            headerTitleAlign: 'center',
+          }}>
+          <Tab.Screen
+            name="Home"
+            options={({navigation}) => ({
+              tabBarLabel: 'Home',
+              tabBarActiveTintColor: '#7C4DFF',
+              headerTitle: () => getAppBarLogo(),
+              headerLeftContainerStyle: {
+                paddingHorizontal: 8,
+              },
+              headerLeft: () =>
+                AppBarIconButton({
+                  type: 'normal',
+                  onPress: () => navigation.push('UserSettingScreen'),
+                  icon: 'person-circle-outline',
+                }),
+              headerRight: () =>
+                AppBarIconButton({
+                  type: 'normal',
+                  onPress: () => navigation.push('UserSettingScreen'),
+                  icon: 'notifications-outline',
+                }),
+              headerRightContainerStyle: {
+                paddingHorizontal: 8,
+              },
+              headerShadowVisible: true,
+            })}
+            component={HomeScreen}
+          />
+          <Tab.Screen
+            name="Discover"
+            options={{
+              tabBarLabel: 'Discover',
+              tabBarActiveTintColor: '#7C4DFF',
+            }}
+            component={DiscoverScreen}
+          />
 
-      <Tab.Screen
-        name="Create"
-        listeners={({navigation}) => ({
-          tabPress: e => {
-            e.preventDefault();
-            handleInitQuestion().then(question => {
-              navigation.navigate('QuestionScreen', {
-                idQuestion: question.idQuestion,
-              });
-            });
-          },
-        })}
-        options={{
-          unmountOnBlur: true,
-          tabBarLabel: 'Create',
-          tabBarActiveTintColor: '#7C4DFF',
-        }}
-        component={CreateQuestionComponent}
-      />
+          <Tab.Screen
+            name="Create"
+            listeners={({navigation}) => ({
+              tabPress: e => {
+                e.preventDefault();
+                handleInitQuestion().then(question => {
+                  navigation.navigate('QuestionScreen', {
+                    idQuestion: question.idQuestion,
+                  });
+                });
+              },
+            })}
+            options={{
+              unmountOnBlur: true,
+              tabBarLabel: 'Create',
+              tabBarActiveTintColor: '#7C4DFF',
+            }}
+            component={CreateQuestionComponent}
+          />
 
-      <Tab.Screen
-        name="Library"
-        options={{
-          tabBarLabel: 'Library',
-          tabBarActiveTintColor: '#7C4DFF',
-          headerShown: false,
-        }}
-        component={LibraryStack}
-      />
-    </Tab.Navigator>
+          <Tab.Screen
+            name="Library"
+            options={{
+              tabBarLabel: 'Library',
+              tabBarActiveTintColor: '#7C4DFF',
+              headerShown: false,
+            }}
+            component={LibraryStack}
+          />
+        </Tab.Navigator>
+      </BottomSheetModalProvider>
+    </GestureHandlerRootView>
   );
 }

@@ -95,8 +95,6 @@ export const QuestionScreen = ({navigation, route}: Props) => {
   );
 
   const handleDiscardChanges = useCallback(() => {
-    console.log('Goi 1 lan');
-
     dispatch(
       deleteKahoot({
         kahootId: idQuestion!,

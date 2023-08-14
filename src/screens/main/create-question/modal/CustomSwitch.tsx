@@ -11,7 +11,6 @@ export const CustomSwitch: FC<Props> = ({isOn, color, handleOnPressSwitch}) => {
   const toggleSwitch = () => {
     handleOnPressSwitch();
   };
-  console.log('isOn', isOn);
 
   return (
     <Switch
@@ -19,7 +18,7 @@ export const CustomSwitch: FC<Props> = ({isOn, color, handleOnPressSwitch}) => {
       thumbColor={isOn ? color : '#f4f3f4'}
       ios_backgroundColor="#3e3e3e"
       onValueChange={toggleSwitch}
-      value={isOn}
+      value={Boolean(isOn)}
     />
   );
 };

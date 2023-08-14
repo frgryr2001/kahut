@@ -38,4 +38,15 @@ const getKahootDetail = async (kahootId: number) => {
   }
 };
 
-export {getKahootsList, getOwnKahootsList, getKahootDetail};
+const deleteKahootById = async (kahootId: number) => {
+  try {
+    const response = await httpClient.delete<RequestResponse<number>>(
+      `/kahoots/${kahootId}`,
+    );
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export {getKahootsList, getOwnKahootsList, getKahootDetail, deleteKahootById};

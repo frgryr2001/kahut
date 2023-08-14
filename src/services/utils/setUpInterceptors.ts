@@ -32,7 +32,7 @@ const setup = () => {
         ((originalConfig.url as string).includes('/kahoots') && err.response)
       ) {
         const refresh_token = getState().auth.user?.refresh_token;
-        console.log(refresh_token);
+        console.log('[Refresh token]', refresh_token);
 
         // Access Token was expired
         if (err.response.status === 403 && !originalConfig._retry) {
@@ -51,6 +51,8 @@ const setup = () => {
               },
             });
 
+            console.log('[New access token]', res.data.access_token);
+
             dispatch(
               loginSuccessNewAccessTokenAction({
                 access_token: res.data.access_token,
@@ -63,6 +65,7 @@ const setup = () => {
             return Promise.reject(_error);
           }
         }
+        console.log('[Lỗi status: ] ', err.response.status);
       }
 
       return Promise.reject(err);
