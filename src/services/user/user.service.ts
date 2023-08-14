@@ -1,6 +1,6 @@
 import httpClient from '../utils/httpClient';
 import {RequestResponse} from '../../types/common';
-import {UserSummary} from '../../types/user.type';
+import {UserDetail, UserSummary} from '../../types/user.type';
 
 const getUsersList = async () => {
   try {
@@ -14,4 +14,16 @@ const getUsersList = async () => {
   }
 };
 
-export {getUsersList};
+const getUserDetail = async ({id}: {id: number}) => {
+  try {
+    const response = await httpClient.get<RequestResponse<UserDetail>>(
+      `/users/detail/${id}`,
+    );
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export {getUsersList, getUserDetail};

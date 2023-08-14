@@ -5,11 +5,12 @@ import {
   IGetKaHootsListResponseData,
 } from '../../types/kahoot.type';
 
-const getKahootsList = async () => {
+const getKahootsList = async ({userId}: {userId?: number}) => {
   try {
+    const url = `/kahoots/list?limit=999&${userId ? `userId=${userId}` : ''}`;
     const response = await httpClient.get<
       RequestResponse<IGetKaHootsListResponseData>
-    >('/kahoots/list');
+    >(url);
     return response.data;
   } catch (error) {
     throw error;

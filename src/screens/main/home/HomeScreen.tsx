@@ -50,6 +50,7 @@ const HomeScreen = ({navigation}: Props) => {
     }, [refreshing]),
   );
 
+
   useFocusEffect(
     useCallback(() => {
       if (authStatus === 'authenticated') {
