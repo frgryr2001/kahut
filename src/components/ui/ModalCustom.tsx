@@ -1,6 +1,6 @@
 import {useTheme} from '@react-navigation/native';
 import React from 'react';
-import {View, Text, Modal, StyleSheet} from 'react-native';
+import {View, Text, Modal, StyleSheet, Pressable} from 'react-native';
 
 export const ModalCustom = ({
   children,
@@ -10,7 +10,7 @@ export const ModalCustom = ({
 }: {
   children: React.ReactNode;
   modalVisible: boolean;
-  onCloseModal: () => void;
+  onCloseModal?: () => void;
   title: string;
 }) => {
   const {colors} = useTheme();
@@ -24,7 +24,7 @@ export const ModalCustom = ({
         flex: 1,
       }}
       onRequestClose={onCloseModal}>
-      <View style={styles.backdrop} />
+      <Pressable style={styles.backdrop} onPress={onCloseModal} />
       <View>
         <View style={styles.box}>
           <Text
@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     width: '90%',
     alignSelf: 'center',
-    marginTop: 200,
+    marginTop: 250,
     paddingHorizontal: 20,
     paddingVertical: 10,
   },

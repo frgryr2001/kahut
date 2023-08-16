@@ -1,4 +1,4 @@
-import React, {useMemo, useCallback} from 'react';
+import React, {useMemo, useCallback, useState} from 'react';
 import {View, StyleSheet, ScrollView} from 'react-native';
 import {BottomSheetBackdrop, BottomSheetModal} from '@gorhom/bottom-sheet';
 import BottomSheet from './BottomSheet';
@@ -9,6 +9,8 @@ import {initQuestion} from '../../../redux/slices/questionSlice/reducer';
 import {useAppDispatch} from '../../../redux/store';
 import {Question, theme} from '../../../types/question';
 import {KahootDetailData} from '../../../types/kahoot.type';
+import {ModalCustom} from '../ModalCustom';
+import GameModeCard from './GameModeCard';
 
 interface Props {
   children: JSX.Element | JSX.Element[];
@@ -19,9 +21,10 @@ const KahootBottomSheet = React.forwardRef(
   (props: Props, ref: React.Ref<BottomSheetModal>) => {
     const {children, deleteKahoot} = props;
     const dispatch = useAppDispatch();
-
+    const [modalVisible, setModalVisible] = useState<boolean>(false);
     const navigation = useNavigation<StackNavigationProp<RootStackParams>>();
     const snapPoints = useMemo(() => ['75%'], []);
+    const [isFavorite, setIsFavorite] = useState<boolean>(false);
 
     const renderBackdrop = useCallback(
       (props: any) => (
@@ -35,9 +38,17 @@ const KahootBottomSheet = React.forwardRef(
       [],
     );
 
+    const openModalChooseGameMode = () => {
+      setModalVisible(true);
+    };
+    const closeModalChooseGameMode = () => {
+      setModalVisible(false);
+    };
+
     return (
       <>
         {children}
+
         <View style={styles.container}>
           <BottomSheetModal
             style={{
@@ -74,10 +85,32 @@ const KahootBottomSheet = React.forwardRef(
                   isEditAPI: true,
                 });
               };
-
+              const handleStartGame = () => {
+                setModalVisible(false);
+                navigation.navigate('PlayScreen', {
+                  kahoot,
+                });
+              };
               return (
                 <ScrollView>
                   <View style={styles.contentContainer}>
+                    <ModalCustom
+                      modalVisible={modalVisible}
+                      title="Choose Game Mode"
+                      onCloseModal={() => closeModalChooseGameMode()}>
+                      <View style={styles.boxGameMode}>
+                        <GameModeCard
+                          title="Assignment"
+                          subTitle="Send this kahoot as homework"
+                          onPress={() => console.log('123')}
+                        />
+                        <GameModeCard
+                          title="Single player"
+                          subTitle="Play on your own"
+                          onPress={() => handleStartGame()}
+                        />
+                      </View>
+                    </ModalCustom>
                     <BottomSheet>
                       <BottomSheet.ImageCoverKahoot image={kahoot.coverImage} />
                       <BottomSheet.Container>
@@ -103,13 +136,13 @@ const KahootBottomSheet = React.forwardRef(
                         />
                         <BottomSheet.BoxUserAction
                           username={kahoot.username}
-                          isFavorite
+                          isFavorite={isFavorite}
                           visibleEdit={kahoot.isMyKahoot}
                           onPressEdit={handleEditKahoot}
                           onPressDelete={deleteKahoot.bind(this, kahoot.id)}
                         />
                         <BottomSheet.ButtonPlay
-                          onPress={() => console.log('play')}
+                          onPress={() => openModalChooseGameMode()}
                         />
                       </BottomSheet.Container>
                     </BottomSheet>
@@ -131,6 +164,10 @@ const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
     alignItems: 'center',
+  },
+  boxGameMode: {
+    gap: 5,
+    paddingBottom: 20,
   },
 });
 
