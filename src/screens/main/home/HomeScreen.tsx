@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef, useCallback} from 'react';
+import React, {useState, useRef, useCallback} from 'react';
 import {SafeAreaView, ScrollView, View, RefreshControl} from 'react-native';
 import {useSelector} from 'react-redux';
 import {
@@ -64,13 +64,6 @@ const HomeScreen = ({navigation}: Props) => {
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [authStatus, refreshing]),
   );
-
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      bottomSheetModalRef.current?.dismiss();
-    });
-    return unsubscribe;
-  }, [navigation]);
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);

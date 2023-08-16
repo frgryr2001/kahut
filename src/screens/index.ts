@@ -3,6 +3,7 @@ export {default as UserSettingScreen} from './main/user-setting/UserSettingScree
 export {default as DiscoverScreen} from './main/discover/DiscoverScreen';
 export {default as LibraryScreen} from './main/library/LibraryScreen';
 export {default as UserDetailScreen} from './main/user-detail-screen/UserDetailScreen';
+export {default as PlayScreen} from './main/play-kahoot/PlayScreen';
 
 export * from './main/question';
 export * from './main/setting-question';
