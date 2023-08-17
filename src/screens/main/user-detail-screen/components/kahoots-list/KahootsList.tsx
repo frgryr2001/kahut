@@ -14,6 +14,7 @@ interface Props {
 
 const KahootsList = ({data}: Props) => {
   const handleTransferIdEdit = () => {};
+  console.log(data && data.length === 0);
 
   return (
     <View

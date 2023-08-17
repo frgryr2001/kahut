@@ -40,7 +40,7 @@ const HomeScreen = ({navigation}: Props) => {
   // Get public kahoot
   useFocusEffect(
     useCallback(() => {
-      getKahootsList()
+      getKahootsList({})
         .then(response => {
           setPublicKahootsList(response.kahoots);
           setIsFetchingPublicKahootsList(false);
@@ -49,7 +49,6 @@ const HomeScreen = ({navigation}: Props) => {
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [refreshing]),
   );
-
 
   useFocusEffect(
     useCallback(() => {

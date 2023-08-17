@@ -9,7 +9,6 @@ const EmptyMessage = ({messages}: Props) => {
   return (
     <View
       style={{
-        flex: 1,
         justifyContent: 'center',
         padding: 16,
         gap: 16,
