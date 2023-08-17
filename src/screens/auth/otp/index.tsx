@@ -112,6 +112,7 @@ export const OtpScreen = ({navigation, route}: Props) => {
             backgroundColor: '#198754',
             fontFamily: 'Poppins-Regular',
           });
+          navigation.navigate('HomeScreen');
         })
         .catch(err => {
           Snackbar.show({

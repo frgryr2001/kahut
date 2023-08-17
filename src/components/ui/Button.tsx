@@ -56,10 +56,10 @@ export const Button = ({
           style={
             as === 'text'
               ? {
-                  color: 'black',
+                  color: 'white',
                   fontFamily: 'Poppins-Bold',
                 }
-              : {...styles.buttonText, color: isActive ? '#fff' : 'black'}
+              : {...styles.buttonText, color: isActive ? '#fff' : 'white'}
           }>
           {title}
         </Text>

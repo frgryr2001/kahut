@@ -275,8 +275,13 @@ const questionSlice = createSlice({
       if (kahoot) {
         const question = kahoot.questions.find(q => q.id === questionId);
         if (question) {
-          Object.assign(question, fieldsToUpdate);
-          question.flag = 'edited';
+          if (question.flag === 'added') {
+            question.flag = 'added';
+            Object.assign(question, fieldsToUpdate);
+          } else {
+            Object.assign(question, fieldsToUpdate);
+            question.flag = 'edited';
+          }
         }
       }
     },

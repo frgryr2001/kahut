@@ -86,7 +86,11 @@ const KahootBottomSheet = React.forwardRef(
     );
 
     const openModalChooseGameMode = () => {
-      setModalVisible(true);
+      if (user) {
+        setModalVisible(true);
+      } else {
+        navigation.navigate('UserSettingScreen');
+      }
     };
     const closeModalChooseGameMode = () => {
       setModalVisible(false);
@@ -113,14 +117,15 @@ const KahootBottomSheet = React.forwardRef(
       }
     };
     const handleFavorite = async () => {
-      setIsFavorite(!isFavorite);
       if (!user) {
         // navigation login
+        navigation.navigate('UserSettingScreen');
         return;
       }
+      setIsFavorite(!isFavorite);
       if (!isFavorite && user) {
         const res = await postUserFavoriteKahoot(
-          kahoot?.id || 0,
+          kahoot?.id as number,
           user.id as number,
         );
         if (res.code === 200) {
@@ -160,6 +165,7 @@ const KahootBottomSheet = React.forwardRef(
     };
     const handleStartGame = () => {
       setModalVisible(false);
+
       navigation.navigate('PlayScreen', {
         kahoot,
       });
@@ -226,6 +232,7 @@ const KahootBottomSheet = React.forwardRef(
                     <BottomSheet.BoxUserAction
                       username={kahoot?.username as string}
                       isFavorite={isFavorite}
+                      isMyKahoot={kahootDetailConfig?.isMyKahoot}
                       visibleEdit={kahoot?.isMyKahoot}
                       onPressEdit={handleEditKahoot}
                       onPressDelete={deleteKahoot.bind(
