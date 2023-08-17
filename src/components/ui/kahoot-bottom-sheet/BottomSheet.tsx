@@ -125,6 +125,7 @@ function BoxUserAction({
   onPressDelete,
   handleFavorite,
   handleNavigateToUserDetail,
+  isMyKahoot = false,
 }: {
   visibleEdit?: boolean;
   username?: string;
@@ -133,6 +134,7 @@ function BoxUserAction({
   onPressDelete?: () => void;
   handleFavorite?: () => void;
   handleNavigateToUserDetail?: () => void;
+  isMyKahoot?: boolean;
 }) {
   const {colors} = useTheme();
 
@@ -184,7 +186,7 @@ function BoxUserAction({
           />
         )}
 
-        <PopupMenu arrInitPopupMenu={itemPopup} />
+        <PopupMenu arrInitPopupMenu={itemPopup} isMyKahoot={isMyKahoot} />
       </View>
     </View>
   );

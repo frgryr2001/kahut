@@ -26,6 +26,8 @@ export const sendOtp = createAsyncThunk(
       });
       return response.data;
     } catch (error: any) {
+      console.log('Lỗi', JSON.stringify(error.response, null, 2));
+
       return thunkAPI.rejectWithValue(error.response.data);
     }
   },

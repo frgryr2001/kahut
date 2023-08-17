@@ -165,8 +165,8 @@ export const FormAuth = ({
           textColor: '#fff',
           backgroundColor: '#7C4DFF',
         });
-
         reset();
+        gotoForm('HomeScreen');
       })
       .catch(err => {
         Snackbar.show({

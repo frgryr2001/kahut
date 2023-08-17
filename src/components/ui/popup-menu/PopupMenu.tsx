@@ -1,5 +1,6 @@
 import {useTheme} from '@react-navigation/native';
 import React from 'react';
+import {View} from 'react-native';
 import {
   Animated,
   Dimensions,
@@ -10,6 +11,7 @@ import {
   Text,
   TouchableOpacity,
 } from 'react-native';
+
 import Icon from 'react-native-vector-icons/Ionicons';
 const width = Dimensions.get('window').width;
 
@@ -19,9 +21,10 @@ interface Props {
     icon: string;
     onPress: () => void;
   }>;
+  isMyKahoot?: boolean;
 }
 
-export default function PopupMenu({arrInitPopupMenu}: Props) {
+export default function PopupMenu({arrInitPopupMenu, isMyKahoot}: Props) {
   const {colors} = useTheme();
   const [visible, setVisible] = React.useState(false);
   const scale = React.useRef(new Animated.Value(0)).current;
@@ -68,23 +71,30 @@ export default function PopupMenu({arrInitPopupMenu}: Props) {
                 ],
               },
             ]}>
-            {options.map((option, index) => (
-              <TouchableOpacity
-                key={index}
-                style={[styles.popupItem]}
-                onPress={() => {
-                  option.onPress();
-                  setVisible(false);
-                }}>
-                <Icon name={option.icon} size={20} color={'black'} />
-                <Text
-                  style={{
-                    color: colors.text,
+            {options.map(option => {
+              if (!isMyKahoot && option.title === 'Delete') {
+                console.log('123123');
+
+                return <View key={option.title} />;
+              }
+              return (
+                <TouchableOpacity
+                  key={option.title}
+                  style={[styles.popupItem]}
+                  onPress={() => {
+                    option.onPress();
+                    setVisible(false);
                   }}>
-                  {option.title}
-                </Text>
-              </TouchableOpacity>
-            ))}
+                  <Icon name={option.icon} size={20} color={'black'} />
+                  <Text
+                    style={{
+                      color: colors.text,
+                    }}>
+                    {option.title}
+                  </Text>
+                </TouchableOpacity>
+              );
+            })}
           </Animated.View>
         </SafeAreaView>
       </Modal>
