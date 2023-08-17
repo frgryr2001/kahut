@@ -1,6 +1,7 @@
 import httpClient from '../utils/httpClient';
 import {RequestResponse} from '../../types/common';
-import {PlaySummary} from '../../types/play.type';
+import {PlayDetail, PlaySummary} from '../../types/play.type';
+import {IPlayData} from '../../types/play';
 
 const getPlaysList = async () => {
   try {
@@ -14,7 +15,28 @@ const getPlaysList = async () => {
   }
 };
 
-import {IPlayData} from '../../types/play';
+const getPlayDetail = async ({
+  id,
+  kahootId,
+  assignmentId,
+}: {
+  id: number;
+  kahootId: number;
+  assignmentId?: number;
+}) => {
+  try {
+    const response = await httpClient.get<RequestResponse<PlayDetail>>(
+      assignmentId
+        ? `/plays/${id}?assignmentId=${assignmentId}`
+        : `/plays/${id}?kahootId=${kahootId}`,
+    );
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
 export const postResultPlayOfUser = async (data: IPlayData) => {
   const response = await httpClient.post<RequestResponse<{}>>({
     url: '/plays',
@@ -23,4 +45,4 @@ export const postResultPlayOfUser = async (data: IPlayData) => {
   return response;
 };
 
-export {getPlaysList};
+export {getPlaysList, getPlayDetail};

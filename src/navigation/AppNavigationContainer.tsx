@@ -45,7 +45,6 @@ export type RootStackParams = {
     kahootID: string | number;
     id: string | number;
   };
-
   ModalQuestionScreen: {
     indexQuestion?: number;
     isQuestionTitle?: boolean;
@@ -53,9 +52,14 @@ export type RootStackParams = {
     kahootID: string | number;
     id: string | number;
   };
-
   PlayScreen: {
     kahoot?: KahootDetailData;
+  };
+  ReportDetailScreen: {
+    id: number;
+    kahootId: number;
+    assignmentId?: number;
+    kahootName: string;
   };
 };
 export type ScreenName = keyof RootStackParams;
@@ -191,7 +195,6 @@ export const AppNavigationContainer = () => {
             animation: 'fade',
           }}
         />
-
         <Stack.Screen
           name="PlayScreen"
           component={mainScreens.PlayScreen}
@@ -200,6 +203,20 @@ export const AppNavigationContainer = () => {
             contentStyle: {
               backgroundColor: colors.background,
             },
+          }}
+        />
+        <Stack.Screen
+          name="ReportDetailScreen"
+          component={mainScreens.ReportDetailScreen}
+          options={({route}) => {
+            return {
+              headerShown: true,
+              headerTitleAlign: 'center',
+              headerTitle: route.params.kahootName,
+              contentStyle: {
+                backgroundColor: colors.background,
+              },
+            };
           }}
         />
       </Stack.Navigator>
