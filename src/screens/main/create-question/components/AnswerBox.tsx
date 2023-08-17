@@ -6,7 +6,8 @@ import {updateFieldQuestion} from '../../../../redux/slices/questionSlice/reduce
 
 const width = Dimensions.get('window').width;
 const color = ['#3273e3', '#e84357', '#b93ddb', '#d9db44'];
-const typeAnswer = ['TRUE', 'FALSE'];
+
+const typeAnswer = ['FALSE', 'TRUE'];
 
 interface Props {
   navigation: any;
