@@ -8,4 +8,29 @@ interface PlaySummary {
   numberOfPlayer: number;
 }
 
-export type {PlaySummary};
+interface PlayDetail {
+  id: number;
+  kahootId: number;
+  point: number;
+  title: string;
+  coverImage: string;
+  answers: Array<{
+    type: string;
+    inOrder: number;
+    media: string;
+    question: string;
+    userAnswer: {
+      id: number;
+      text?: string;
+      image?: string;
+    };
+    correctAnswer: {
+      id: number;
+      text?: string;
+      image?: string;
+    };
+    isCorrect: boolean;
+  }>;
+}
+
+export type {PlaySummary, PlayDetail};

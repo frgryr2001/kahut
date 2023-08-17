@@ -37,7 +37,7 @@ export default function ReportScreen({navigation}: any) {
             {playsList.length > 0 && (
               <View style={styles.authContainer}>
                 {playsList.map(play => (
-                  <View
+                  <Pressable
                     key={play.id}
                     style={{
                       backgroundColor: '#fff',
@@ -46,7 +46,15 @@ export default function ReportScreen({navigation}: any) {
                       borderRadius: 4,
                       gap: 4,
                       padding: 16,
-                    }}>
+                    }}
+                    onPress={() =>
+                      navigation.push('ReportDetailScreen', {
+                        id: play.id,
+                        kahootId: play.kahootId,
+                        assignmentId: play.assignmentId,
+                        kahootName: play.kahootTitle,
+                      })
+                    }>
                     <Text style={{color: '#777', fontSize: 14}}>
                       {luxon.DateTime.fromSeconds(play.createdAt)
                         .setLocale('vi')
@@ -77,7 +85,7 @@ export default function ReportScreen({navigation}: any) {
                         {play.numberOfPlayer}
                       </Text>
                     </View>
-                  </View>
+                  </Pressable>
                 ))}
               </View>
             )}
