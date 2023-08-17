@@ -55,7 +55,7 @@ export type RootStackParams = {
   };
 
   PlayScreen: {
-    kahoot: KahootDetailData;
+    kahoot?: KahootDetailData;
   };
 };
 export type ScreenName = keyof RootStackParams;
@@ -121,6 +121,20 @@ export const AppNavigationContainer = () => {
         />
         <Stack.Screen name="HomeScreen" component={AppTabNavigator} />
         <Stack.Screen
+          name="UserDetailScreen"
+          component={mainScreens.UserDetailScreen}
+          options={({route}) => ({
+            headerShown: true,
+            headerTitle: route.params.name,
+            headerTitleAlign: 'center',
+            headerStyle: {
+              backgroundColor: colors.card,
+            },
+            headerShadowVisible: false,
+          })}
+        />
+
+        <Stack.Screen
           name="UserSettingScreen"
           component={mainScreens.UserSettingScreen}
           options={{
@@ -176,19 +190,6 @@ export const AppNavigationContainer = () => {
             presentation: 'transparentModal',
             animation: 'fade',
           }}
-        />
-        <Stack.Screen
-          name="UserDetailScreen"
-          component={mainScreens.UserDetailScreen}
-          options={({route}) => ({
-            headerShown: true,
-            headerTitle: route.params.name,
-            headerTitleAlign: 'center',
-            headerStyle: {
-              backgroundColor: colors.card,
-            },
-            headerShadowVisible: false,
-          })}
         />
 
         <Stack.Screen

@@ -41,13 +41,6 @@ const MyKahootsScreen = () => {
     }, 2000);
   }, []);
 
-  const handleTransferIdEdit = (kahootId: number) => {
-    // navigation.navigate('QuestionScreen', {
-    //   kahootID: kahootId,
-    //   isEdit: true,
-    // });
-  };
-
   return (
     <SafeAreaView
       style={{
@@ -76,11 +69,7 @@ const MyKahootsScreen = () => {
           {ownKahootsList &&
             ownKahootsList.length > 0 &&
             ownKahootsList.map(kahoot => (
-              <KahootListItem
-                key={kahoot.id}
-                kahoot={kahoot}
-                handleTransferIdEdit={handleTransferIdEdit}
-              />
+              <KahootListItem key={kahoot.id} kahoot={kahoot} />
             ))}
         </View>
       </ScrollView>

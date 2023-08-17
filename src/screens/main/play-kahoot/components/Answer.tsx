@@ -1,4 +1,4 @@
-import {Text, StyleSheet, Pressable} from 'react-native';
+import {Text, StyleSheet, Pressable, Image} from 'react-native';
 import React from 'react';
 import {Answer as IAnswer} from '../../../../types/kahoot.type';
 import {Dimensions} from 'react-native';
@@ -10,15 +10,15 @@ export default function Answer({
   item,
   handleChoice,
   isChoice,
+  imageAnswer,
 }: {
   color: string;
   item: IAnswer | boolean;
   handleChoice: (item: number | boolean) => void;
   isChoice: boolean;
+  imageAnswer?: string | null;
 }) {
   if (typeof item === 'boolean') {
-    console.log('isChoice -> Answer', isChoice);
-
     return (
       <Pressable
         style={[
@@ -62,15 +62,23 @@ export default function Answer({
       onPress={() => {
         handleChoice(item.id);
       }}>
-      <Text
-        style={[
-          styles.text,
-          {
-            fontFamily: 'Poppins-Bold',
-          },
-        ]}>
-        {item?.text}
-      </Text>
+      {imageAnswer ? (
+        <Image
+          source={{uri: imageAnswer}}
+          style={{width: 100, height: 100}}
+          resizeMode="contain"
+        />
+      ) : (
+        <Text
+          style={[
+            styles.text,
+            {
+              fontFamily: 'Poppins-Bold',
+            },
+          ]}>
+          {item?.text}
+        </Text>
+      )}
     </Pressable>
   );
 }

@@ -47,7 +47,7 @@ function ImageCoverKahoot({image}: {image: string}) {
     </>
   );
 }
-function Title({title}: {title: string}) {
+function Title({title}: {title?: string}) {
   const {colors} = useTheme();
   return (
     <View
@@ -123,12 +123,16 @@ function BoxUserAction({
   username,
   onPressEdit,
   onPressDelete,
+  handleFavorite,
+  handleNavigateToUserDetail,
 }: {
   visibleEdit?: boolean;
-  username: string;
+  username?: string;
   isFavorite?: boolean;
   onPressEdit?: () => void;
   onPressDelete?: () => void;
+  handleFavorite?: () => void;
+  handleNavigateToUserDetail?: () => void;
 }) {
   const {colors} = useTheme();
 
@@ -157,7 +161,7 @@ function BoxUserAction({
             backgroundColor: colors.background,
           },
         ]}
-        onPress={() => console.log('123')}>
+        onPress={() => handleNavigateToUserDetail!()}>
         <Text
           style={{
             color: colors.text,
@@ -170,7 +174,7 @@ function BoxUserAction({
         {/* user action */}
         <ButtonActions
           nameIcon={isFavorite ? 'star' : 'star-outline'}
-          onPress={() => console.log('star')}
+          onPress={() => handleFavorite!()}
           color={isFavorite ? '#FFC107' : '#000'}
         />
         {visibleEdit && (

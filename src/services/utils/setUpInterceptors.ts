@@ -36,7 +36,7 @@ const setup = () => {
 
         // Access Token was expired
         if (err.response.status === 403 && !originalConfig._retry) {
-          console.info('Access token expired');
+          console.info('[TOKEN] Access token expired');
           originalConfig._retry = true;
           try {
             const res = await axiosInstance.post<AuthRefreshToken>({
