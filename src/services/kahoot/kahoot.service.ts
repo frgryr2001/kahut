@@ -3,11 +3,24 @@ import {RequestResponse} from '../../types/common';
 import {
   IKahootDetail,
   IGetKaHootsListResponseData,
+  KahootDetailData,
 } from '../../types/kahoot.type';
 
 const getKahootsList = async ({userId}: {userId?: number}) => {
   try {
     const url = `/kahoots/list?limit=999&${userId ? `userId=${userId}` : ''}`;
+    const response = await httpClient.get<
+      RequestResponse<IGetKaHootsListResponseData>
+    >(url);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const getKahootsListPublic = async () => {
+  try {
+    const url = '/kahoots/list';
     const response = await httpClient.get<
       RequestResponse<IGetKaHootsListResponseData>
     >(url);
@@ -28,7 +41,7 @@ const getOwnKahootsList = async (page: number) => {
   }
 };
 
-const getKahootDetail = async (kahootId: number) => {
+const getKahootDetail = async (kahootId: number): Promise<KahootDetailData> => {
   try {
     const response = await httpClient.get<IKahootDetail>(
       `/kahoots/detail/${kahootId}`,
@@ -39,15 +52,71 @@ const getKahootDetail = async (kahootId: number) => {
   }
 };
 
-const deleteKahootById = async (kahootId: number) => {
+const deleteKahootById = async (
+  kahootId: number,
+): Promise<RequestResponse<number>> => {
   try {
     const response = await httpClient.delete<RequestResponse<number>>(
       `/kahoots/${kahootId}`,
     );
+
     return response;
   } catch (error) {
     throw error;
   }
 };
 
-export {getKahootsList, getOwnKahootsList, getKahootDetail, deleteKahootById};
+const postUserFavoriteKahoot = async (
+  kahootId: number,
+  userId: number,
+): Promise<RequestResponse<number>> => {
+  try {
+    const response = await httpClient.post<RequestResponse<number>>({
+      url: '/favorites',
+      data: {
+        kahootId,
+        userId,
+      },
+      config: {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
+    });
+    console.log('response', response);
+
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+const deleteUserFavoriteKahoot = async (
+  kahootId: number,
+): Promise<RequestResponse<number>> => {
+  try {
+    const response = await httpClient.delete<RequestResponse<number>>(
+      '/favorites',
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        data: {
+          kahootId,
+        },
+      },
+    );
+    console.log('response', response);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+export {
+  getKahootsList,
+  getKahootsListPublic,
+  getOwnKahootsList,
+  getKahootDetail,
+  deleteKahootById,
+  postUserFavoriteKahoot,
+  deleteUserFavoriteKahoot,
+};

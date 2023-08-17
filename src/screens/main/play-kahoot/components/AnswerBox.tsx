@@ -28,6 +28,7 @@ export default function AnswerBox({
             handleChoice={handleChoice!}
             key={item.id}
             isChoice={choiced === item.id}
+            imageAnswer={item.image}
           />
         ))}
       {type === 'trueorfalse' && (

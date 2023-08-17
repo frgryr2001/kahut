@@ -1,19 +1,31 @@
-import React from 'react';
+import React, {useRef, useState} from 'react';
 import {View} from 'react-native';
 
 import {
   KahootListItemSkeleton,
   EmptyMessage,
   KahootListItem,
+  KahootBottomSheet,
 } from '../../../../../components/ui/';
 import {KahootSummary} from '../../../../../types/kahoot.type';
+import {BottomSheetModal} from '@gorhom/bottom-sheet';
 
 interface Props {
   data?: KahootSummary[];
+  isMyKahoots?: boolean;
 }
 
-const KahootsList = ({data}: Props) => {
-  const handleTransferIdEdit = () => {};
+const KahootsList = ({data, isMyKahoots}: Props) => {
+  const [kahootDetailConfig, setKahootDetailConfig] = useState<{
+    kahootID: number;
+    isMyKahoot: boolean;
+  }>();
+  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+
+  const handleKahootListItemPress = (kahootID: number) => {
+    setKahootDetailConfig({kahootID, isMyKahoot: isMyKahoots!});
+    bottomSheetModalRef.current?.present();
+  };
 
   return (
     <View
@@ -37,9 +49,14 @@ const KahootsList = ({data}: Props) => {
           <KahootListItem
             key={kahoot.id}
             kahoot={kahoot}
-            handleTransferIdEdit={handleTransferIdEdit}
+            handleKahootListItemPress={handleKahootListItemPress}
           />
         ))}
+
+      <KahootBottomSheet
+        ref={bottomSheetModalRef}
+        kahootDetailConfig={kahootDetailConfig}
+      />
     </View>
   );
 };

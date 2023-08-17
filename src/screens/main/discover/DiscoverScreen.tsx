@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useEffect, useCallback, useRef} from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -12,10 +12,14 @@ import {
   BannerSlider,
   SectionContainer,
   KahootSlider,
+  KahootBottomSheet,
 } from '../../../components/ui';
 import {getUsersList} from '../../../services/user/user.service';
 import {UserSummary} from '../../../types/user.type';
 import styles from './DiscoverScreen.style';
+import {BottomSheetModal} from '@gorhom/bottom-sheet';
+import {useSelector} from 'react-redux';
+import {selectUser} from '../../../redux/slices/authSlice/selector';
 
 interface Props {
   navigation: any;
@@ -25,6 +29,12 @@ const DiscoverScreen = ({navigation}: Props) => {
   const {colors} = useTheme();
   const [usersList, setUsersList] = useState<UserSummary[]>();
   const [isFetching, setIsFetching] = useState<boolean>(true);
+  const userStore = useSelector(selectUser);
+  const [kahootDetailConfig, setKahootDetailConfig] = useState<{
+    kahootID: number;
+    isMyKahoot: boolean;
+  }>();
+  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
   useEffect(() => {
     getUsersList().then(data => {
@@ -40,6 +50,15 @@ const DiscoverScreen = ({navigation}: Props) => {
       return clearTimeout(timerId);
     }, 2000);
   }, []);
+
+  // open bottom sheet
+  const handlePresentModalPress = useCallback(
+    (kahootID: number, isMyKahoot: boolean) => {
+      setKahootDetailConfig({kahootID, isMyKahoot});
+      bottomSheetModalRef.current?.present();
+    },
+    [],
+  );
 
   return (
     <SafeAreaView>
@@ -62,7 +81,15 @@ const DiscoverScreen = ({navigation}: Props) => {
                     name: user.name,
                   })
                 }>
-                <KahootSlider kahootsList={user.kahoots} />
+                <KahootSlider
+                  kahootsList={user.kahoots}
+                  onItemPress={handlePresentModalPress}
+                  isMyKahoot={userStore?.id === user.id}
+                />
+                <KahootBottomSheet
+                  ref={bottomSheetModalRef}
+                  kahootDetailConfig={kahootDetailConfig}
+                />
               </SectionContainer>
             ))}
 

@@ -100,9 +100,15 @@ const questionSlice = createSlice({
       if (kahoot) {
         const question = kahoot.questions.find(q => q.id === questionId);
         if (question) {
-          question.media = imageQuestion;
-          question.flag = 'edited';
-          kahoot.images?.push(file);
+          if (question.flag === 'added') {
+            question.media = imageQuestion;
+            kahoot.images?.push(file);
+            question.flag = 'added';
+          } else {
+            question.media = imageQuestion;
+            kahoot.images?.push(file);
+            question.flag = 'edited';
+          }
         }
       }
     },

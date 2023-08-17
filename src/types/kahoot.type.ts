@@ -33,6 +33,10 @@ export interface KahootDetailData {
   description: string;
   media: string;
   visibleScope: string;
+  numberOfPlayer: number;
+  usersFavorite: {
+    userId: number;
+  }[];
   questions: Question[];
   isMyKahoot?: boolean;
 }
@@ -52,7 +56,7 @@ export interface Question {
 export interface Answer {
   id: number;
   text: string;
-  image: null;
+  image: null | string;
   isCorrect: number;
   inOrder: number;
 }

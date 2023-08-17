@@ -13,9 +13,9 @@ interface Props {
     idQuestion?: string;
   };
   handleEditWithDraftKaHoot?: (isDraft: boolean, kahootIdDraft: string) => void;
-  handleTransferIdEdit?: (kahootId: number) => void;
   numberOfQuestionInLocal?: number;
   navigation?: any;
+  handleKahootListItemPress?: (kahootID: number) => void;
 }
 
 const KahootListItem = ({
@@ -23,7 +23,7 @@ const KahootListItem = ({
   kahoot,
   numberOfQuestionInLocal,
   handleEditWithDraftKaHoot,
-  handleTransferIdEdit,
+  handleKahootListItemPress,
 }: Props) => {
   const {colors} = useTheme();
 
@@ -31,9 +31,10 @@ const KahootListItem = ({
     <>
       <Pressable
         onPress={() => {
-          handleEditWithDraftKaHoot &&
-            handleEditWithDraftKaHoot(isDraft, kahoot.idQuestion!);
-          handleTransferIdEdit && handleTransferIdEdit(kahoot.id);
+          if (handleEditWithDraftKaHoot) {
+            return handleEditWithDraftKaHoot(isDraft, kahoot.idQuestion!);
+          }
+          handleKahootListItemPress && handleKahootListItemPress(kahoot.id);
         }}
         style={[
           {
