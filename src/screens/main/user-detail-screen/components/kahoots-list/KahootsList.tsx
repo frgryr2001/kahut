@@ -15,6 +15,7 @@ interface Props {
   isMyKahoots?: boolean;
 }
 
+
 const KahootsList = ({data, isMyKahoots}: Props) => {
   const [kahootDetailConfig, setKahootDetailConfig] = useState<{
     kahootID: number;

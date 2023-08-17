@@ -11,21 +11,22 @@ import {BottomSheetModalProvider} from '@gorhom/bottom-sheet';
 
 const UserDetailScreen = ({route}: any) => {
   const {id}: {id: number} = route.params;
+
   const [userDetail, setUserDetail] = useState<UserDetail>();
   const [kahootsList, setKahootsList] = useState<KahootSummary[]>();
   const authState = useSelector(selectUser);
 
-  const getUserDetailRequest = async () => {
-    const response = await getUserDetail({id});
-    setUserDetail(response);
-  };
-
-  const getKahootsListRequest = async () => {
-    const response = await getKahootsList({userId: id});
-    setKahootsList(response.kahoots);
-  };
-
   useEffect(() => {
+    const getUserDetailRequest = async () => {
+      const response = await getUserDetail({id});
+      setUserDetail(response);
+    };
+
+    const getKahootsListRequest = async () => {
+      const response = await getKahootsList({userId: id});
+      setKahootsList(response.kahoots);
+    };
+
     getUserDetailRequest();
     getKahootsListRequest();
     // eslint-disable-next-line react-hooks/exhaustive-deps
