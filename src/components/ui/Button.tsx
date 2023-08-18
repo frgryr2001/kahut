@@ -59,7 +59,7 @@ export const Button = ({
                   color: 'white',
                   fontFamily: 'Poppins-Bold',
                 }
-              : {...styles.buttonText, color: isActive ? '#fff' : 'white'}
+              : {...styles.buttonText, color: isActive ? '#fff' : 'black'}
           }>
           {title}
         </Text>

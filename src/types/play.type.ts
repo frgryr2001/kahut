@@ -30,6 +30,7 @@ interface PlayDetail {
       image?: string;
     };
     isCorrect: boolean;
+    point: number;
   }>;
 }
 

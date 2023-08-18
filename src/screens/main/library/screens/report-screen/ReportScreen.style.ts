@@ -36,9 +36,8 @@ export default StyleSheet.create({
   authContainer: {
     borderRadius: 4,
     overflow: 'hidden',
-    shadowColor: '#00000040',
-    elevation: 2,
-    backgroundColor: '#ddd',
+    rowGap: 10,
+
     gap: 1,
   },
   authItemContainer: {
@@ -47,6 +46,15 @@ export default StyleSheet.create({
     gap: 16,
     padding: 16,
     backgroundColor: '#fff',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 3,
   },
   authItemTitle: {
     fontSize: 16,

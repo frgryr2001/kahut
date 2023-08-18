@@ -7,7 +7,7 @@ export * from './ModalCustom';
 export {default as KahootSliderItem} from './kahoot-slider-item/KahootSliderItem';
 export {default as KahootListItem} from './kahoot-list-item/KahootListItem';
 export {default as AppBarIconButton} from './app-bar-icon-button/AppBarIconButton';
-export {default as Skeleton} from './skeleton/Skeleton';
+export {default as Skeleton} from './Skeleton/Skeleton';
 export {default as KahootListItemSkeleton} from './kahoot-list-item-skeleton/KahootListItemSkeleton';
 export {default as KahootSliderItemSkeleton} from './kahoot-slider-item-skeleton/KahootSliderItemSkeleton';
 export {default as EmptyMessage} from './empty-message/EmptyMessage';
@@ -16,3 +16,4 @@ export {default as SectionContainer} from './section-container/SectionContainer'
 export {default as KahootSlider} from './kahoot-slider/KahootSlider';
 export {default as KahootBottomSheet} from './kahoot-bottom-sheet/KahootBottomSheet';
 export {default as PopupMenu} from './popup-menu/PopupMenu';
+export {default as CardReportAnswer} from './card-report-answer/CardReportAnswer';

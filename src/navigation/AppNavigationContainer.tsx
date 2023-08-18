@@ -61,6 +61,13 @@ export type RootStackParams = {
     assignmentId?: number;
     kahootName: string;
   };
+  ResultPlayKahootScreen: {
+    id: number;
+    kahootId: number;
+    assignmentId?: number;
+    kahootName?: string;
+    kahootObj: KahootDetailData;
+  };
 };
 export type ScreenName = keyof RootStackParams;
 
@@ -198,6 +205,17 @@ export const AppNavigationContainer = () => {
         <Stack.Screen
           name="PlayScreen"
           component={mainScreens.PlayScreen}
+          options={{
+            headerShown: false,
+            contentStyle: {
+              backgroundColor: colors.background,
+            },
+          }}
+        />
+
+        <Stack.Screen
+          name="ResultPlayKahootScreen"
+          component={mainScreens.ResultPlayKahoot}
           options={{
             headerShown: false,
             contentStyle: {

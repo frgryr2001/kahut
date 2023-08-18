@@ -73,8 +73,6 @@ export default function PopupMenu({arrInitPopupMenu, isMyKahoot}: Props) {
             ]}>
             {options.map(option => {
               if (!isMyKahoot && option.title === 'Delete') {
-                console.log('123123');
-
                 return <View key={option.title} />;
               }
               return (

@@ -38,7 +38,13 @@ const getPlayDetail = async ({
 };
 
 export const postResultPlayOfUser = async (data: IPlayData) => {
-  const response = await httpClient.post<RequestResponse<{}>>({
+  const response = await httpClient.post<
+    RequestResponse<{
+      id: number;
+      kahootId: number;
+      assignmentId: number;
+    }>
+  >({
     url: '/plays',
     data,
   });

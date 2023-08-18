@@ -3,7 +3,7 @@ import React from 'react';
 import Header from './Header';
 import Footer from './Footer';
 import QuestionImage from './QuestionImage';
-import {Question} from '../../../../types/kahoot.type';
+import {KahootDetailData, Question} from '../../../../types/kahoot.type';
 import QuestionTitle from './QuestionTitle';
 import Box from './Box';
 import {Button, ModalCustom} from '../../../../components/ui';
@@ -17,6 +17,7 @@ interface Props {
   numberQuestion: number;
   navigation: any;
   kahootId: number;
+  kahootObj?: KahootDetailData;
 }
 
 export default function QuestionBox({
@@ -24,6 +25,7 @@ export default function QuestionBox({
   numberQuestion,
   navigation,
   kahootId,
+  kahootObj,
 }: Props) {
   const {colors} = useTheme();
   const [startIndex, setStartIndex] = React.useState(0);
@@ -37,14 +39,15 @@ export default function QuestionBox({
     const sumScore = questions.reduce((acc, cur, index) => {
       if (typeof answered[index] === 'number') {
         const answerObj = cur.answers.find(
-          (answer, _) => answer.isCorrect && answer.id === answered[index],
+          (answer, _) => answer.id === answered[index],
         );
-        if (answerObj) {
+
+        if (answerObj?.isCorrect) {
           acc += cur.point;
         }
       }
       if (typeof answered[index] === 'boolean') {
-        if (answered[index] === cur.answer) {
+        if (answered[index] === Boolean(cur.answer)) {
           acc += cur.point;
         }
       }
@@ -52,6 +55,7 @@ export default function QuestionBox({
     }, 0);
     return sumScore;
   }, [answered, questions]);
+
   const dataCompleted: IPlayData = React.useMemo(() => {
     return {
       kahootId,
@@ -83,6 +87,19 @@ export default function QuestionBox({
 
   const handleChoice = (index: number | boolean) => {
     setChoiced(index);
+  };
+
+  const visibleResultScreen = (
+    playId: number,
+    kahootID: number,
+    assignmentId: number,
+  ) => {
+    navigation.navigate('ResultPlayKahootScreen', {
+      id: playId,
+      kahootId: kahootID,
+      assignmentId,
+      kahootObj,
+    });
   };
 
   return (
@@ -142,6 +159,7 @@ export default function QuestionBox({
         handleNextQuestion={handleNextQuestion}
         handleAnswer={handleAnswer}
         dataCompleted={dataCompleted}
+        visibleResultScreen={visibleResultScreen}
         choiced={choiced!}
       />
     </View>

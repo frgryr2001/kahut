@@ -1,4 +1,4 @@
-import {View, Text, StyleSheet, Alert} from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 import React from 'react';
 import {Button} from '../../../../components/ui';
 import {CountdownCircleTimer} from 'react-native-countdown-circle-timer';
@@ -16,6 +16,11 @@ interface Props {
   choiced: number | boolean | null;
   startIndex: number;
   dataCompleted: IPlayData;
+  visibleResultScreen: (
+    playId: number,
+    kahootID: number,
+    assignmentId: number,
+  ) => void;
 }
 
 export default function Footer({
@@ -28,6 +33,7 @@ export default function Footer({
   handleAnswer,
   choiced,
   dataCompleted,
+  visibleResultScreen,
 }: Props) {
   const {colors} = useTheme();
   const flag = React.useRef(false);
@@ -42,12 +48,14 @@ export default function Footer({
         return;
       }
       dataCompleted.answers?.push(choice);
-      console.log(dataCompleted);
 
       //   submit answer to API
+
       const data = await postResultPlayOfUser(dataCompleted);
+
       if (data.code === 200) {
-        Alert.alert(data.message, `Your score is ${dataCompleted.point}`);
+        const {id, kahootId, assignmentId} = data.data;
+        visibleResultScreen(id, kahootId, assignmentId);
       }
     }
   };
