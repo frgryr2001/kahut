@@ -1,5 +1,5 @@
 import {View, Text} from 'react-native';
-import React from 'react';
+import React, {useCallback, useEffect} from 'react';
 import Header from './Header';
 import Footer from './Footer';
 import QuestionImage from './QuestionImage';
@@ -10,7 +10,8 @@ import {Button, ModalCustom} from '../../../../components/ui';
 import {useTheme} from '@react-navigation/native';
 import AnswerBox from './AnswerBox';
 import {siteConfig} from '../../../../configs/siteConfig';
-import {IPlayData} from '../../../../types/play';
+// import {IPlayData} from '../../../../types/play';
+import {postResultPlayOfUser} from '../../../../services/play/play.service';
 
 interface Props {
   questions: Question[];
@@ -49,6 +50,7 @@ export default function QuestionBox({
       if (typeof answered[index] === 'boolean') {
         if (answered[index] === Boolean(cur.answer)) {
           acc += cur.point;
+          console.log('acc', acc);
         }
       }
       return acc;
@@ -56,29 +58,56 @@ export default function QuestionBox({
     return sumScore;
   }, [answered, questions]);
 
-  const dataCompleted: IPlayData = React.useMemo(() => {
-    return {
-      kahootId,
-      point: score,
-      answers: answered,
-    };
-  }, [kahootId, score, answered]);
-
   const handleBack = () => {
     navigation.goBack();
   };
 
-  const continueQuestion = () => {
-    if (startIndex === numberQuestion - 1) {
-      //   TODO: handle end game
-      return console.log('end');
-    }
-
-    setStartIndex(startIndex + 1);
-  };
   const handleAnswer = (index: number | boolean | null) => {
     setAnswered(prev => [...prev, index]);
     setChoiced(undefined);
+  };
+  const visibleResultScreen = useCallback(
+    (playId: number, kahootID: number, assignmentId: number) => {
+      navigation.replace('ResultPlayKahootScreen', {
+        id: playId,
+        kahootId: kahootID,
+        assignmentId,
+        kahootObj,
+      });
+    },
+    [navigation, kahootObj],
+  );
+  useEffect(() => {
+    if (
+      startIndex === numberQuestion - 1 &&
+      answered.length === numberQuestion
+    ) {
+      const prepareData = {
+        kahootId,
+        point: score,
+        answers: answered,
+      };
+      postResultPlayOfUser(prepareData).then(data => {
+        if (data.code === 200) {
+          const {id, kahootId, assignmentId} = data.data;
+          visibleResultScreen(id, kahootId, assignmentId);
+        }
+      });
+    }
+  }, [
+    startIndex,
+    numberQuestion,
+    answered,
+    kahootId,
+    score,
+    visibleResultScreen,
+  ]);
+  const continueQuestion = async () => {
+    if (startIndex === numberQuestion - 1) {
+      return;
+    }
+
+    setStartIndex(startIndex + 1);
   };
 
   const handleNextQuestion = () => {
@@ -87,19 +116,6 @@ export default function QuestionBox({
 
   const handleChoice = (index: number | boolean) => {
     setChoiced(index);
-  };
-
-  const visibleResultScreen = (
-    playId: number,
-    kahootID: number,
-    assignmentId: number,
-  ) => {
-    navigation.navigate('ResultPlayKahootScreen', {
-      id: playId,
-      kahootId: kahootID,
-      assignmentId,
-      kahootObj,
-    });
   };
 
   return (
@@ -135,7 +151,7 @@ export default function QuestionBox({
       <Header
         startIndex={startIndex + 1}
         numberQuestion={numberQuestion}
-        typeQuestion={questions[startIndex].type}
+        typeQuestion={questions[startIndex]?.type}
         onPressQuit={() => handleBack()}
       />
 
@@ -158,7 +174,6 @@ export default function QuestionBox({
         endQuestion={startIndex === numberQuestion - 1}
         handleNextQuestion={handleNextQuestion}
         handleAnswer={handleAnswer}
-        dataCompleted={dataCompleted}
         visibleResultScreen={visibleResultScreen}
         choiced={choiced!}
       />

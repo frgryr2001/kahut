@@ -9,8 +9,6 @@ import {initQuestion} from '../../../redux/slices/questionSlice/reducer';
 import {useAppDispatch} from '../../../redux/store';
 import {Question, theme} from '../../../types/question';
 import {KahootDetailData} from '../../../types/kahoot.type';
-import {ModalCustom} from '../ModalCustom';
-import GameModeCard from './GameModeCard';
 import {
   postUserFavoriteKahoot,
   deleteUserFavoriteKahoot,
@@ -19,6 +17,8 @@ import {
 } from '../../../services/kahoot/kahoot.service';
 import {useSelector} from 'react-redux';
 import {selectUser} from '../../../redux/slices/authSlice/selector';
+import ModalGameMode from './ModalGameMode';
+import {v4 as uuidv4} from 'uuid';
 
 interface Props {
   updateStateWhenDeleteKahoot?: (kahootId: number) => void;
@@ -185,23 +185,14 @@ const KahootBottomSheet = React.forwardRef(
             backdropComponent={renderBackdrop}>
             <ScrollView>
               <View style={styles.contentContainer}>
-                <ModalCustom
+                {/* Here */}
+                <ModalGameMode
                   modalVisible={modalVisible}
-                  title="Choose Game Mode"
-                  onCloseModal={() => closeModalChooseGameMode()}>
-                  <View style={styles.boxGameMode}>
-                    <GameModeCard
-                      title="Assignment"
-                      subTitle="Send this kahoot as homework"
-                      onPress={() => console.log('123')}
-                    />
-                    <GameModeCard
-                      title="Single player"
-                      subTitle="Play on your own"
-                      onPress={() => handleStartGame()}
-                    />
-                  </View>
-                </ModalCustom>
+                  closeModalChooseGameMode={closeModalChooseGameMode}
+                  handleStartGame={handleStartGame}
+                  kahootId={kahoot?.id as number}
+                  key={uuidv4()}
+                />
                 <BottomSheet>
                   <BottomSheet.ImageCoverKahoot
                     image={kahoot?.coverImage ?? ''}
@@ -263,10 +254,6 @@ const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
     alignItems: 'center',
-  },
-  boxGameMode: {
-    gap: 5,
-    paddingBottom: 20,
   },
 });
 

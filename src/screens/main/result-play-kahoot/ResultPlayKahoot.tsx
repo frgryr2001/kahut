@@ -104,7 +104,7 @@ export default function ResultPlayKahootScreen({navigation, route}: Props) {
         <Button
           title="Play again"
           onPress={() => {
-            navigation.navigate('PlayScreen', {
+            navigation.replace('PlayScreen', {
               kahoot: kahootObj,
             });
           }}

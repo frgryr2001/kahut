@@ -3,8 +3,6 @@ import React from 'react';
 import {Button} from '../../../../components/ui';
 import {CountdownCircleTimer} from 'react-native-countdown-circle-timer';
 import {useTheme} from '@react-navigation/native';
-import {IPlayData} from '../../../../types/play';
-import {postResultPlayOfUser} from '../../../../services/play/play.service';
 
 interface Props {
   timeLimit: number;
@@ -15,7 +13,7 @@ interface Props {
   handleAnswer: (index: number | boolean | null) => void;
   choiced: number | boolean | null;
   startIndex: number;
-  dataCompleted: IPlayData;
+
   visibleResultScreen: (
     playId: number,
     kahootID: number,
@@ -30,34 +28,14 @@ export default function Footer({
   endQuestion,
   handleNextQuestion,
   startIndex,
-  handleAnswer,
   choiced,
-  dataCompleted,
-  visibleResultScreen,
+  handleAnswer,
 }: Props) {
   const {colors} = useTheme();
   const flag = React.useRef(false);
 
   const handleSubmitAnswer = async (choice: any) => {
-    if (choiced !== undefined && !endQuestion) {
-      continueQuestion();
-      handleAnswer(choiced);
-    }
-    if (endQuestion) {
-      if (dataCompleted.answers?.length === startIndex + 1) {
-        return;
-      }
-      dataCompleted.answers?.push(choice);
-
-      //   submit answer to API
-
-      const data = await postResultPlayOfUser(dataCompleted);
-
-      if (data.code === 200) {
-        const {id, kahootId, assignmentId} = data.data;
-        visibleResultScreen(id, kahootId, assignmentId);
-      }
-    }
+    handleAnswer(choice);
   };
 
   return (
@@ -72,13 +50,15 @@ export default function Footer({
         onUpdate={remainingTime => {
           if (remainingTime === 0 && !endQuestion) {
             handleNextQuestion();
-            handleAnswer(null);
+            continueQuestion();
+            handleSubmitAnswer(choiced ?? null);
           }
           if (remainingTime === 0 && endQuestion) {
             if (!flag.current) {
               flag.current = true;
               if (choiced === undefined || choiced) {
-                handleSubmitAnswer(null);
+                handleSubmitAnswer(choiced ?? null);
+                continueQuestion();
               }
             }
           }
@@ -97,7 +77,10 @@ export default function Footer({
         style={{
           marginTop: 0,
         }}
-        onPress={() => handleSubmitAnswer(choiced)}
+        onPress={() => {
+          continueQuestion();
+          handleSubmitAnswer(choiced ?? null);
+        }}
       />
     </View>
   );

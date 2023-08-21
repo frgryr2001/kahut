@@ -15,7 +15,7 @@ export default function GameModeCard({title, subTitle, onPress}: Props) {
       style={[
         styles.container,
         {
-          backgroundColor: colors.background,
+          backgroundColor: colors.card,
         },
       ]}
       activeOpacity={0.7}

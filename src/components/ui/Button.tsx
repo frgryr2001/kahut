@@ -15,7 +15,7 @@ interface Props {
   as?: 'text' | 'button';
   isActive?: boolean;
   color?: string;
-  width?: number;
+  width?: number | string;
   style?: any;
 }
 export const Button = ({
@@ -56,7 +56,7 @@ export const Button = ({
           style={
             as === 'text'
               ? {
-                  color: 'white',
+                  color: 'black',
                   fontFamily: 'Poppins-Bold',
                 }
               : {...styles.buttonText, color: isActive ? '#fff' : 'black'}

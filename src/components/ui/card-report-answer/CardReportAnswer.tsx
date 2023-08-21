@@ -123,7 +123,9 @@ function YourAnswer({
       }}>
       {typeAnswer === 'quiz' && (userAnswer as QuizAnswer).text && (
         <Text style={{color: '#fff', fontWeight: '700'}}>
-          {(userAnswer as QuizAnswer).text}
+          {(userAnswer as QuizAnswer).text === null
+            ? 'No answer'
+            : (userAnswer as QuizAnswer).text}
         </Text>
       )}
 
@@ -140,7 +142,11 @@ function YourAnswer({
 
       {typeAnswer === 'trueorfalse' && (
         <Text style={{color: '#fff', fontWeight: '700'}}>
-          {(userAnswer as boolean) ? 'True' : 'False'}
+          {(userAnswer as boolean) === null
+            ? 'No answer'
+            : (userAnswer as boolean)
+            ? 'True'
+            : 'False'}
         </Text>
       )}
 

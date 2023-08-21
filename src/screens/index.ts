@@ -5,8 +5,8 @@ export {default as LibraryScreen} from './main/library/LibraryScreen';
 export {default as UserDetailScreen} from './main/user-detail-screen/UserDetailScreen';
 export {default as PlayScreen} from './main/play-kahoot/PlayScreen';
 export {default as ResultPlayKahoot} from './main/result-play-kahoot/ResultPlayKahoot';
-
 export {default as ReportDetailScreen} from './main/report-detail-screen/ReportDetailScreen';
+export {default as JoinScreen} from './main/join/JoinScreen';
 
 export * from './main/question';
 export * from './main/setting-question';

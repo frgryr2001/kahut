@@ -3,7 +3,6 @@ import {View, Text, Pressable, ActivityIndicator} from 'react-native';
 import {useSelector} from 'react-redux';
 import {useTheme} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import {DateTime} from 'luxon';
 
 import {selectStatus} from '../../../../../redux/slices/authSlice/selector';
 import {getPlaysList} from '../../../../../services/play/play.service';
@@ -11,6 +10,7 @@ import {PlaySummary} from '../../../../../types/play.type';
 import {EmptyMessage} from '../../../../../components/ui';
 import styles from './ReportScreen.style';
 import {ScrollView} from 'react-native';
+import {formattedDate} from '../../../../../helpers/formattedDate';
 
 export default function ReportScreen({navigation}: any) {
   const {colors} = useTheme();
@@ -24,9 +24,6 @@ export default function ReportScreen({navigation}: any) {
     };
     getPlaysListData();
   }, []);
-
-  const formattedDate = (time: number) =>
-    DateTime.fromMillis(time).toLocaleString(DateTime.DATETIME_MED);
 
   return (
     <ScrollView>

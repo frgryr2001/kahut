@@ -16,7 +16,7 @@ import {BottomSheetModalProvider} from '@gorhom/bottom-sheet';
 
 const Tab = createBottomTabNavigator();
 
-const CreateQuestionComponent = () => {
+const EmptyComponent = () => {
   return null;
 };
 
@@ -97,8 +97,24 @@ export function AppTabNavigator() {
             options={{
               tabBarLabel: 'Discover',
               tabBarActiveTintColor: '#7C4DFF',
+              lazy: true,
             }}
             component={DiscoverScreen}
+          />
+          <Tab.Screen
+            name="Join"
+            listeners={({navigation}) => ({
+              tabPress: e => {
+                e.preventDefault();
+                navigation.navigate('JoinScreen');
+              },
+            })}
+            options={{
+              unmountOnBlur: true,
+              tabBarLabel: 'Join',
+              tabBarActiveTintColor: '#7C4DFF',
+            }}
+            component={EmptyComponent}
           />
 
           <Tab.Screen
@@ -118,7 +134,7 @@ export function AppTabNavigator() {
               tabBarLabel: 'Create',
               tabBarActiveTintColor: '#7C4DFF',
             }}
-            component={CreateQuestionComponent}
+            component={EmptyComponent}
           />
 
           <Tab.Screen

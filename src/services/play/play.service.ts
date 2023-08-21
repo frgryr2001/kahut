@@ -1,7 +1,7 @@
 import httpClient from '../utils/httpClient';
 import {RequestResponse} from '../../types/common';
 import {PlayDetail, PlaySummary} from '../../types/play.type';
-import {IPlayData} from '../../types/play';
+import {IAssignmentData, IPlayData} from '../../types/play';
 
 const getPlaysList = async () => {
   try {
@@ -47,6 +47,22 @@ export const postResultPlayOfUser = async (data: IPlayData) => {
   >({
     url: '/plays',
     data,
+  });
+  return response;
+};
+
+export const createAssignment = async (data: {
+  kahootId: number;
+  expiredAt: number;
+}) => {
+  const response = await httpClient.post<RequestResponse<IAssignmentData>>({
+    url: '/assignments',
+    data,
+    config: {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    },
   });
   return response;
 };

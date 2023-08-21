@@ -16,11 +16,11 @@ export const styles = StyleSheet.create({
 const LightTheme = {
   dark: false,
   colors: {
-    primary: 'rgb(0, 122, 255)',
-    background: 'rgb(245, 245, 245)', //
-    card: 'rgb(255, 255, 255)',
-    text: 'rgb(17, 17, 17)', //
-    border: 'rgb(216, 216, 216)',
+    primary: '#1c7ed6',
+    background: '#f1f3f5', //
+    card: '#f8f9fa',
+    text: '#343a40', //
+    border: '#ced4da',
     notification: 'rgb(255, 59, 48)',
   },
 };

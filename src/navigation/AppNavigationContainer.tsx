@@ -68,6 +68,7 @@ export type RootStackParams = {
     kahootName?: string;
     kahootObj: KahootDetailData;
   };
+  JoinScreen: undefined;
 };
 export type ScreenName = keyof RootStackParams;
 
@@ -206,10 +207,19 @@ export const AppNavigationContainer = () => {
           name="PlayScreen"
           component={mainScreens.PlayScreen}
           options={{
-            headerShown: false,
             contentStyle: {
               backgroundColor: colors.background,
             },
+          }}
+        />
+        <Stack.Screen
+          name="JoinScreen"
+          component={mainScreens.JoinScreen}
+          options={{
+            contentStyle: {
+              backgroundColor: colors.background,
+            },
+            presentation: 'card',
           }}
         />
 

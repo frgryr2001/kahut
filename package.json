@@ -13,6 +13,7 @@
   "dependencies": {
     "@gorhom/bottom-sheet": "4",
     "@react-native-async-storage/async-storage": "^1.19.0",
+    "@react-native-clipboard/clipboard": "^1.11.2",
     "@react-native-community/blur": "^4.3.2",
     "@react-native-community/checkbox": "^0.5.16",
     "@react-native-google-signin/google-signin": "^10.0.1",
@@ -33,6 +34,7 @@
     "react-hook-form": "^7.45.1",
     "react-native": "0.72.1",
     "react-native-countdown-circle-timer": "^3.2.1",
+    "react-native-date-picker": "^4.2.14",
     "react-native-element-dropdown": "^2.9.0",
     "react-native-gesture-handler": "^2.12.0",
     "react-native-get-random-values": "^1.9.0",
