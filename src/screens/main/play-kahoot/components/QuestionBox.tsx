@@ -10,7 +10,6 @@ import {Button, ModalCustom} from '../../../../components/ui';
 import {useTheme} from '@react-navigation/native';
 import AnswerBox from './AnswerBox';
 import {siteConfig} from '../../../../configs/siteConfig';
-// import {IPlayData} from '../../../../types/play';
 import {postResultPlayOfUser} from '../../../../services/play/play.service';
 
 interface Props {

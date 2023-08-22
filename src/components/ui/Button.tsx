@@ -3,8 +3,10 @@ import {
   ActivityIndicator,
   StyleSheet,
   Text,
+  View,
   TouchableOpacity,
 } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 interface Props {
   title: string;
@@ -17,6 +19,11 @@ interface Props {
   color?: string;
   width?: number | string;
   style?: any;
+  icon?: {
+    name: string;
+    size: number;
+    color: string;
+  };
 }
 export const Button = ({
   title,
@@ -29,6 +36,7 @@ export const Button = ({
   width,
   isActive,
   style,
+  icon,
 }: Props) => {
   return (
     <TouchableOpacity
@@ -52,17 +60,31 @@ export const Button = ({
       {loading ? (
         <ActivityIndicator color="#fff" size={'small'} />
       ) : (
-        <Text
-          style={
-            as === 'text'
-              ? {
-                  color: 'black',
-                  fontFamily: 'Poppins-Bold',
-                }
-              : {...styles.buttonText, color: isActive ? '#fff' : 'black'}
-          }>
-          {title}
-        </Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+            gap: 5,
+          }}>
+          {icon && (
+            <Icon name={icon.name} size={icon.size} color={icon.color} />
+          )}
+          <Text
+            style={[
+              as === 'text'
+                ? {
+                    color: 'black',
+                    fontFamily: 'Poppins-Bold',
+                  }
+                : {...styles.buttonText, color: isActive ? '#fff' : 'black'},
+              {
+                opacity: disabled ? 0.4 : 1,
+              },
+            ]}>
+            {title}
+          </Text>
+        </View>
       )}
     </TouchableOpacity>
   );
