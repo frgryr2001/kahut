@@ -27,16 +27,13 @@ const setup = () => {
     async err => {
       const originalConfig = err.config;
 
-      if (
-        (originalConfig.url as string).endsWith('/auth/sign-out') ||
-        ((originalConfig.url as string).includes('/kahoots') && err.response)
-      ) {
+      if (err.response) {
         const refresh_token = getState().auth.user?.refresh_token;
-        console.log('[Refresh token]', refresh_token);
 
         // Access Token was expired
         if (err.response.status === 403 && !originalConfig._retry) {
           console.info('[TOKEN] Access token expired');
+          console.log('[Refresh token]', refresh_token);
           originalConfig._retry = true;
           try {
             const res = await axiosInstance.post<AuthRefreshToken>({
@@ -65,7 +62,6 @@ const setup = () => {
             return Promise.reject(_error);
           }
         }
-        console.log('[Lỗi status: ] ', err.response.status);
       }
 
       return Promise.reject(err);

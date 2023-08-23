@@ -11,6 +11,7 @@ import {useTheme} from '@react-navigation/native';
 import AnswerBox from './AnswerBox';
 import {siteConfig} from '../../../../configs/siteConfig';
 import {postResultPlayOfUser} from '../../../../services/play/play.service';
+import {IPlayData} from '../../../../types/play';
 
 interface Props {
   questions: Question[];
@@ -18,6 +19,7 @@ interface Props {
   navigation: any;
   kahootId: number;
   kahootObj?: KahootDetailData;
+  assignmentId?: number;
 }
 
 export default function QuestionBox({
@@ -26,6 +28,7 @@ export default function QuestionBox({
   navigation,
   kahootId,
   kahootObj,
+  assignmentId,
 }: Props) {
   const {colors} = useTheme();
   const [startIndex, setStartIndex] = React.useState(0);
@@ -49,7 +52,6 @@ export default function QuestionBox({
       if (typeof answered[index] === 'boolean') {
         if (answered[index] === Boolean(cur.answer)) {
           acc += cur.point;
-          console.log('acc', acc);
         }
       }
       return acc;
@@ -66,11 +68,11 @@ export default function QuestionBox({
     setChoiced(undefined);
   };
   const visibleResultScreen = useCallback(
-    (playId: number, kahootID: number, assignmentId: number) => {
+    (playId: number, kahootID: number, assignId: number) => {
       navigation.replace('ResultPlayKahootScreen', {
         id: playId,
         kahootId: kahootID,
-        assignmentId,
+        assignmentId: assignId,
         kahootObj,
       });
     },
@@ -81,17 +83,23 @@ export default function QuestionBox({
       startIndex === numberQuestion - 1 &&
       answered.length === numberQuestion
     ) {
-      const prepareData = {
-        kahootId,
+      const prepareData: IPlayData = {
+        kahootId: kahootId,
+        assignmentId,
         point: score,
         answers: answered,
       };
-      postResultPlayOfUser(prepareData).then(data => {
-        if (data.code === 200) {
-          const {id, kahootId, assignmentId} = data.data;
-          visibleResultScreen(id, kahootId, assignmentId);
-        }
-      });
+
+      postResultPlayOfUser(prepareData)
+        .then(data => {
+          if (data.code === 200) {
+            const {id, kahootId: khID, assignmentId: assignId} = data.data;
+            visibleResultScreen(id, khID, assignId);
+          }
+        })
+        .catch(err => {
+          console.log('err', JSON.stringify(err, null, 2));
+        });
     }
   }, [
     startIndex,
@@ -100,6 +108,7 @@ export default function QuestionBox({
     kahootId,
     score,
     visibleResultScreen,
+    assignmentId,
   ]);
   const continueQuestion = async () => {
     if (startIndex === numberQuestion - 1) {

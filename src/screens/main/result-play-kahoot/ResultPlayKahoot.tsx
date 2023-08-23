@@ -19,6 +19,7 @@ interface Props
 const height = Dimensions.get('window').height;
 export default function ResultPlayKahootScreen({navigation, route}: Props) {
   const {id, kahootId, assignmentId, kahootObj} = route.params;
+
   const [data, setData] = useState<PlayDetail>();
 
   useEffect(() => {
@@ -96,18 +97,24 @@ export default function ResultPlayKahootScreen({navigation, route}: Props) {
             navigation.navigate('HomeScreen');
           }}
           size="medium"
+          width={'48%'}
           style={{
             backgroundColor: '#fff',
             color: '#20065c',
           }}
         />
         <Button
-          title="Play again"
+          title={assignmentId ? 'Rank' : 'Play again'}
           onPress={() => {
+            if (assignmentId) {
+              console.log('rank');
+              return;
+            }
             navigation.replace('PlayScreen', {
               kahoot: kahootObj,
             });
           }}
+          width={'48%'}
           size="medium"
           isActive
         />

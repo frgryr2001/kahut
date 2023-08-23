@@ -1,9 +1,13 @@
-import {View, Text, StyleSheet, TextInput} from 'react-native';
+import {View, Text, StyleSheet, TextInput, Alert} from 'react-native';
 import {useTheme} from '@react-navigation/native';
 import React from 'react';
 import {Button} from '../../../../components/ui';
 
-export default function PinCode() {
+export default function PinCode({
+  verifyPinPlay,
+}: {
+  verifyPinPlay: (pinCode: number) => Promise<void>;
+}) {
   const {colors} = useTheme();
   const [textPin, setTextPin] = React.useState('');
 
@@ -44,17 +48,28 @@ export default function PinCode() {
         placeholderTextColor={'#ccc'}
         keyboardType="numeric"
         maxLength={8}
+        onChangeText={text => setTextPin(text)}
+        value={textPin}
       />
+
       <Button
         title="Enter"
-        onPress={() => {}}
+        onPress={() => {
+          if (textPin.match(/^[0-9]+$/) == null) {
+            return Alert.alert('PIN must be a number');
+          }
+          verifyPinPlay(+textPin).then(() => {
+            setTextPin('');
+          });
+        }}
         size="medium"
         width={'100%'}
         style={{
           marginTop: 20,
-          backgroundColor: '#536DFE',
+          backgroundColor: textPin.length < 8 ? '#ccc' : '#536DFE',
         }}
         isActive
+        disabled={textPin.length < 8}
       />
     </View>
   );

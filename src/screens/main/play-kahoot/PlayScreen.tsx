@@ -7,7 +7,7 @@ import {v4 as uuidv4} from 'uuid';
 
 interface Props extends StackScreenProps<RootStackParams, 'PlayScreen'> {}
 export default function PlayScreen({navigation, route}: Props) {
-  const {kahoot} = route.params;
+  const {kahoot, assignmentId} = route.params;
   const {questions} = kahoot!;
 
   return (
@@ -20,8 +20,9 @@ export default function PlayScreen({navigation, route}: Props) {
         questions={questions}
         numberQuestion={questions.length}
         navigation={navigation}
-        kahootId={kahoot?.id ?? 0}
+        kahootId={assignmentId ? kahoot?.kahootId! : kahoot?.id!}
         kahootObj={kahoot}
+        assignmentId={assignmentId}
       />
     </SafeAreaView>
   );

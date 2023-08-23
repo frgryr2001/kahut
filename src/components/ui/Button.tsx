@@ -78,9 +78,6 @@ export const Button = ({
                     fontFamily: 'Poppins-Bold',
                   }
                 : {...styles.buttonText, color: isActive ? '#fff' : 'black'},
-              {
-                opacity: disabled ? 0.4 : 1,
-              },
             ]}>
             {title}
           </Text>

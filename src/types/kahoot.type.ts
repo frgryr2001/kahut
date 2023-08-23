@@ -26,6 +26,7 @@ export interface KahootDetailData {
   id: number;
   userId: number;
   username: string;
+  kahootId?: number;
   userImage: string;
   coverImage: string;
   title: string;

@@ -1,5 +1,5 @@
 export interface IPlayData {
-  kahootId: number;
+  kahootId?: number | null;
   assignmentId?: number;
   point: number;
   answers: (number | boolean | null)[];

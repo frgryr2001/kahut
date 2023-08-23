@@ -2,6 +2,7 @@ import httpClient from '../utils/httpClient';
 import {RequestResponse} from '../../types/common';
 import {PlayDetail, PlaySummary} from '../../types/play.type';
 import {IAssignmentData, IPlayData} from '../../types/play';
+import {KahootDetailData} from '../../types/kahoot.type';
 
 const getPlaysList = async () => {
   try {
@@ -65,6 +66,17 @@ export const createAssignment = async (data: {
     },
   });
   return response;
+};
+
+export const getAssignment = async (id?: number, pin?: number) => {
+  try {
+    const response = await httpClient.get<RequestResponse<KahootDetailData>>(
+      `/assignments/detail?${id ? `id=${id}` : ''}&${pin ? `pin=${pin}` : ''}`,
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
 };
 
 export {getPlaysList, getPlayDetail};

@@ -5,6 +5,7 @@ import {IAssignmentData} from '../../../types/play';
 import {Button} from '../Button';
 import {useTheme} from '@react-navigation/native';
 import Clipboard from '@react-native-clipboard/clipboard';
+import QRCode from 'react-qr-code';
 export default function PinAssignment({
   assignment,
   closeModalChooseGameMode,
@@ -63,6 +64,13 @@ export default function PinAssignment({
           {assignment.pin}
         </Text>
       </Pressable>
+      <View
+        style={{
+          marginBottom: 10,
+          marginTop: 5,
+        }}>
+        <QRCode value={assignment.pin} />
+      </View>
       <Text>Deadline</Text>
       <Text
         style={{

@@ -54,6 +54,7 @@ export type RootStackParams = {
   };
   PlayScreen: {
     kahoot?: KahootDetailData;
+    assignmentId?: number;
   };
   ReportDetailScreen: {
     id: number;
