@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, Image, StatusBar} from 'react-native';
+import {View, Text, Image} from 'react-native';
 import {useTheme} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -34,7 +34,6 @@ export default function CardReportAnswer({answer}: CardProps) {
         height: 'auto',
         gap: 16,
       }}>
-      <StatusBar backgroundColor="white" barStyle="dark-content" />
       <View
         style={{
           flexDirection: 'row',

@@ -32,6 +32,13 @@ interface PlayDetail {
     isCorrect: boolean;
     point: number;
   }>;
+  topPlayers: Array<{
+    id: number;
+    userId: number;
+    point: number;
+    username: string;
+    userImage: string;
+  }>;
 }
 
 export type {PlaySummary, PlayDetail};

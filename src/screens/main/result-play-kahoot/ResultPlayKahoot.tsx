@@ -1,17 +1,11 @@
 import {RootStackParams} from '../../../navigation/AppNavigationContainer';
 import {StackScreenProps} from '@react-navigation/stack';
 import React, {useState, useEffect} from 'react';
-import {
-  View,
-  Text,
-  ActivityIndicator,
-  ScrollView,
-  SafeAreaView,
-  Dimensions,
-} from 'react-native';
+import {View, ScrollView, SafeAreaView, Dimensions} from 'react-native';
 import {getPlayDetail} from '../../../services/play/play.service';
 import {PlayDetail} from '../../../types/play.type';
-import {Button, CardReportAnswer} from '../../../components/ui';
+import {Button} from '../../../components/ui';
+import KahootResult from '../../../components/ui/kahoot-report-list/KahootResult';
 
 interface Props
   extends StackScreenProps<RootStackParams, 'ResultPlayKahootScreen'> {}
@@ -44,43 +38,7 @@ export default function ResultPlayKahootScreen({navigation, route}: Props) {
           backgroundColor: '#20065c',
           height: height - 45,
         }}>
-        {data ? (
-          <View
-            style={{
-              flex: 1,
-              backgroundColor: '#20065c',
-              padding: 16,
-            }}>
-            <Text
-              style={{
-                color: '#fff',
-                fontSize: 20,
-                fontWeight: '700',
-                textAlign: 'center',
-              }}>
-              Your Point: {data.point}
-            </Text>
-
-            <View
-              style={{
-                gap: 16,
-                marginTop: 16,
-              }}>
-              {data.answers
-                .sort((a, b) => a.inOrder - b.inOrder)
-                .map(answer => (
-                  <CardReportAnswer
-                    key={JSON.stringify(answer)}
-                    answer={answer}
-                  />
-                ))}
-            </View>
-          </View>
-        ) : (
-          <View style={{padding: 16, flex: 1, backgroundColor: '#20065c'}}>
-            <ActivityIndicator color="#fff" size={40} />
-          </View>
-        )}
+        <KahootResult data={data!} hasAssign />
       </ScrollView>
       <View
         style={{
