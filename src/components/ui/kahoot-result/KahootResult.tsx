@@ -5,6 +5,7 @@ import KahootReportBox from './KahootReportBox';
 import KahootYourPoint from './KahootYourPoint';
 import KahootReportList from './KahootReportList';
 import Tabbed from './Tabbed';
+import KahootLeaderBoard from './KahootLeaderBoard';
 
 export default function KahootResult({
   data,
@@ -17,14 +18,15 @@ export default function KahootResult({
   const handleSetActiveTab = (index: number) => {
     setActiveTab(index);
   };
+
   return (
     <View>
       <Tabbed>
-        <Tabbed.ActionContainer>
+        <Tabbed.ActionContainer hideTab={!hasAssign}>
           <Tabbed.Tab
             active={activeTab === 0}
             handleSetActiveTab={handleSetActiveTab.bind(null, 0)}>
-            <Text>Result</Text>
+            <Text>My answer</Text>
           </Tabbed.Tab>
           <Tabbed.Tab
             active={activeTab === 1}
@@ -32,6 +34,7 @@ export default function KahootResult({
             <Text>LeaderBoard</Text>
           </Tabbed.Tab>
         </Tabbed.ActionContainer>
+
         <Tabbed.TabContent>
           {data ? (
             <KahootReportBox>
@@ -41,7 +44,9 @@ export default function KahootResult({
                   <KahootReportList answers={data.answers} />
                 </>
               )}
-              {activeTab === 1 && <Text>LeaderBoard</Text>}
+              {activeTab === 1 && (
+                <KahootLeaderBoard top5LeaderBoard={data.topPlayers} />
+              )}
             </KahootReportBox>
           ) : (
             <View style={{padding: 16, flex: 1, backgroundColor: '#20065c'}}>

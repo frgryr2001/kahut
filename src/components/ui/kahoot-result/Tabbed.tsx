@@ -48,7 +48,7 @@ function Tab({
   );
 }
 
-function TabActionContainer({children}: Props) {
+function TabActionContainer({children, hideTab}: Props & {hideTab?: boolean}) {
   return (
     <View
       style={{
@@ -57,7 +57,7 @@ function TabActionContainer({children}: Props) {
 
         padding: 10,
       }}>
-      {children}
+      {hideTab ? <></> : children}
     </View>
   );
 }

@@ -9,6 +9,7 @@ interface Props extends StackScreenProps<RootStackParams, 'PlayScreen'> {}
 export default function PlayScreen({navigation, route}: Props) {
   const {kahoot, assignmentId} = route.params;
   const {questions} = kahoot!;
+  console.log('[PlayScreen Debug]', assignmentId);
 
   return (
     <SafeAreaView
