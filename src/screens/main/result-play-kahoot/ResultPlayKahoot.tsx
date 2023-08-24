@@ -5,7 +5,7 @@ import {View, ScrollView, SafeAreaView, Dimensions} from 'react-native';
 import {getPlayDetail} from '../../../services/play/play.service';
 import {PlayDetail} from '../../../types/play.type';
 import {Button} from '../../../components/ui';
-import KahootResult from '../../../components/ui/kahoot-report-list/KahootResult';
+import KahootResult from '../../../components/ui/kahoot-result/KahootResult';
 
 interface Props
   extends StackScreenProps<RootStackParams, 'ResultPlayKahootScreen'> {}
@@ -30,23 +30,26 @@ export default function ResultPlayKahootScreen({navigation, route}: Props) {
 
     getData();
   }, [id, kahootId, assignmentId]);
+  console.log(assignmentId);
 
   return (
-    <SafeAreaView>
+    <SafeAreaView
+      style={{
+        flex: 1,
+        backgroundColor: '#20065c',
+      }}>
       <ScrollView
         style={{
-          backgroundColor: '#20065c',
-          height: height - 45,
+          height: assignmentId ? height : height - 45,
         }}>
-        <KahootResult data={data!} hasAssign />
+        <KahootResult data={data!} hasAssign={Boolean(assignmentId)} />
       </ScrollView>
+
       <View
         style={{
           flexDirection: 'row',
           justifyContent: 'space-around',
-
           backgroundColor: '#20065c',
-
           padding: 16,
         }}>
         <Button
@@ -62,14 +65,15 @@ export default function ResultPlayKahootScreen({navigation, route}: Props) {
           }}
         />
         <Button
-          title={assignmentId ? 'Rank' : 'Play again'}
+          title={assignmentId ? 'Practice' : 'Play again'}
           onPress={() => {
+            let copyKahoot = {...kahootObj};
+
             if (assignmentId) {
-              console.log('rank');
-              return;
+              copyKahoot.id = kahootId;
             }
             navigation.replace('PlayScreen', {
-              kahoot: kahootObj,
+              kahoot: copyKahoot,
             });
           }}
           width={'48%'}
