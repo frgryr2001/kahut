@@ -19,6 +19,7 @@ import {useSelector} from 'react-redux';
 import {selectUser} from '../../../redux/slices/authSlice/selector';
 import ModalGameMode from './ModalGameMode';
 import {v4 as uuidv4} from 'uuid';
+import ModalShare from './ModalShare';
 
 interface Props {
   updateStateWhenDeleteKahoot?: (kahootId: number) => void;
@@ -35,6 +36,7 @@ const KahootBottomSheet = React.forwardRef(
     const user = useSelector(selectUser);
     const isFocused = useIsFocused();
     const [modalVisible, setModalVisible] = useState<boolean>(false);
+    const [modalShareVisible, setModalShareVisible] = useState<boolean>(false);
     const navigation = useNavigation<StackNavigationProp<RootStackParams>>();
     const snapPoints = useMemo(() => ['75%'], []);
     const [kahoot, setKahoot] = useState<KahootDetailData>();
@@ -91,6 +93,9 @@ const KahootBottomSheet = React.forwardRef(
       } else {
         navigation.navigate('UserSettingScreen');
       }
+    };
+    const openModalShare = () => {
+      setModalShareVisible(true);
     };
     const closeModalChooseGameMode = () => {
       setModalVisible(false);
@@ -193,6 +198,13 @@ const KahootBottomSheet = React.forwardRef(
                   kahootId={kahoot?.id as number}
                   key={uuidv4()}
                 />
+                <ModalShare
+                  modalShareVisible={modalShareVisible}
+                  onCloseModal={() => {
+                    setModalShareVisible(false);
+                  }}
+                  kahootId={kahoot?.id as number}
+                />
                 <BottomSheet>
                   <BottomSheet.ImageCoverKahoot
                     image={kahoot?.coverImage ?? ''}
@@ -232,6 +244,7 @@ const KahootBottomSheet = React.forwardRef(
                       )}
                       handleFavorite={handleFavorite}
                       handleNavigateToUserDetail={handleNavigateToUserDetail}
+                      openModalShare={openModalShare}
                     />
                     <BottomSheet.ButtonPlay
                       onPress={() => openModalChooseGameMode()}
