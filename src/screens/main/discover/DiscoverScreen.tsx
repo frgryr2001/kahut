@@ -86,10 +86,6 @@ const DiscoverScreen = ({navigation}: Props) => {
                   onItemPress={handlePresentModalPress}
                   isMyKahoot={userStore?.id === user.id}
                 />
-                <KahootBottomSheet
-                  ref={bottomSheetModalRef}
-                  kahootDetailConfig={kahootDetailConfig}
-                />
               </SectionContainer>
             ))}
 
@@ -98,6 +94,10 @@ const DiscoverScreen = ({navigation}: Props) => {
               <ActivityIndicator color={colors.text} size={40} />
             </View>
           )}
+          <KahootBottomSheet
+            ref={bottomSheetModalRef}
+            kahootDetailConfig={kahootDetailConfig}
+          />
         </View>
       </ScrollView>
     </SafeAreaView>

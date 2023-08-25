@@ -126,6 +126,7 @@ function BoxUserAction({
   handleFavorite,
   handleNavigateToUserDetail,
   isMyKahoot = false,
+  openModalShare,
 }: {
   visibleEdit?: boolean;
   username?: string;
@@ -135,6 +136,7 @@ function BoxUserAction({
   handleFavorite?: () => void;
   handleNavigateToUserDetail?: () => void;
   isMyKahoot?: boolean;
+  openModalShare?: () => void;
 }) {
   const {colors} = useTheme();
 
@@ -143,7 +145,7 @@ function BoxUserAction({
       {
         title: 'Share',
         icon: 'share-social-outline',
-        onPress: () => console.log('Share'),
+        onPress: () => openModalShare && openModalShare(),
       },
       {
         title: 'Delete',
