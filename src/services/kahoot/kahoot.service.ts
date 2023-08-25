@@ -18,7 +18,7 @@ const getKahootsList = async ({userId}: {userId?: number}) => {
   }
 };
 
-const getKahootsListPublic = async () => {
+const getPublicKahootsList = async () => {
   try {
     const url = '/kahoots/list';
     const response = await httpClient.get<
@@ -35,6 +35,40 @@ const getOwnKahootsList = async (page: number) => {
     const response = await httpClient.get<
       RequestResponse<IGetKaHootsListResponseData>
     >(`/kahoots/list/own?page=${page}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const getFavoriteKahootsList = async ({
+  page,
+  limit,
+}: {
+  page: number;
+  limit: number;
+}) => {
+  try {
+    const response = await httpClient.get<
+      RequestResponse<IGetKaHootsListResponseData>
+    >(`/favorites?page=${page}&limit=${limit}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const getSharedKahootsList = async ({
+  page,
+  limit,
+}: {
+  page: number;
+  limit: number;
+}) => {
+  try {
+    const response = await httpClient.get<
+      RequestResponse<IGetKaHootsListResponseData>
+    >(`/shared?page=${page}&limit=${limit}`);
     return response.data;
   } catch (error) {
     throw error;
@@ -90,6 +124,7 @@ const postUserFavoriteKahoot = async (
     throw error;
   }
 };
+
 const deleteUserFavoriteKahoot = async (
   kahootId: number,
 ): Promise<RequestResponse<number>> => {
@@ -111,10 +146,13 @@ const deleteUserFavoriteKahoot = async (
     throw error;
   }
 };
+
 export {
   getKahootsList,
-  getKahootsListPublic,
+  getPublicKahootsList,
   getOwnKahootsList,
+  getFavoriteKahootsList,
+  getSharedKahootsList,
   getKahootDetail,
   deleteKahootById,
   postUserFavoriteKahoot,

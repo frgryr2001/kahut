@@ -6,12 +6,13 @@ import {
   SectionContainer,
   KahootSlider,
   KahootBottomSheet,
+  EmptyMessage,
 } from '../../../components/ui/';
 import {HomeSkeleton} from './components';
 import {selectStatus} from '../../../redux/slices/authSlice/selector';
 import {KahootSummary} from '../../../types/kahoot.type';
 import {
-  getKahootsListPublic,
+  getPublicKahootsList,
   getOwnKahootsList,
 } from '../../../services/kahoot/kahoot.service';
 import styles from './HomeScreen.style';
@@ -42,7 +43,7 @@ const HomeScreen = ({navigation}: Props) => {
   // Get public kahoot
   useFocusEffect(
     useCallback(() => {
-      getKahootsListPublic()
+      getPublicKahootsList()
         .then(response => {
           setPublicKahootsList(response.kahoots);
           setIsFetchingPublicKahootsList(false);
@@ -148,6 +149,9 @@ const HomeScreen = ({navigation}: Props) => {
               icon="person-outline"
               onPressSeeAll={() => navigation.navigate('Library')}>
               {isFetchingOwnKahootsList && <HomeSkeleton />}
+              {ownKahootsList && ownKahootsList.length === 0 && (
+                <EmptyMessage messages={['Looks empty here...']} />
+              )}
               {ownKahootsList && (
                 <KahootSlider
                   kahootsList={ownKahootsList}
