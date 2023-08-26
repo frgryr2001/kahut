@@ -48,7 +48,7 @@ export const QuestionScreen = ({navigation, route}: Props) => {
   const dispatch = useAppDispatch();
   const kahootArray = useSelector(selectQuestions);
   const kahoot = kahootArray.find(item => item.idQuestion === idQuestion);
-  console.log('[DEBUG] , ', JSON.stringify(kahoot, null, 2));
+  //   console.log('[DEBUG] , ', JSON.stringify(kahoot, null, 2));
 
   const indexOfKahoot = kahootArray.findIndex(
     item => item.idQuestion === idQuestion,

@@ -20,6 +20,7 @@ import {selectUser} from '../../../redux/slices/authSlice/selector';
 import ModalGameMode from './ModalGameMode';
 import {v4 as uuidv4} from 'uuid';
 import ModalShare from './ModalShare';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 interface Props {
   updateStateWhenDeleteKahoot?: (kahootId: number) => void;
@@ -35,6 +36,7 @@ const KahootBottomSheet = React.forwardRef(
     const dispatch = useAppDispatch();
     const user = useSelector(selectUser);
     const isFocused = useIsFocused();
+    const [loading, setLoading] = useState<boolean>(false);
     const [modalVisible, setModalVisible] = useState<boolean>(false);
     const [modalShareVisible, setModalShareVisible] = useState<boolean>(false);
     const navigation = useNavigation<StackNavigationProp<RootStackParams>>();
@@ -114,9 +116,13 @@ const KahootBottomSheet = React.forwardRef(
 
     //   detele kahoot
     const deleteKahoot = async (kahootId: number) => {
+      setLoading(true);
+
       const response = await deleteKahootById(kahootId);
       if (response.code === 200) {
         //   Update state on Homesceen
+        setLoading(false);
+
         updateStateWhenDeleteKahoot && updateStateWhenDeleteKahoot(kahootId);
         //   Do something
       }
@@ -179,6 +185,7 @@ const KahootBottomSheet = React.forwardRef(
     return (
       <>
         <View style={styles.container}>
+          <Spinner visible={loading} />
           <BottomSheetModal
             style={{
               backgroundColor: 'white',

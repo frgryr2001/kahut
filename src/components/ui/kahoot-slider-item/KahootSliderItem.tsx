@@ -30,6 +30,12 @@ const KahootSliderItem = ({
 }: Props) => {
   const {colors} = useTheme();
 
+  const formattedName = (name: string) => {
+    const nameArr = name.split('-');
+    nameArr.pop();
+    return nameArr.join(' ');
+  };
+
   return (
     <TouchableOpacity
       onPress={async () => {
@@ -98,7 +104,7 @@ const KahootSliderItem = ({
               style={styles.username}
               numberOfLines={1}
               ellipsizeMode="tail">
-              {kahoot.username}
+              {formattedName(kahoot.username)}
             </Text>
           </View>
         )}

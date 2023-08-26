@@ -43,7 +43,15 @@ function ImageCoverKahoot({image}: {image: string}) {
             backgroundColor: colors.background,
           }}
         />
-      ) : null}
+      ) : (
+        <View
+          style={{
+            width: '100%',
+            height: 220,
+            backgroundColor: colors.background,
+          }}
+        />
+      )}
     </>
   );
 }
@@ -139,7 +147,13 @@ function BoxUserAction({
   openModalShare?: () => void;
 }) {
   const {colors} = useTheme();
+  const formattedName = () => {
+    const name = (username as string) ?? '';
+    const nameArr = name.split('-');
 
+    nameArr.pop();
+    return nameArr.join(' ');
+  };
   const itemPopup = useMemo(() => {
     return [
       {
@@ -171,7 +185,7 @@ function BoxUserAction({
             color: colors.text,
             fontFamily: 'Poppins-Regular',
           }}>
-          {username}
+          {formattedName()}
         </Text>
       </Pressable>
       <View style={styles.btnActionContainer}>

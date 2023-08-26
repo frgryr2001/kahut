@@ -32,7 +32,6 @@ export default function Footer({
   handleAnswer,
 }: Props) {
   const {colors} = useTheme();
-  const flag = React.useRef(false);
 
   const handleSubmitAnswer = async (choice: any) => {
     handleAnswer(choice);
@@ -54,18 +53,20 @@ export default function Footer({
             handleSubmitAnswer(choiced ?? null);
           }
           if (remainingTime === 0 && endQuestion) {
-            if (!flag.current) {
-              flag.current = true;
-              if (choiced === undefined || choiced) {
-                handleSubmitAnswer(choiced ?? null);
-                continueQuestion();
-              }
-            }
+            handleSubmitAnswer(choiced ?? null);
+            continueQuestion();
           }
         }}
         colorsTime={[7, 5, 2, 0]}>
         {({remainingTime}) => {
-          return <Text>{remainingTime}</Text>;
+          return (
+            <Text
+              style={{
+                color: colors.text,
+              }}>
+              {remainingTime}
+            </Text>
+          );
         }}
       </CountdownCircleTimer>
       {/* btn continue */}

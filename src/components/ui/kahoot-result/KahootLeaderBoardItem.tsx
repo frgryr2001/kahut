@@ -15,7 +15,15 @@ export default function KahootLeaderBoardItem({item}: {item: any}) {
         ]}>
         {item.username}
       </Text>
-      <Text style={styles.text}>{item.point}</Text>
+      <Text
+        style={[
+          styles.text,
+          {
+            color: colors.text,
+          },
+        ]}>
+        {item.point}
+      </Text>
     </View>
   );
 }

@@ -2,6 +2,7 @@ import {Text, StyleSheet, Pressable, Image} from 'react-native';
 import React from 'react';
 import {Answer as IAnswer} from '../../../../types/kahoot.type';
 import {Dimensions} from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 const height = Dimensions.get('window').height;
 
@@ -29,7 +30,7 @@ export default function Answer({
           },
           isChoice && {
             borderColor: isChoice ? '#00c853' : '',
-            borderWidth: isChoice ? 2 : 0,
+            borderWidth: isChoice ? 4 : 0,
           },
         ]}
         onPress={() => {
@@ -44,6 +45,18 @@ export default function Answer({
           ]}>
           {item ? 'True' : 'False'}
         </Text>
+        {isChoice && (
+          <Icon
+            name={'checkmark-circle'}
+            size={30}
+            color="#00c853"
+            style={{
+              position: 'absolute',
+              top: 5,
+              right: 5,
+            }}
+          />
+        )}
       </Pressable>
     );
   }
@@ -69,15 +82,29 @@ export default function Answer({
           resizeMode="contain"
         />
       ) : (
-        <Text
-          style={[
-            styles.text,
-            {
-              fontFamily: 'Poppins-Bold',
-            },
-          ]}>
-          {item?.text}
-        </Text>
+        <>
+          <Text
+            style={[
+              styles.text,
+              {
+                fontFamily: 'Poppins-Bold',
+              },
+            ]}>
+            {item?.text}
+          </Text>
+          {isChoice && (
+            <Icon
+              name={'checkmark-circle'}
+              size={30}
+              color="#00c853"
+              style={{
+                position: 'absolute',
+                top: 5,
+                right: 5,
+              }}
+            />
+          )}
+        </>
       )}
     </Pressable>
   );

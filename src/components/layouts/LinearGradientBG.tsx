@@ -48,13 +48,14 @@ export const LinearGradientBG = ({
       {isBtnBack && (
         <TouchableOpacity
           onPress={goBack}
+          activeOpacity={0.8}
           style={{
             position: 'absolute',
             top: 20,
             left: 10,
             zIndex: 999,
           }}>
-          <Icon name="chevron-back-circle-outline" size={30} color={'white'} />
+          <Icon name="arrow-back-outline" size={30} color={'white'} />
         </TouchableOpacity>
       )}
       <View style={styles.container}>

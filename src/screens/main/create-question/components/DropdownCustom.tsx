@@ -32,6 +32,7 @@ export const DropdownCustom = ({typeQuestion, kahootId, questionId}: Props) => {
         maxHeight={300}
         labelField="label"
         valueField="type"
+        itemTextStyle={{color: 'black'}}
         value={typeQuestion === 'quiz' ? 'quiz' : 'trueorfalse'}
         onFocus={() => setIsFocus(true)}
         onBlur={() => setIsFocus(false)}
@@ -89,6 +90,7 @@ const styles = StyleSheet.create({
   },
   placeholderStyle: {
     fontSize: 16,
+    color: 'black',
   },
   selectedTextStyle: {
     fontSize: 16,

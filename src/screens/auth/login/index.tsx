@@ -95,6 +95,8 @@ export const LoginScreen = ({navigation}: Props) => {
               <LinearGradientBG
                 title="Sign in to your Account"
                 bgImage="login"
+                isBtnBack
+                goBack={() => navigation.goBack()}
               />
               <FormAuth
                 formType="login"

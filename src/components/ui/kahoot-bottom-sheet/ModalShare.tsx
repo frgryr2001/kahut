@@ -6,7 +6,6 @@ import {useTheme} from '@react-navigation/native';
 import {Button} from '../Button';
 import {getUsersList} from '../../../services/user/user.service';
 import {createShare} from '../../../services/share/share.service';
-import {UserSummary} from '../../../types/user.type';
 import {useDebounce} from '../../../hooks/useDebounce';
 import {useSelector} from 'react-redux';
 import {selectUser} from '../../../redux/slices/authSlice/selector';
@@ -21,14 +20,15 @@ export default function ModalShare({
   kahootId: number;
 }) {
   const userAuth = useSelector(selectUser);
-  const [users, setUsers] = useState<UserSummary[]>([]);
+  const [users, setUsers] = useState<string[]>([]);
   const [searchDebounce, setSearchDebounce] = useState<string>('');
   const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   useEffect(() => {
     const getUsers = async () => {
       const data = await getUsersList();
-      setUsers(data);
+      const userNameList = data.map(user => user.name);
+      setUsers(userNameList);
     };
     getUsers();
   }, []);
@@ -37,16 +37,16 @@ export default function ModalShare({
     setSearchDebounce(text);
   }, []);
 
-  const filteredUsers = users.filter(user => {
+  const filteredUsers = users.filter(name => {
     if (searchDebounce === '') {
       return false;
     }
     if (userAuth) {
-      if (user.name === userAuth.username) {
+      if (name === userAuth.username) {
         return false;
       }
     }
-    return user.name.toLowerCase().includes(searchDebounce.toLowerCase());
+    return name.toLowerCase().includes(searchDebounce.toLowerCase());
   });
 
   const addUserShare = (username: string) => {
@@ -54,9 +54,11 @@ export default function ModalShare({
       return;
     }
     setSelectedUsers(prev => [...prev, username]);
+    setUsers(prev => prev.filter(user => user !== username));
   };
   const removeUserShare = (username: string) => {
     setSelectedUsers(prev => prev.filter(user => user !== username));
+    setUsers(prev => [...prev, username]);
   };
 
   const handleShare = async () => {
@@ -144,7 +146,7 @@ function ListUser({
   users,
   addUserShare,
 }: {
-  users: UserSummary[];
+  users: string[];
   addUserShare: (username: string) => void;
 }) {
   return (
@@ -153,7 +155,7 @@ function ListUser({
         marginTop: 10,
       }}>
       {users.map(user => (
-        <UserItem key={user.id} user={user} onAddUserShare={addUserShare} />
+        <UserItem key={user} user={user} onAddUserShare={addUserShare} />
       ))}
     </View>
   );
@@ -163,9 +165,10 @@ function UserItem({
   user,
   onAddUserShare,
 }: {
-  user: UserSummary;
+  user: string;
   onAddUserShare: (username: string) => void;
 }) {
+  const {colors} = useTheme();
   return (
     <View
       style={{
@@ -176,14 +179,15 @@ function UserItem({
       <Text
         style={{
           fontSize: 16,
+          color: colors.text,
         }}>
-        {user.name}
+        {user}
       </Text>
       <Icon
         name="add-outline"
-        size={30}
+        size={25}
         color="black"
-        onPress={() => onAddUserShare(user.name)}
+        onPress={() => onAddUserShare(user)}
       />
     </View>
   );
@@ -195,6 +199,7 @@ function ChipTag({
   selectedUsers: string[];
   removeUserShare: (username: string) => void;
 }) {
+  const {colors} = useTheme();
   return (
     <View
       style={{
@@ -214,7 +219,12 @@ function ChipTag({
               borderRadius: 3,
               margin: 5,
             }}>
-            <Text>{user}</Text>
+            <Text
+              style={{
+                color: colors.text,
+              }}>
+              {user}
+            </Text>
             <Icon
               name="close-outline"
               size={25}

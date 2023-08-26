@@ -130,7 +130,10 @@ export const ResetPasswordScreen = ({navigation, route}: Props) => {
                 disabled={loading}
                 color="#7C4DFF"
                 size="medium"
-                // isActive
+                isActive
+                style={{
+                  backgroundColor: '#7C4DFF',
+                }}
                 onPress={handleSubmit(onSubmit)}
               />
             </View>

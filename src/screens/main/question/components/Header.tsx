@@ -1,5 +1,11 @@
 import React from 'react';
-import {StyleSheet, Text, TouchableWithoutFeedback, View} from 'react-native';
+import {
+  Alert,
+  StyleSheet,
+  Text,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay';
 import {Question} from '../../../../types/question';
 import {useAppDispatch} from '../../../../redux/store';
@@ -165,20 +171,26 @@ const Header = ({
           JSON.stringify(kahoot?.deletedAnswerIds),
         );
 
-        const res = await httpClient.put<any>('/kahoots', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        });
+        try {
+          const res = await httpClient.put<any>('/kahoots', formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          });
 
-        if (res.code === 200) {
-          dispatch(
-            deleteKahoot({
-              kahootId: kahoot?.idQuestion!,
-            }),
-          );
+          if (res.code === 200) {
+            dispatch(
+              deleteKahoot({
+                kahootId: kahoot?.idQuestion!,
+              }),
+            );
+            setIsLoading(false);
+            navigation.goBack();
+          }
+        } catch (error) {
           setIsLoading(false);
-          navigation.goBack();
+          Alert.alert('Error', 'Something went wrong');
+          console.log('error', JSON.stringify(error, null, 2));
         }
       }
       update().catch(err => {

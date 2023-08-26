@@ -146,15 +146,33 @@ export default function QuestionBox({
           a quiz with <Text style={{fontWeight: 'bold'}}>{numberQuestion}</Text>{' '}
           questions.{siteConfig.noteModalBeforePlay}
         </Text>
-        <Button
-          title="Start"
-          onPress={() => {
-            setModalVisible(false);
-          }}
-          color={colors.primary}
-          size="medium"
-          isActive
-        />
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            gap: 10,
+          }}>
+          <Button
+            title="Cancel"
+            onPress={() => {
+              setModalVisible(false);
+              navigation.goBack();
+            }}
+            width={'48%'}
+            color={colors.background}
+            size="medium"
+          />
+          <Button
+            title="Start"
+            onPress={() => {
+              setModalVisible(false);
+            }}
+            color={colors.primary}
+            size="medium"
+            width={'48%'}
+            isActive
+          />
+        </View>
       </ModalCustom>
       <Header
         startIndex={startIndex + 1}

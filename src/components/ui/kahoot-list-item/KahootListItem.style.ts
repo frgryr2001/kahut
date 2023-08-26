@@ -2,10 +2,11 @@ import {StyleSheet} from 'react-native';
 
 export default StyleSheet.create({
   container: {
-    borderRadius: 8,
+    borderRadius: 3,
     overflow: 'hidden',
+    backgroundColor: '#fff',
     shadowColor: '#000',
-    elevation: 4,
+    elevation: 1,
     flexDirection: 'row',
   },
   coverImage: {

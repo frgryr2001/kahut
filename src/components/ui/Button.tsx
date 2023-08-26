@@ -72,6 +72,9 @@ export const Button = ({
           )}
           <Text
             style={[
+              {
+                color: '#fff',
+              },
               as === 'text'
                 ? {
                     color: 'black',
