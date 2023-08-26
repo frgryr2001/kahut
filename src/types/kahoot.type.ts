@@ -40,6 +40,9 @@ export interface KahootDetailData {
   }[];
   questions: Question[];
   isMyKahoot?: boolean;
+  isPlayed?: boolean;
+  playId?: number;
+  assignmentId?: number;
 }
 
 export interface Question {

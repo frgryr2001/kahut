@@ -25,10 +25,19 @@ export default function Tabbed() {
       if (res) {
         setLoading(false);
         const kahoot = res;
-        navigation.navigate('PlayScreen', {
-          kahoot,
-          assignmentId: kahoot.id, // kahoot.id as assignmentId
-        });
+        if (!kahoot.isPlayed) {
+          navigation.navigate('PlayScreen', {
+            kahoot,
+            assignmentId: kahoot.id, // kahoot.id as assignmentId
+          });
+        } else {
+          navigation.replace('ResultPlayKahootScreen', {
+            id: kahoot.playId!,
+            kahootId: undefined,
+            assignmentId: kahoot.assignmentId!,
+            kahootObj: kahoot,
+          });
+        }
       }
     } catch (error: any) {
       setLoading(false);

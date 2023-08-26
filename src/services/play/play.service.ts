@@ -22,7 +22,7 @@ const getPlayDetail = async ({
   assignmentId,
 }: {
   id: number;
-  kahootId: number;
+  kahootId?: number;
   assignmentId?: number;
 }) => {
   try {

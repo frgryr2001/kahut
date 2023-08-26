@@ -13,7 +13,6 @@ interface Props
 const height = Dimensions.get('window').height;
 export default function ResultPlayKahootScreen({navigation, route}: Props) {
   const {id, kahootId, assignmentId, kahootObj} = route.params;
-
   const [data, setData] = useState<PlayDetail>();
 
   useEffect(() => {
@@ -30,7 +29,6 @@ export default function ResultPlayKahootScreen({navigation, route}: Props) {
 
     getData();
   }, [id, kahootId, assignmentId]);
-  console.log(assignmentId);
 
   return (
     <SafeAreaView
@@ -48,38 +46,42 @@ export default function ResultPlayKahootScreen({navigation, route}: Props) {
       <View
         style={{
           flexDirection: 'row',
-          justifyContent: 'space-around',
+          justifyContent: kahootObj?.isPlayed ? 'flex-start' : 'space-around',
           backgroundColor: '#20065c',
           padding: 16,
         }}>
         <Button
           title="Back to home"
           onPress={() => {
-            navigation.navigate('HomeScreen');
+            navigation.goBack();
           }}
           size="medium"
-          width={'48%'}
+          width={kahootObj?.isPlayed ? '100%' : '48%'}
           style={{
             backgroundColor: '#fff',
             color: '#20065c',
           }}
         />
-        <Button
-          title={assignmentId ? 'Practice' : 'Play again'}
-          onPress={() => {
-            let copyKahoot = {...kahootObj};
+        {!kahootObj?.isPlayed && (
+          <Button
+            title={assignmentId ? 'Practice' : 'Play again'}
+            onPress={() => {
+              if (kahootObj) {
+                let copyKahoot = {...kahootObj};
 
-            if (assignmentId) {
-              copyKahoot.id = kahootId;
-            }
-            navigation.replace('PlayScreen', {
-              kahoot: copyKahoot,
-            });
-          }}
-          width={'48%'}
-          size="medium"
-          isActive
-        />
+                if (assignmentId) {
+                  copyKahoot.id = kahootId!;
+                }
+                navigation.replace('PlayScreen', {
+                  kahoot: copyKahoot,
+                });
+              }
+            }}
+            width={'48%'}
+            size="medium"
+            isActive
+          />
+        )}
       </View>
     </SafeAreaView>
   );

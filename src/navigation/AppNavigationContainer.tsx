@@ -64,10 +64,10 @@ export type RootStackParams = {
   };
   ResultPlayKahootScreen: {
     id: number;
-    kahootId: number;
+    kahootId?: number;
     assignmentId?: number;
     kahootName?: string;
-    kahootObj: KahootDetailData;
+    kahootObj?: KahootDetailData;
   };
   JoinScreen: undefined;
 };
