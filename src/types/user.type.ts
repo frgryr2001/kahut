@@ -2,13 +2,13 @@ import {KahootSummary} from './kahoot.type';
 
 interface UserSummary {
   id: number;
-  name: string;
+  username: string;
   kahoots: KahootSummary[];
 }
 
 interface UserDetail {
   id: number;
-  name: string;
+  username: string;
   image: string;
   numberOfKahoots: number;
   numberOfPlays: number;

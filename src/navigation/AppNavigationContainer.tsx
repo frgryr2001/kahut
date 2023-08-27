@@ -1,5 +1,5 @@
 import React from 'react';
-import {useColorScheme} from 'react-native';
+import {useColorScheme, Image} from 'react-native';
 import {NavigationContainer, useTheme} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {useSelector} from 'react-redux';
@@ -79,6 +79,17 @@ export const AppNavigationContainer = () => {
   const scheme = useColorScheme();
   const {colors} = useTheme();
   const status = useSelector(selectStatus);
+
+  const getAppBarLogo = () => {
+    return (
+      <Image
+        source={require('../assets/images/logo.png')}
+        style={{width: 32, height: 32}}
+        resizeMode="cover"
+      />
+    );
+  };
+
   return (
     <NavigationContainer theme={scheme === 'light' ? LightTheme : DarkTheme}>
       <Stack.Navigator
@@ -136,15 +147,21 @@ export const AppNavigationContainer = () => {
         <Stack.Screen
           name="UserDetailScreen"
           component={mainScreens.UserDetailScreen}
-          options={({route}) => ({
+          // options={({route}) => ({
+          //   headerShown: true,
+          //   headerTitle: route.params.name,
+          //   headerTitleAlign: 'center',
+          //   headerStyle: {
+          //     backgroundColor: colors.card,
+          //   },
+          //   headerShadowVisible: false,
+          // })}
+          options={{
             headerShown: true,
-            headerTitle: route.params.name,
             headerTitleAlign: 'center',
-            headerStyle: {
-              backgroundColor: colors.card,
-            },
             headerShadowVisible: false,
-          })}
+            headerTitle: () => getAppBarLogo(),
+          }}
         />
 
         <Stack.Screen

@@ -49,7 +49,7 @@ const UserInfo = ({data}: UserInfoProps) => {
             ...styles.username,
             color: colors.text,
           }}>
-          {data.name}
+          {data.username}
         </Text>
       </View>
 

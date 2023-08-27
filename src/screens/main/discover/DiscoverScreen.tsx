@@ -74,11 +74,11 @@ const DiscoverScreen = ({navigation}: Props) => {
             usersList.map(user => (
               <SectionContainer
                 key={user.id}
-                title={user.name}
+                title={user.username}
                 onPressSeeAll={() =>
                   navigation.navigate('UserDetailScreen', {
                     id: user.id,
-                    name: user.name,
+                    name: user.username,
                   })
                 }>
                 <KahootSlider
