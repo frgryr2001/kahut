@@ -17,7 +17,7 @@ import {
   updateImagesKahoot,
 } from '../../../../redux/slices/questionSlice/reducer';
 
-const color = ['#3273e3', '#e84357', '#b93ddb', '#d9db44'];
+const color = ['#870817', '#123D87', '#6B1782', '#3F400C'];
 
 const AnswerModal = ({
   navigation,
@@ -135,6 +135,7 @@ const AnswerModal = ({
               {
                 width: '60%',
                 backgroundColor: color[indexQuestion],
+                color: 'white',
               },
             ]}
           />
@@ -170,7 +171,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     backgroundColor: '#FFFFFF',
-    color: '#000000',
+
     padding: 10,
     height: 80,
     borderRadius: 8,
