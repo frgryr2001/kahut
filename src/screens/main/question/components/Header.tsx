@@ -149,6 +149,15 @@ const Header = ({
           }
           return question;
         });
+        console.log(
+          'test',
+          JSON.stringify({
+            ...kahoot,
+            id: kahoot?.idQuestion,
+            theme: kahoot?.theme.toLocaleLowerCase(),
+            questions: convertDataValid,
+          }),
+        );
 
         formData.append(
           'kahoot',

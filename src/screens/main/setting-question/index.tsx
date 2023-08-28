@@ -19,14 +19,20 @@ import {
   deleteKahoot,
   updateKahoot,
 } from '../../../redux/slices/questionSlice/reducer';
+import {useTheme} from '@react-navigation/native';
+import {deleteKahootById} from '../../../services/kahoot/kahoot.service';
+import Snackbar from 'react-native-snackbar';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 interface Props
   extends StackScreenProps<RootStackParams, 'SettingQuestionScreen'> {}
 
 export const SettingQuestionScreen = ({navigation, route}: Props) => {
-  const kahoot = route.params.kahoot;
-  const dispatch = useAppDispatch();
+  const {colors} = useTheme();
   const insets = useSafeAreaInsets();
+  const {kahoot, isEditAPI} = route.params;
+  const dispatch = useAppDispatch();
+  const [isDeleting, setIsDeleting] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [valueInputDescription, setValueInputDescription] =
     React.useState<string>(kahoot.description);
@@ -57,7 +63,24 @@ export const SettingQuestionScreen = ({navigation, route}: Props) => {
     setModalVisible(true);
   };
 
-  const handleDeleteKahoot = () => {
+  const handleDeleteKahoot = async () => {
+    if (isEditAPI) {
+      setIsDeleting(true);
+      const response = await deleteKahootById(kahoot.idQuestion as number);
+      if (response.code === 200) {
+        setIsDeleting(false);
+        Snackbar.show({
+          text: 'Delete kahoot successfully',
+          backgroundColor: 'green',
+          duration: Snackbar.LENGTH_SHORT,
+        });
+        navigation.reset({
+          index: 0,
+          routes: [{name: 'HomeScreen'}],
+        });
+      }
+    }
+
     dispatch(
       deleteKahoot({
         kahootId: kahoot.idQuestion ?? '',
@@ -75,6 +98,7 @@ export const SettingQuestionScreen = ({navigation, route}: Props) => {
         paddingRight: insets.right,
         flex: 1,
       }}>
+      {isDeleting && <Spinner visible={isDeleting} />}
       <View
         style={{
           flex: 1,
@@ -90,7 +114,7 @@ export const SettingQuestionScreen = ({navigation, route}: Props) => {
         <Text style={styles.labelVisible}>Visible to</Text>
         <RadioGr value={valueRadio} handleChangeRadio={handleChangeRadio} />
         <ButtonCustom
-          label="Detele"
+          label="Delete"
           color="secondary"
           as="button"
           onPress={handleShowModalKahoot}
@@ -105,7 +129,13 @@ export const SettingQuestionScreen = ({navigation, route}: Props) => {
           }}>
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
-              <Text style={styles.modalText}>
+              <Text
+                style={[
+                  styles.modalText,
+                  {
+                    color: colors.text,
+                  },
+                ]}>
                 Are you sure you want to delete this kahut?
               </Text>
               <View style={styles.containerModal}>
@@ -119,7 +149,15 @@ export const SettingQuestionScreen = ({navigation, route}: Props) => {
                   activeOpacity={0.7}
                   style={[styles.button, styles.buttonOk]}
                   onPress={handleDeleteKahoot}>
-                  <Text style={styles.textStyle}>Ok</Text>
+                  <Text
+                    style={[
+                      styles.textStyle,
+                      {
+                        color: 'white',
+                      },
+                    ]}>
+                    Ok
+                  </Text>
                 </TouchableOpacity>
               </View>
             </View>

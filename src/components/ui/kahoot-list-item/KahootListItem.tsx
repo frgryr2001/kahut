@@ -28,7 +28,12 @@ const KahootListItem = ({
   const {colors} = useTheme();
 
   return (
-    <>
+    <View
+      style={{
+        width: '100%',
+        borderRadius: 10,
+        padding: 8,
+      }}>
       <Pressable
         onPress={() => {
           if (handleEditWithDraftKaHoot) {
@@ -113,7 +118,7 @@ const KahootListItem = ({
           </View>
         </View>
       </Pressable>
-    </>
+    </View>
   );
 };
 

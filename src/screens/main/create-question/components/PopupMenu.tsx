@@ -1,3 +1,4 @@
+import {useTheme} from '@react-navigation/native';
 import React from 'react';
 import {
   Animated,
@@ -23,6 +24,7 @@ export const PopupMenu = ({
   handleDeleteQuestion,
   onOpenModal,
 }: Props) => {
+  const {colors} = useTheme();
   const [visible, setVisible] = React.useState(false);
   const scale = React.useRef(new Animated.Value(0)).current;
   const options = React.useMemo(
@@ -93,7 +95,12 @@ export const PopupMenu = ({
                   setVisible(false);
                 }}>
                 <Icon name={option.icon} size={20} color={'black'} />
-                <Text>{option.title}</Text>
+                <Text
+                  style={{
+                    color: colors.text,
+                  }}>
+                  {option.title}
+                </Text>
               </TouchableOpacity>
             ))}
           </Animated.View>

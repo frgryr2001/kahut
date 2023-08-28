@@ -146,7 +146,6 @@ const styles = StyleSheet.create({
     width: '49%',
     height: 100,
     borderRadius: 3,
-
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -160,7 +159,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     color: '#FFFFFF',
-    textAlignVertical: 'center',
     textAlign: 'center',
+    flex: 1,
   },
 });

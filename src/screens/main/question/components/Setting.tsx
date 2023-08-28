@@ -8,13 +8,15 @@ import {Question} from '../../../../types/question';
 interface SettingProps {
   navigation: StackNavigationProp<RootStackParams, 'QuestionScreen', undefined>;
   kahoot: Question | undefined;
+  isEditAPI?: boolean;
 }
-const Setting = ({navigation, kahoot}: SettingProps) => {
+const Setting = ({navigation, kahoot, isEditAPI}: SettingProps) => {
   return (
     <TouchableWithoutFeedback
       onPress={() =>
         navigation.navigate('SettingQuestionScreen', {
           kahoot: kahoot!,
+          isEditAPI,
         })
       }>
       <View style={styles.btn}>

@@ -28,7 +28,7 @@ export default function KahootLeaderBoard({
         }}>
         {top5LeaderBoard?.map((item, index) => (
           <>
-            <KahootLeaderBoardItem key={index} item={item} />
+            <KahootLeaderBoardItem key={index} item={item} index={index} />
           </>
         ))}
       </View>
