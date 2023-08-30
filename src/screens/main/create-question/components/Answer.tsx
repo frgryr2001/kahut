@@ -81,7 +81,12 @@ export const Answer = ({
       ) : (
         <TextInput
           editable={isEdit}
-          style={styles.input}
+          style={[
+            styles.input,
+            {
+              color: '#fff',
+            },
+          ]}
           autoFocus={isFocus}
           onChangeText={text => handleOnChangeTextAnswer!(text)}
           multiline={true}
@@ -146,7 +151,6 @@ const styles = StyleSheet.create({
     width: '49%',
     height: 100,
     borderRadius: 3,
-
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -159,8 +163,8 @@ const styles = StyleSheet.create({
   input: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#FFFFFF',
-    textAlignVertical: 'center',
+
     textAlign: 'center',
+    flex: 1,
   },
 });

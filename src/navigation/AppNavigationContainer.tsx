@@ -38,6 +38,7 @@ export type RootStackParams = {
   };
   SettingQuestionScreen: {
     kahoot: Question;
+    isEditAPI?: boolean;
     isDraft?: boolean;
   };
   CreateQuestionScreen: {

@@ -61,7 +61,7 @@ export const QuestionScreen = ({navigation, route}: Props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const snapPoints = useMemo(() => ['50%', '100%'], []);
+  const snapPoints = useMemo(() => ['30%', '100%'], []);
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
   }, []);
@@ -259,7 +259,11 @@ export const QuestionScreen = ({navigation, route}: Props) => {
                       value={kahoot?.title}
                       idQuestion={idQuestion ?? ''}
                     />
-                    <Setting navigation={navigation} kahoot={kahoot} />
+                    <Setting
+                      navigation={navigation}
+                      kahoot={kahoot}
+                      isEditAPI={isEditAPI}
+                    />
                   </View>
                   {/* Theme Setting */}
                   <Text

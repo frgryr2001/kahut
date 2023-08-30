@@ -61,10 +61,7 @@ const SharedScreen = () => {
         refreshControl={
           <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
         }>
-        <View
-          style={{
-            gap: 16,
-          }}>
+        <View>
           {isFetching && (
             <>
               <KahootListItemSkeleton />

@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {ModalCustom} from '../ModalCustom';
-import {View, TextInput, Text, Pressable, Alert} from 'react-native';
+import {View, TextInput, Text, Pressable} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useTheme} from '@react-navigation/native';
 import {Button} from '../Button';
@@ -9,6 +9,7 @@ import {createShare} from '../../../services/share/share.service';
 import {useDebounce} from '../../../hooks/useDebounce';
 import {useSelector} from 'react-redux';
 import {selectUser} from '../../../redux/slices/authSlice/selector';
+import Snackbar from 'react-native-snackbar';
 
 export default function ModalShare({
   modalShareVisible,
@@ -27,7 +28,7 @@ export default function ModalShare({
   useEffect(() => {
     const getUsers = async () => {
       const data = await getUsersList();
-      const userNameList = data.map(user => user.name);
+      const userNameList = data.map(user => user.username);
       setUsers(userNameList);
     };
     getUsers();
@@ -68,9 +69,14 @@ export default function ModalShare({
     setLoading(true);
     const res = await createShare(kahootId, selectedUsers);
     if (res.code === 200) {
+      setUsers(prev => [...prev, ...selectedUsers]);
       setSelectedUsers([]);
       setLoading(false);
-      Alert.alert('Share success');
+      Snackbar.show({
+        text: 'Share successfully',
+        backgroundColor: 'green',
+        duration: Snackbar.LENGTH_SHORT,
+      });
     }
   };
 
@@ -153,6 +159,7 @@ function ListUser({
     <View
       style={{
         marginTop: 10,
+        gap: 10,
       }}>
       {users.map(user => (
         <UserItem key={user} user={user} onAddUserShare={addUserShare} />
@@ -170,7 +177,8 @@ function UserItem({
 }) {
   const {colors} = useTheme();
   return (
-    <View
+    <Pressable
+      onPress={() => onAddUserShare(user)}
       style={{
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -183,13 +191,8 @@ function UserItem({
         }}>
         {user}
       </Text>
-      <Icon
-        name="add-outline"
-        size={25}
-        color="black"
-        onPress={() => onAddUserShare(user)}
-      />
-    </View>
+      <Icon name="add-outline" size={25} color="black" />
+    </Pressable>
   );
 }
 function ChipTag({

@@ -58,10 +58,7 @@ const MyKahootsScreen = () => {
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }>
-        <View
-          style={{
-            gap: 16,
-          }}>
+        <View>
           {isFetchingOwnKahootsList && (
             <>
               <KahootListItemSkeleton />

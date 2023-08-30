@@ -5,7 +5,7 @@ import {useAppDispatch} from '../../../../redux/store';
 import {updateFieldQuestion} from '../../../../redux/slices/questionSlice/reducer';
 
 const width = Dimensions.get('window').width;
-const color = ['#3273e3', '#e84357', '#b93ddb', '#d9db44'];
+const color = ['#870817', '#123D87', '#6B1782', '#3F400C'];
 
 const typeAnswer = ['FALSE', 'TRUE'];
 
