@@ -22,12 +22,12 @@ const DraftScreen = ({navigation}: any) => {
   return (
     <SafeAreaView
       style={{
-        padding: 16,
+        padding: 8,
       }}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View
           style={{
-            gap: 16,
+            gap: 8,
           }}>
           {filterKahootByIsDraft &&
             filterKahootByIsDraft.map(kahoot => {

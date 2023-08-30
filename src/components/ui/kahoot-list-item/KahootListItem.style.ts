@@ -4,7 +4,7 @@ export default StyleSheet.create({
   container: {
     borderRadius: 10,
     overflow: 'hidden',
-    shadowColor: '#000',
+    shadowColor: '#00000040',
     elevation: 4,
     flexDirection: 'row',
   },
@@ -32,7 +32,6 @@ export default StyleSheet.create({
     padding: 8,
     backgroundColor: '#fff',
     justifyContent: 'space-between',
-    flex: 1,
   },
   draft: {
     color: '#fff',

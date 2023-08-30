@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     width: '100%',
     borderRadius: 3,
     justifyContent: 'center',
-    shadowColor: '#000',
+    shadowColor: '#00000040',
     shadowOffset: {
       width: 0,
       height: 1,

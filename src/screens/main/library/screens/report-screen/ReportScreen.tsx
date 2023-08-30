@@ -39,52 +39,62 @@ export default function ReportScreen({navigation}: any) {
               {playsList.length > 0 && (
                 <View style={styles.authContainer}>
                   {playsList.map(play => (
-                    <Pressable
+                    <View
                       key={play.id}
                       style={{
-                        backgroundColor: '#fff',
-                        elevation: 4,
-                        borderRadius: 4,
-                        gap: 4,
-                        padding: 16,
-                      }}
-                      onPress={() =>
-                        navigation.push('ReportDetailScreen', {
-                          id: play.id,
-                          kahootId: play.kahootId,
-                          assignmentId: play.assignmentId,
-                          kahootName: play.kahootTitle,
-                        })
-                      }>
-                      <Text style={{color: '#777', fontSize: 14}}>
-                        {formattedDate(play.createdAt)}
-                      </Text>
-                      <Text
+                        width: '100%',
+                        borderRadius: 10,
+                        padding: 8,
+                      }}>
+                      <Pressable
                         style={{
-                          color: colors.text,
-                          fontWeight: '700',
-                          fontSize: 16,
-                        }}>
-                        {play.kahootTitle}
-                      </Text>
-                      <View
-                        style={{
-                          flexDirection: 'row',
-                          gap: 2,
-                          alignItems: 'center',
-                          alignSelf: 'flex-end',
-                        }}>
-                        <Icon name="account" size={24} color={colors.text} />
+                          width: '100%',
+                          gap: 4,
+                          elevation: 4,
+                          shadowColor: '#00000040',
+                          overflow: 'hidden',
+                          borderRadius: 10,
+                          backgroundColor: '#fff',
+                          padding: 16,
+                        }}
+                        onPress={() =>
+                          navigation.push('ReportDetailScreen', {
+                            id: play.id,
+                            kahootId: play.kahootId,
+                            assignmentId: play.assignmentId,
+                            kahootName: play.kahootTitle,
+                          })
+                        }>
+                        <Text style={{color: '#777', fontSize: 14}}>
+                          {formattedDate(play.createdAt)}
+                        </Text>
                         <Text
                           style={{
                             color: colors.text,
                             fontWeight: '700',
-                            fontSize: 14,
+                            fontSize: 16,
                           }}>
-                          {play.numberOfPlayer}
+                          {play.kahootTitle}
                         </Text>
-                      </View>
-                    </Pressable>
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            gap: 2,
+                            alignItems: 'center',
+                            alignSelf: 'flex-end',
+                          }}>
+                          <Icon name="account" size={24} color={colors.text} />
+                          <Text
+                            style={{
+                              color: colors.text,
+                              fontWeight: '700',
+                              fontSize: 14,
+                            }}>
+                            {play.numberOfPlayer}
+                          </Text>
+                        </View>
+                      </Pressable>
+                    </View>
                   ))}
                 </View>
               )}

@@ -56,7 +56,7 @@ const HomeScreen = ({navigation}: Props) => {
   useFocusEffect(
     useCallback(() => {
       if (authStatus === 'authenticated') {
-        getOwnKahootsList(page.current)
+        getOwnKahootsList()
           .then(response => {
             setOwnKahootsList(response.kahoots);
             setIsOver(response.is_over);
@@ -82,7 +82,7 @@ const HomeScreen = ({navigation}: Props) => {
     }
 
     page.current++;
-    getOwnKahootsList(page.current)
+    getOwnKahootsList()
       .then(response => {
         setTimeout(() => {
           setOwnKahootsList(prev => [...prev, ...response.kahoots]);

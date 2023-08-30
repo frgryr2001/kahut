@@ -3,10 +3,31 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {LibraryScreen} from '../screens';
 import * as libraryStackScreens from '../screens/main/library/screens';
 import * as libraryKahootsScreens from '../screens/main/library/screens/kahoots-screen/screens';
+import {useTheme} from '@react-navigation/native';
 
-const Stack = createNativeStackNavigator();
+export type RootStackParams = {
+  LibraryScreen: undefined;
+  LibraryKahootsScreen: undefined;
+  LibraryAssignmentsScreen: undefined;
+  LibraryAssignmentDetailScreen: {
+    id: number;
+    title: string;
+  };
+  LibraryDraftScreen: undefined;
+  LibraryReportsScreen: undefined;
+  StudyGroupScreen: undefined;
+  CoursesScreen: undefined;
+  GroupsScreen: undefined;
+  StudyScreen: undefined;
+  LibraryMyKahootsScreen: undefined;
+  LibraryFavoritesScreen: undefined;
+  LibrarySharedScreen: undefined;
+};
+const Stack = createNativeStackNavigator<RootStackParams>();
 
 function LibraryStack() {
+  const {colors} = useTheme();
+
   return (
     <Stack.Navigator
       initialRouteName="LibraryScreen"
@@ -22,10 +43,31 @@ function LibraryStack() {
         }}
       />
       <Stack.Screen
-        name="KahootsScreen"
+        name="LibraryKahootsScreen"
         component={libraryStackScreens.KahootsScreen}
         options={{
           headerTitle: 'Kahoots',
+        }}
+      />
+      <Stack.Screen
+        name="LibraryAssignmentsScreen"
+        component={libraryStackScreens.AssignmentsScreen}
+        options={{
+          headerTitle: 'Assignments',
+        }}
+      />
+      <Stack.Screen
+        name="LibraryAssignmentDetailScreen"
+        component={libraryStackScreens.AssignmentDetailScreen}
+        options={({route}) => {
+          return {
+            headerShown: true,
+            headerTitleAlign: 'center',
+            headerTitle: route.params?.title!,
+            contentStyle: {
+              backgroundColor: colors.background,
+            },
+          };
         }}
       />
       <Stack.Screen
@@ -36,7 +78,7 @@ function LibraryStack() {
         }}
       />
       <Stack.Screen
-        name="ReportScreen"
+        name="LibraryReportsScreen"
         component={libraryStackScreens.ReportScreen}
         options={{
           headerTitle: 'Reports',

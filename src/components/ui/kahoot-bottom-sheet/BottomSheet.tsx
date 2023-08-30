@@ -247,7 +247,7 @@ function ButtonPlay({onPress}: {onPress: () => void}) {
       size="medium"
       isActive
       style={{
-        shadowColor: '#000',
+        shadowColor: '#00000040',
         shadowOffset: {
           width: 0,
           height: 1,
@@ -275,7 +275,7 @@ const styles = StyleSheet.create({
   },
   nameUser: {
     padding: 10,
-    shadowColor: '#000',
+    shadowColor: '#00000040',
     shadowOffset: {
       width: 0,
       height: 2,
@@ -299,7 +299,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 3,
-    shadowColor: '#000',
+    shadowColor: '#00000040',
     shadowOffset: {
       width: 0,
       height: 2,
