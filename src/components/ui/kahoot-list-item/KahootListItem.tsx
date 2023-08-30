@@ -57,29 +57,30 @@ const KahootListItem = ({
           <Text style={styles.numberOfQuestion}>
             {kahoot?.numberOfQuestion || numberOfQuestionInLocal} Qs
           </Text>
+          {isDraft && (
+            <Text
+              style={[
+                {
+                  backgroundColor: colors.notification,
+                  position: 'absolute',
+                  left: 4,
+                  top: 4,
+                },
+                styles.draft,
+              ]}>
+              Draft
+            </Text>
+          )}
         </ImageBackground>
 
         <View style={styles.rightContainer}>
           <View>
-            <View style={styles.draftContainer}>
-              {isDraft && (
-                <Text
-                  style={[
-                    {
-                      backgroundColor: colors.notification,
-                    },
-                    styles.draft,
-                  ]}>
-                  Draft
-                </Text>
-              )}
-              <Text
-                style={[{color: colors.text}, styles.title]}
-                numberOfLines={2}
-                ellipsizeMode="tail">
-                {kahoot?.title}
-              </Text>
-            </View>
+            <Text
+              style={[{color: colors.text}, styles.title]}
+              numberOfLines={2}
+              ellipsizeMode="tail">
+              {kahoot?.title}
+            </Text>
 
             <View
               style={{

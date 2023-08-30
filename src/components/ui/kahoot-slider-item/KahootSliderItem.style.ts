@@ -61,6 +61,7 @@ export default StyleSheet.create({
     objectFit: 'cover',
   },
   username: {
+    flex: 1,
     color: '#777',
     fontSize: 12,
     fontWeight: '600',

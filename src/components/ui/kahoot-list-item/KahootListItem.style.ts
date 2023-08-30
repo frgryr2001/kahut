@@ -32,11 +32,7 @@ export default StyleSheet.create({
     padding: 8,
     backgroundColor: '#fff',
     justifyContent: 'space-between',
-  },
-  draftContainer: {
-    flexDirection: 'row',
-    gap: 8,
-    alignItems: 'center',
+    flex: 1,
   },
   draft: {
     color: '#fff',
@@ -45,8 +41,12 @@ export default StyleSheet.create({
     paddingHorizontal: 8,
     paddingVertical: 2,
     borderRadius: 2,
+    position: 'absolute',
+    left: 4,
+    top: 4,
   },
   title: {
+    flex: 1,
     fontSize: 16,
     fontWeight: '600',
   },

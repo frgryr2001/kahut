@@ -147,13 +147,15 @@ function BoxUserAction({
   openModalShare?: () => void;
 }) {
   const {colors} = useTheme();
-  const formattedName = () => {
-    const name = (username as string) ?? '';
-    const nameArr = name.split('-');
 
-    nameArr.pop();
-    return nameArr.join(' ');
-  };
+  // const formattedName = () => {
+  //   const name = (username as string) ?? '';
+  //   const nameArr = name.split('-');
+
+  //   nameArr.pop();
+  //   return nameArr.join(' ');
+  // };
+
   const itemPopup = useMemo(() => {
     return [
       {
@@ -169,6 +171,7 @@ function BoxUserAction({
     ];
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   return (
     <View style={styles.boxUserAction}>
       {/* user name */}
@@ -181,13 +184,18 @@ function BoxUserAction({
         ]}
         onPress={() => handleNavigateToUserDetail!()}>
         <Text
+          numberOfLines={1}
+          ellipsizeMode="tail"
           style={{
             color: colors.text,
             fontFamily: 'Poppins-Regular',
+            maxWidth: 150,
           }}>
-          {formattedName()}
+          {/* {formattedName()} */}
+          {username}
         </Text>
       </Pressable>
+
       <View style={styles.btnActionContainer}>
         {/* user action */}
         <ButtonActions
