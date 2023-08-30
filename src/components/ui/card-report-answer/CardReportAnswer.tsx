@@ -42,9 +42,15 @@ export default function CardReportAnswer({answer}: CardProps) {
         <Text style={{color: '#777', fontWeight: '700'}}>
           {answer.inOrder} - {answer.type}
         </Text>
-        <Text style={{color: colors.text, fontWeight: '700'}}>
-          point : {answer.point}
-        </Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            gap: 4,
+          }}>
+          <Icon name="checkbox-marked-circle-outline" size={20} color="#777" />
+          <Text style={{color: '#777', fontWeight: '700'}}>{answer.point}</Text>
+        </View>
       </View>
 
       <View style={{flexDirection: 'row', gap: 16, alignItems: 'flex-start'}}>

@@ -17,7 +17,7 @@ export default function ButtonTab({
         width={'50%'}
         style={{
           marginTop: 0,
-          backgroundColor: activeTab === 0 ? '#673AB7' : '#ffffff',
+          backgroundColor: activeTab === 0 ? '#20065c' : '#ffffff',
           borderRadius: 0,
           elevation: 0,
         }}
@@ -35,7 +35,7 @@ export default function ButtonTab({
         width={'50%'}
         style={{
           marginTop: 0,
-          backgroundColor: activeTab === 1 ? '#673AB7' : '#ffffff',
+          backgroundColor: activeTab === 1 ? '#20065c' : '#ffffff',
           borderRadius: 0,
           elevation: 0,
         }}
@@ -52,7 +52,7 @@ export default function ButtonTab({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#673AB7',
+    backgroundColor: '#20065c',
   },
   titlePin: {
     fontSize: 32,
