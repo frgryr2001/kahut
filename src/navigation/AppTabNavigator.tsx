@@ -94,11 +94,22 @@ export function AppTabNavigator() {
           />
           <Tab.Screen
             name="Discover"
-            options={{
+            options={({navigation}) => ({
               tabBarLabel: 'Discover',
               tabBarActiveTintColor: '#7C4DFF',
               lazy: true,
-            }}
+              headerRight: () =>
+                AppBarIconButton({
+                  type: 'normal',
+                  onPress: () => navigation.push('SearchKahootScreen'),
+                  icon: 'search-outline',
+                }),
+
+              headerRightContainerStyle: {
+                paddingHorizontal: 8,
+              },
+              headerShadowVisible: true,
+            })}
             component={DiscoverScreen}
           />
           <Tab.Screen

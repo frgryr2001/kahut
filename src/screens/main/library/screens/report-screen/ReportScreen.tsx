@@ -24,7 +24,6 @@ export default function ReportScreen({navigation}: any) {
     };
     getPlaysListData();
   }, []);
-
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -56,9 +55,20 @@ export default function ReportScreen({navigation}: any) {
                           kahootName: play.kahootTitle,
                         })
                       }>
-                      <Text style={{color: '#777', fontSize: 14}}>
-                        {formattedDate(play.createdAt)}
-                      </Text>
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          justifyContent: 'space-between',
+                        }}>
+                        <Text style={{color: '#777', fontSize: 14}}>
+                          {formattedDate(play.createdAt)}
+                        </Text>
+                        {play.assignmentId ? (
+                          <Icon name="trophy" size={24} color="#c59838" />
+                        ) : (
+                          <Icon name="account" size={24} color="#2456bf" />
+                        )}
+                      </View>
                       <Text
                         style={{
                           color: colors.text,

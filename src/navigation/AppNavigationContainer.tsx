@@ -71,6 +71,7 @@ export type RootStackParams = {
     kahootObj?: KahootDetailData;
   };
   JoinScreen: undefined;
+  SearchKahootScreen: undefined;
 };
 export type ScreenName = keyof RootStackParams;
 
@@ -264,6 +265,17 @@ export const AppNavigationContainer = () => {
                 backgroundColor: colors.background,
               },
             };
+          }}
+        />
+
+        <Stack.Screen
+          name="SearchKahootScreen"
+          component={mainScreens.SearchKahootScreen}
+          options={{
+            headerShown: false,
+            contentStyle: {
+              backgroundColor: colors.background,
+            },
           }}
         />
       </Stack.Navigator>
