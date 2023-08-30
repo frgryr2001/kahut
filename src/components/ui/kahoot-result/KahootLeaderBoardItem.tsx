@@ -12,13 +12,20 @@ export default function KahootLeaderBoardItem({
   const {colors} = useTheme();
   return (
     <View style={styles.container}>
-      <Text style={[styles.text, {color: colors.text}]}>{index + 1}.</Text>
+      <Text
+        style={[
+          styles.text,
+          {color: colors.text, fontWeight: '600', fontSize: 20},
+        ]}>
+        {index + 1}.
+      </Text>
 
       <Text
         style={[
           styles.text,
           {
             color: colors.text,
+            flex: 1,
           },
         ]}>
         {item.username}
@@ -44,9 +51,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 3,
     padding: 16,
+    gap: 8,
   },
   text: {
     fontSize: 16,
-    textTransform: 'capitalize',
   },
 });

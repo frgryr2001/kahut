@@ -48,4 +48,12 @@ interface PlayDetail {
   }>;
 }
 
-export type {PlaySummary, PlayDetail};
+interface Player {
+  id: number;
+  userId: number;
+  point: number;
+  username: string;
+  userImage: string;
+}
+
+export type {PlaySummary, PlayDetail, Player};

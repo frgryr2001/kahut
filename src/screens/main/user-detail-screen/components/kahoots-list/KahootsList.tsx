@@ -1,5 +1,5 @@
 import React, {useRef, useState} from 'react';
-import {View} from 'react-native';
+import {SafeAreaView, ScrollView} from 'react-native';
 
 import {
   KahootListItemSkeleton,
@@ -15,7 +15,6 @@ interface Props {
   isMyKahoots?: boolean;
 }
 
-
 const KahootsList = ({data, isMyKahoots}: Props) => {
   const [kahootDetailConfig, setKahootDetailConfig] = useState<{
     kahootID: number;
@@ -29,36 +28,38 @@ const KahootsList = ({data, isMyKahoots}: Props) => {
   };
 
   return (
-    <View
+    <SafeAreaView
       style={{
-        gap: 16,
-        padding: 16,
+        gap: 8,
+        padding: 8,
       }}>
-      {!data && (
-        <>
-          <KahootListItemSkeleton />
-          <KahootListItemSkeleton />
-          <KahootListItemSkeleton />
-        </>
-      )}
-      {data && data.length === 0 && (
-        <EmptyMessage messages={['Looks empty here...']} />
-      )}
-      {data &&
-        data.length > 0 &&
-        data.map(kahoot => (
-          <KahootListItem
-            key={kahoot.id}
-            kahoot={kahoot}
-            handleKahootListItemPress={handleKahootListItemPress}
-          />
-        ))}
+      <ScrollView>
+        {!data && (
+          <>
+            <KahootListItemSkeleton />
+            <KahootListItemSkeleton />
+            <KahootListItemSkeleton />
+          </>
+        )}
+        {data && data.length === 0 && (
+          <EmptyMessage messages={['Looks empty here...']} />
+        )}
+        {data &&
+          data.length > 0 &&
+          data.map(kahoot => (
+            <KahootListItem
+              key={kahoot.id}
+              kahoot={kahoot}
+              handleKahootListItemPress={handleKahootListItemPress}
+            />
+          ))}
+      </ScrollView>
 
       <KahootBottomSheet
         ref={bottomSheetModalRef}
         kahootDetailConfig={kahootDetailConfig}
       />
-    </View>
+    </SafeAreaView>
   );
 };
 

@@ -6,19 +6,28 @@ const LIBRARY_SECTIONS = [
         id: 1,
         title: 'Kahoots',
         icon: 'account-outline',
-        onPress: (navigation: any) => navigation.navigate('KahootsScreen'),
+        onPress: (navigation: any) =>
+          navigation.navigate('LibraryKahootsScreen'),
       },
       {
         id: 2,
+        title: 'Assignments',
+        icon: 'format-list-checks',
+        onPress: (navigation: any) =>
+          navigation.navigate('LibraryAssignmentsScreen'),
+      },
+      {
+        id: 3,
         title: 'Draft',
         icon: 'note-outline',
         onPress: (navigation: any) => navigation.navigate('LibraryDraftScreen'),
       },
       {
-        id: 3,
+        id: 4,
         title: 'Reports',
         icon: 'finance',
-        onPress: (navigation: any) => navigation.navigate('ReportScreen'),
+        onPress: (navigation: any) =>
+          navigation.navigate('LibraryReportsScreen'),
       },
     ],
   },

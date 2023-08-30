@@ -1,4 +1,6 @@
 export {default as KahootsScreen} from './kahoots-screen/KahootsScreen';
+export {default as AssignmentsScreen} from './assignments-screen/AssignmentsScreen';
+export {default as AssignmentDetailScreen} from './assignments-screen/AssignmentDetailScreen';
 export {default as ReportScreen} from './report-screen/ReportScreen';
 export {default as StudyGroupScreen} from './study-group-screen/StudyGroupScreen';
 export {default as CoursesScreen} from './courses-screen/CoursesScreen';

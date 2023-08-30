@@ -26,7 +26,7 @@ const MyKahootsScreen = () => {
 
   useEffect(() => {
     if (authStatus === 'authenticated') {
-      getOwnKahootsList(1)
+      getOwnKahootsList()
         .then(response => {
           setOwnKahootsList(response.kahoots);
           setIsFetchingOwnKahootsList(false);

@@ -30,11 +30,11 @@ const getPublicKahootsList = async () => {
   }
 };
 
-const getOwnKahootsList = async (page: number) => {
+const getOwnKahootsList = async () => {
   try {
     const response = await httpClient.get<
       RequestResponse<IGetKaHootsListResponseData>
-    >(`/kahoots/list/own?page=${page}`);
+    >('/kahoots/list/own');
     return response.data;
   } catch (error) {
     throw error;

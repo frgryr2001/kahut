@@ -18,7 +18,7 @@ export default function KahootLeaderBoard({
     <View>
       <View style={styles.containerTitle}>
         {getIcon('ribbon-outline', 40, '#fff')}
-        <Text style={styles.textTitle}>Top 5 high score</Text>
+        <Text style={styles.textTitle}>Top 5 high scores</Text>
       </View>
 
       <View
@@ -27,11 +27,7 @@ export default function KahootLeaderBoard({
           gap: 10,
         }}>
         {top5LeaderBoard?.map((item, index) => (
-          <KahootLeaderBoardItem
-            key={index + Math.random()}
-            item={item}
-            index={index}
-          />
+          <KahootLeaderBoardItem key={item.id} item={item} index={index} />
         ))}
       </View>
     </View>

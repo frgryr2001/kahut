@@ -4,7 +4,7 @@ export default StyleSheet.create({
   container: {
     borderRadius: 10,
     overflow: 'hidden',
-    shadowColor: '#000',
+    shadowColor: '#00000040',
     elevation: 4,
     flexDirection: 'row',
   },
@@ -33,11 +33,6 @@ export default StyleSheet.create({
     backgroundColor: '#fff',
     justifyContent: 'space-between',
   },
-  draftContainer: {
-    flexDirection: 'row',
-    gap: 8,
-    alignItems: 'center',
-  },
   draft: {
     color: '#fff',
     fontSize: 12,
@@ -45,8 +40,12 @@ export default StyleSheet.create({
     paddingHorizontal: 8,
     paddingVertical: 2,
     borderRadius: 2,
+    position: 'absolute',
+    left: 4,
+    top: 4,
   },
   title: {
+    flex: 1,
     fontSize: 16,
     fontWeight: '600',
   },

@@ -17,3 +17,4 @@ export {default as KahootSlider} from './kahoot-slider/KahootSlider';
 export {default as KahootBottomSheet} from './kahoot-bottom-sheet/KahootBottomSheet';
 export {default as PopupMenu} from './popup-menu/PopupMenu';
 export {default as CardReportAnswer} from './card-report-answer/CardReportAnswer';
+export {default as NotAuthForm} from './not-auth-form/NotAuthForm';
