@@ -110,7 +110,7 @@ function SearchInput({handleSearch}: {handleSearch: (text: string) => void}) {
   const {colors} = useTheme();
   const [search, setSearch] = useState('');
 
-  const debounceValue = useDebounce(search, 250);
+  const debounceValue = useDebounce(search, 500);
 
   useEffect(() => {
     handleSearch(debounceValue);

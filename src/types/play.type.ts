@@ -6,6 +6,13 @@ interface PlaySummary {
   kahootTitle: string;
   assignmentId: number | null;
   numberOfPlayer: number;
+  type: PlayType;
+  point: number;
+}
+
+enum PlayType {
+  practice = 'practice',
+  assignment = 'assignment',
 }
 
 interface PlayDetail {

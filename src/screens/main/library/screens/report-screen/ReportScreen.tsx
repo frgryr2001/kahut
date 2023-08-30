@@ -24,7 +24,6 @@ export default function ReportScreen({navigation}: any) {
     };
     getPlaysListData();
   }, []);
-
   return (
     <ScrollView>
       <View style={styles.container}>
