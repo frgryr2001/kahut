@@ -11,7 +11,6 @@ const ReportDetailScreen = ({route}: any) => {
   useEffect(() => {
     const getData = async () => {
       try {
-        console.log(id, kahootId, assignmentId);
         const response = await getPlayDetail({
           id,
           kahootId,

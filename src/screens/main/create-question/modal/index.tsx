@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
     height: 80,
     borderRadius: 8,
     textAlign: 'center',
-    shadowColor: '#000',
+    shadowColor: '#00000040',
     shadowOffset: {
       width: 0,
       height: 1,
@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
     height: 80,
     borderRadius: 8,
     textAlign: 'center',
-    shadowColor: '#000',
+    shadowColor: '#00000040',
     shadowOffset: {
       width: 0,
       height: 1,

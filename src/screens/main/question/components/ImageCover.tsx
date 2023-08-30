@@ -186,7 +186,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     height: windowHeight * 0.35,
     justifyContent: 'center',
-    shadowColor: '#000',
+    shadowColor: '#00000040',
     shadowOffset: {
       width: 0,
       height: 1,

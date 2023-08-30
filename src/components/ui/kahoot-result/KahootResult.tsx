@@ -31,7 +31,7 @@ export default function KahootResult({
           <Tabbed.Tab
             active={activeTab === 1}
             handleSetActiveTab={handleSetActiveTab.bind(null, 1)}>
-            <Text>LeaderBoard</Text>
+            <Text>Leader board</Text>
           </Tabbed.Tab>
         </Tabbed.ActionContainer>
 

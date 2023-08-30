@@ -10,14 +10,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     borderRadius: 8,
     gap: 8,
-    shadowColor: '#000',
+    shadowColor: '#00000040',
     elevation: 4,
   },
   itemTitle: {
     height: 40,
-    // alignItems: 'center',
     textAlignVertical: 'center',
-    // justifyContent: 'center',
     fontWeight: '700',
   },
   itemImage: {

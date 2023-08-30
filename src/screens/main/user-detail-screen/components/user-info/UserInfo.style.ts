@@ -6,7 +6,7 @@ export default StyleSheet.create({
     padding: 16,
     gap: 16,
     elevation: 4,
-    shadowColor: '#000',
+    shadowColor: '#00000040',
   },
   avatarAndUsernameContainer: {
     flexDirection: 'row',
@@ -18,7 +18,7 @@ export default StyleSheet.create({
     height: 60,
     borderRadius: 999,
     objectFit: 'cover',
-    borderColor: '#00000060',
+    borderColor: '#00000020',
     borderWidth: 1,
   },
   username: {
@@ -45,6 +45,6 @@ export default StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#fff',
     elevation: 4,
-    shadowColor: '#000',
+    shadowColor: '#00000040',
   },
 });

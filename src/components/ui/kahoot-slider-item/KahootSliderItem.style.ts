@@ -4,7 +4,7 @@ export default StyleSheet.create({
   container: {
     borderRadius: 8,
     overflow: 'hidden',
-    shadowColor: '#000',
+    shadowColor: '#00000040',
     elevation: 4,
   },
   coverImage: {
@@ -61,6 +61,7 @@ export default StyleSheet.create({
     objectFit: 'cover',
   },
   username: {
+    flex: 1,
     color: '#777',
     fontSize: 12,
     fontWeight: '600',

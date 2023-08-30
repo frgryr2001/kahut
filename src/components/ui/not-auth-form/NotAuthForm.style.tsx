@@ -1,9 +1,6 @@
 import {StyleSheet} from 'react-native';
 
 export default StyleSheet.create({
-  container: {
-    padding: 8,
-  },
   notAuthContainer: {
     gap: 16,
   },
@@ -31,30 +28,6 @@ export default StyleSheet.create({
   notAuthButtonText: {
     fontSize: 16,
     color: '#fff',
-    fontWeight: '700',
-  },
-  authContainer: {
-    borderRadius: 4,
-    overflow: 'hidden',
-  },
-  authItemContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 16,
-    padding: 16,
-    backgroundColor: '#fff',
-    shadowColor: '#00000040',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-
-    elevation: 3,
-  },
-  authItemTitle: {
-    fontSize: 16,
     fontWeight: '700',
   },
 });
