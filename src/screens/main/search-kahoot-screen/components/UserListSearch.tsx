@@ -1,25 +1,37 @@
 import {View, Text, TouchableOpacity} from 'react-native';
 import React from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {useTheme} from '@react-navigation/native';
+import {useNavigation, useTheme} from '@react-navigation/native';
+import {User} from '../../../../types/search.type';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {RootStackParams} from '../../../../navigation/AppNavigationContainer';
 
-export default function UserListSearch() {
+export default function UserListSearch({users}: {users: User[]}) {
   return (
-    <TouchableOpacity
-      activeOpacity={0.7}
+    <View
       style={{
         gap: 10,
       }}>
-      <UserListItem />
-      <UserListItem />
-    </TouchableOpacity>
+      {users?.map(user => (
+        <UserListItem key={user.id} user={user} />
+      ))}
+    </View>
   );
 }
 
-function UserListItem() {
+function UserListItem({user}: {user: User}) {
   const {colors} = useTheme();
+  const navigation = useNavigation<StackNavigationProp<RootStackParams>>();
+  const handleNavigateToUserDetail = () => {
+    navigation.navigate('UserDetailScreen', {
+      id: user.id,
+      name: user.username,
+    });
+  };
   return (
-    <View
+    <TouchableOpacity
+      activeOpacity={0.7}
+      onPress={handleNavigateToUserDetail}
       style={{
         flexDirection: 'row',
         alignItems: 'center',
@@ -31,8 +43,8 @@ function UserListItem() {
           color: colors.text,
           fontSize: 16,
         }}>
-        UserListItem
+        {user.username}
       </Text>
-    </View>
+    </TouchableOpacity>
   );
 }

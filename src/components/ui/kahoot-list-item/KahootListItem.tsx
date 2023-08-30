@@ -79,14 +79,16 @@ const KahootListItem = ({
         </ImageBackground>
 
         <View style={styles.rightContainer}>
-          <View>
+          <View
+            style={{
+              flex: 1,
+            }}>
             <Text
               style={[{color: colors.text}, styles.title]}
               numberOfLines={2}
               ellipsizeMode="tail">
               {kahoot?.title}
             </Text>
-
             <View
               style={{
                 flexDirection: 'row',

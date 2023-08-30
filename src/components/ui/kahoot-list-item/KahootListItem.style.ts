@@ -45,7 +45,6 @@ export default StyleSheet.create({
     top: 4,
   },
   title: {
-    flex: 1,
     fontSize: 16,
     fontWeight: '600',
   },
