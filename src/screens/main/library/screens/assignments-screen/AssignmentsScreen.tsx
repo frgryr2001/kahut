@@ -73,8 +73,7 @@ const AssignmentsScreen = ({navigation}: any) => {
                   kahoot={assignment}
                   handleKahootListItemPress={() =>
                     navigation.navigate('LibraryAssignmentDetailScreen', {
-                      id: assignment.id,
-                      title: assignment.title,
+                      assignment: assignment,
                     })
                   }
                 />

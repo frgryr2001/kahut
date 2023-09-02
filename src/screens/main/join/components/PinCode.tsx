@@ -45,7 +45,7 @@ export default function PinCode({
           borderRadius: 3,
         }}
         placeholder="Enter PIN"
-        placeholderTextColor={'#ccc'}
+        placeholderTextColor={'#777'}
         keyboardType="numeric"
         maxLength={8}
         onChangeText={text => setTextPin(text)}
@@ -79,9 +79,8 @@ const styles = StyleSheet.create({
     fontSize: 32,
   },
   subTitlePin: {
-    color: '#D1C4E9',
+    color: '#fff',
     fontSize: 16,
     fontFamily: 'Poppins-Regular',
-    marginTop: 10,
   },
 });

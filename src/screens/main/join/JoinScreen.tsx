@@ -30,7 +30,7 @@ export default function JoinScreen({navigation}: Props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#673AB7',
+    backgroundColor: '#20065c',
     paddingHorizontal: 20,
   },
 });

@@ -1,17 +1,17 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {useTheme} from '@react-navigation/native';
 import {LibraryScreen} from '../screens';
 import * as libraryStackScreens from '../screens/main/library/screens';
 import * as libraryKahootsScreens from '../screens/main/library/screens/kahoots-screen/screens';
-import {useTheme} from '@react-navigation/native';
+import {AssignmentSummary} from '../types/assignment.type';
 
 export type RootStackParams = {
   LibraryScreen: undefined;
   LibraryKahootsScreen: undefined;
   LibraryAssignmentsScreen: undefined;
   LibraryAssignmentDetailScreen: {
-    id: number;
-    title: string;
+    assignment: AssignmentSummary;
   };
   LibraryDraftScreen: undefined;
   LibraryReportsScreen: undefined;
@@ -63,7 +63,7 @@ function LibraryStack() {
           return {
             headerShown: true,
             headerTitleAlign: 'center',
-            headerTitle: route.params?.title!,
+            headerTitle: route.params.assignment.title,
             contentStyle: {
               backgroundColor: colors.background,
             },

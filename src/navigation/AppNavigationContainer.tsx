@@ -2,15 +2,13 @@ import React from 'react';
 import {useColorScheme, Image} from 'react-native';
 import {NavigationContainer, useTheme} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {useSelector} from 'react-redux';
+
 import * as mainScreens from '../screens';
 import {AppTabNavigator} from './AppTabNavigator';
 import ModalScreen from '../screens/main/create-question/modal';
 import {Question} from '../types/question';
 import {KahootDetailData} from '../types/kahoot.type';
 import {DarkTheme, LightTheme} from '../themes/appTheme';
-import {AppBarIconButton} from '../components/ui';
-import {selectStatus} from '../redux/slices/authSlice/selector';
 
 export type RootStackParams = {
   HomeScreen: undefined;
@@ -80,7 +78,7 @@ const Stack = createNativeStackNavigator<RootStackParams>();
 export const AppNavigationContainer = () => {
   const scheme = useColorScheme();
   const {colors} = useTheme();
-  const status = useSelector(selectStatus);
+  // const status = useSelector(selectStatus);
 
   const getAppBarLogo = () => {
     return (
@@ -171,20 +169,21 @@ export const AppNavigationContainer = () => {
           component={mainScreens.UserSettingScreen}
           options={{
             headerShown: true,
-            headerTitle: '',
+            headerTitleAlign: 'center',
+            headerTitle: 'Settings',
             headerStyle: {
               backgroundColor: colors.card,
             },
             headerShadowVisible: false,
-            headerRight:
-              status === 'authenticated'
-                ? () =>
-                    AppBarIconButton({
-                      type: 'normal',
-                      onPress: () => {},
-                      icon: 'create-outline',
-                    })
-                : undefined,
+            // headerRight:
+            //   status === 'authenticated'
+            //     ? () =>
+            //         AppBarIconButton({
+            //           type: 'normal',
+            //           onPress: () => {},
+            //           icon: 'account-edit-outline',
+            //         })
+            //     : undefined,
           }}
         />
         <Stack.Screen

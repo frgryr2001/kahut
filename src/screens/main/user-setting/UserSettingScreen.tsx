@@ -1,15 +1,25 @@
-import React from 'react';
-import {View, Text, TouchableHighlight} from 'react-native';
+import React, {useCallback, useState} from 'react';
+import {ScrollView, SafeAreaView, View} from 'react-native';
 import {useTheme} from '@react-navigation/native';
 import {StackScreenProps} from '@react-navigation/stack';
 import {useSelector} from 'react-redux';
-import Icon from 'react-native-vector-icons/Ionicons';
-
 import {RootStackParams} from '../../../navigation/AppNavigationContainer';
-import {selectStatus} from '../../../redux/slices/authSlice/selector';
+import {
+  selectStatus,
+  selectUser,
+} from '../../../redux/slices/authSlice/selector';
 import {store} from '../../../redux/store';
 import {signOut} from '../../../redux/slices/authSlice/actions';
+import {NotAuthForm} from '../../../components/ui';
+import {
+  UserInfo,
+  Sections,
+  EditUserModal,
+  SelectImageSourceModal,
+} from './components';
 import styles from './UserSettingScreen.style';
+import {updateUser} from '../../../services/user/user.service';
+import Snackbar from 'react-native-snackbar';
 
 interface Props
   extends StackScreenProps<RootStackParams, 'UserSettingScreen'> {}
@@ -17,10 +27,28 @@ interface Props
 const UserSettingScreen = ({navigation}: Props) => {
   const {colors} = useTheme();
   const authStatus = useSelector(selectStatus);
+  const authUser = useSelector(selectUser);
   const {getState, dispatch} = store;
+  const refreshToken = getState().auth.user?.refresh_token;
+  const [userState, setUserState] = useState<{
+    username?: string;
+    image?: string;
+    file?: {
+      uri: string;
+      type: string;
+      name: string;
+    };
+  }>({
+    username: authUser?.username,
+    image: authUser?.image,
+    file: undefined,
+  });
+  const [isShowModal, setIsShowModal] = useState(false);
+  const [isShowSelectImagePickerSrc, setIsShowSelectImagePickerSrc] =
+    useState(false);
+  const [isFetching, setIsFetching] = useState<boolean>(false);
 
-  const handleSignOut = async () => {
-    const refreshToken = getState().auth.user?.refresh_token;
+  const handleSignOut = useCallback(async () => {
     if (refreshToken) {
       try {
         dispatch(
@@ -32,83 +60,84 @@ const UserSettingScreen = ({navigation}: Props) => {
         console.error(error);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [refreshToken]);
+
+  const resetUserState = () => {
+    setUserState({
+      username: authUser?.username,
+      image: authUser?.image,
+      file: undefined,
+    });
+  };
+
+  const handleSave = async () => {
+    console.log(userState);
+    // Add verify username
+    const formData = new FormData();
+    formData.append('username', userState.username?.trim());
+    formData.append('userImage', userState.image);
+    userState.file && formData.append('images', userState.file);
+
+    try {
+      setIsFetching(true);
+      const updateResponse = await updateUser(formData);
+      setIsFetching(false);
+      console.log(updateResponse);
+      Snackbar.show({
+        text: 'Update successfully',
+        duration: Snackbar.LENGTH_SHORT,
+        textColor: '#fff',
+        backgroundColor: '#7C4DFF',
+      });
+    } catch (error: any) {
+      Snackbar.show({
+        text: error.message,
+        duration: Snackbar.LENGTH_SHORT,
+        textColor: '#fff',
+        backgroundColor: '#ff0000',
+      });
+    }
   };
 
   return (
-    <View style={{flex: 1, backgroundColor: colors.background, padding: 16}}>
-      {authStatus === 'not-authenticated' && (
-        <View style={{gap: 12}}>
-          <Text
-            style={{
-              color: colors.text,
-              ...styles.notAuthTitle,
-            }}>
-            Log in for more
-          </Text>
+    <SafeAreaView
+      style={{
+        ...styles.container,
+        backgroundColor: colors.background,
+      }}>
+      {authStatus === 'not-authenticated' || !authUser ? (
+        <NotAuthForm navigation={navigation} />
+      ) : (
+        <ScrollView showsVerticalScrollIndicator={false}>
+          {/* User info */}
+          <UserInfo user={authUser} setIsShowModal={setIsShowModal} />
 
-          <Text style={styles.notAuthSubTitle}>
-            Create and save kahoots, and access more features with a Kahoot!
-            account.
-          </Text>
+          {/* Sections */}
+          <Sections handleSignOut={handleSignOut} />
 
-          <View style={styles.notAuthButtonGroup}>
-            <TouchableHighlight
-              underlayColor="#d8dce3"
-              onPress={() => navigation.push('LoginScreen')}
-              style={{
-                backgroundColor: '#2456bf',
-                ...styles.notAuthButtonContainer,
-              }}>
-              <Text style={styles.notAuthButtonText}>Sign in</Text>
-            </TouchableHighlight>
+          {/* Edit user modal */}
+          <EditUserModal
+            isVisible={isShowModal}
+            setIsVisible={setIsShowModal}
+            userState={userState}
+            setUserState={setUserState}
+            setIsShowSelectImagePickerSrc={setIsShowSelectImagePickerSrc}
+            resetUserState={resetUserState}
+            onSave={handleSave}
+          />
 
-            <TouchableHighlight
-              onPress={() => navigation.push('RegisterScreen')}
-              underlayColor="#0e418a"
-              style={{
-                backgroundColor: '#10872a',
-                ...styles.notAuthButtonContainer,
-              }}>
-              <Text style={styles.notAuthButtonText}>Sign up</Text>
-            </TouchableHighlight>
-          </View>
-        </View>
+          {/* Select image source modal */}
+          <SelectImageSourceModal
+            isVisible={isShowSelectImagePickerSrc}
+            setIsVisible={setIsShowSelectImagePickerSrc}
+            setUserState={setUserState}
+          />
+
+          {isFetching && <View></View>}
+        </ScrollView>
       )}
-
-      {authStatus === 'authenticated' && (
-        <View>
-          <TouchableHighlight
-            onPress={handleSignOut}
-            underlayColor="#eee"
-            style={{
-              backgroundColor: '#fff',
-              paddingHorizontal: 24,
-              paddingVertical: 10,
-              borderRadius: 4,
-              borderWidth: 1,
-              borderColor: '#ddd',
-            }}>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-              }}>
-              <Text
-                style={{
-                  color: colors.text,
-                  fontSize: 16,
-                  fontWeight: '700',
-                }}>
-                Sign out
-              </Text>
-
-              <Icon name="log-out-outline" size={24} color={colors.text} />
-            </View>
-          </TouchableHighlight>
-        </View>
-      )}
-    </View>
+    </SafeAreaView>
   );
 };
 

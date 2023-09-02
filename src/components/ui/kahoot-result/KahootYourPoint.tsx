@@ -1,16 +1,26 @@
-import {Text} from 'react-native';
+import {Text, View} from 'react-native';
 import React from 'react';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default function KahootYourPoint({point}: {point: number}) {
   return (
-    <Text
+    <View
       style={{
-        color: '#fff',
-        fontSize: 20,
-        fontWeight: '700',
-        textAlign: 'center',
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 4,
+        justifyContent: 'center',
       }}>
-      Your Point: {point}
-    </Text>
+      <Icon name="seal-variant" size={36} color="#fff" />
+      <Text
+        style={{
+          color: '#fff',
+          fontSize: 24,
+          fontWeight: '700',
+          textAlign: 'center',
+        }}>
+        {point}
+      </Text>
+    </View>
   );
 }

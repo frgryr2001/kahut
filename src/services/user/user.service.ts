@@ -26,4 +26,16 @@ const getUserDetail = async ({id}: {id: number}) => {
   }
 };
 
-export {getUsersList, getUserDetail};
+const updateUser = async (data: FormData) => {
+  try {
+    const response = await httpClient.put<
+      RequestResponse<{id: number; username: string; image: string}>
+    >('/users', data);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export {getUsersList, getUserDetail, updateUser};

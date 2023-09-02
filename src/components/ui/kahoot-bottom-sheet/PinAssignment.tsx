@@ -6,6 +6,7 @@ import {Button} from '../Button';
 import {useTheme} from '@react-navigation/native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import QRCode from 'react-qr-code';
+
 export default function PinAssignment({
   assignment,
   closeModalChooseGameMode,
