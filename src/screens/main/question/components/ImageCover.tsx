@@ -98,10 +98,10 @@ const ImageCover = ({as, content, imageDefault, kahootID, id}: Props) => {
         },
       );
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        console.log('Camera permission given');
+        // console.log('Camera permission given');
         openCamera();
       } else {
-        console.log('Camera permission denied');
+        // console.log('Camera permission denied');
       }
     } catch (err) {
       console.warn(err);
