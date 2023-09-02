@@ -6,6 +6,7 @@ import {
   Dimensions,
   StyleSheet,
   Image,
+  PermissionsAndroid,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
@@ -39,42 +40,72 @@ const ImageCover = ({as, content, imageDefault, kahootID, id}: Props) => {
   const onDismiss = () => {
     setModalVisible(false);
   };
-  const openCamera = () => {
-    launchCamera({mediaType: 'photo'}, response => {
-      // console.log('response', JSON.stringify(response, null, 2));
-      if (response.didCancel) {
-        return;
-      }
 
-      if (kahootID && id) {
-        dispatch(
-          addImageQuestion({
-            kahootId: kahootID!,
-            questionId: id!,
-            imageQuestion: response.assets![0].fileName as string,
-            file: {
-              uri: response.assets![0].uri as string,
-              type: response.assets![0].type as string,
-              name: response.assets![0].fileName as string,
-            },
-          }),
-        );
-      }
-      if (kahootID && !id) {
-        dispatch(
-          addImageCoverKahoot({
-            kahootId: kahootID!,
-            imageCover: response.assets![0].fileName as string,
-            file: {
-              uri: response.assets![0].uri as string,
-              type: response.assets![0].type as string,
-              name: response.assets![0].fileName as string,
-            },
-          }),
-        );
-      }
-    });
+  const openCamera = () => {
+    launchCamera(
+      {
+        mediaType: 'photo',
+        saveToPhotos: true,
+      },
+      response => {
+        console.log('response', JSON.stringify(response, null, 2));
+        if (response.didCancel) {
+          return;
+        }
+
+        if (kahootID && id) {
+          dispatch(
+            addImageQuestion({
+              kahootId: kahootID!,
+              questionId: id!,
+              imageQuestion: response.assets![0].fileName as string,
+              file: {
+                uri: response.assets![0].uri as string,
+                type: response.assets![0].type as string,
+                name: response.assets![0].fileName as string,
+              },
+            }),
+          );
+        }
+        if (kahootID && !id && response.assets?.length !== 0) {
+          dispatch(
+            addImageCoverKahoot({
+              kahootId: kahootID!,
+              imageCover: response.assets?.at(0)!.fileName as string,
+              file: {
+                uri: response.assets?.at(0)!.uri as string,
+                type: response.assets?.at(0)!.type as string,
+                name: response.assets?.at(0)!.fileName as string,
+              },
+            }),
+          );
+        }
+      },
+    );
     onDismiss();
+  };
+
+  const requestCameraPermission = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.CAMERA,
+        {
+          title: 'App Camera Permission',
+          message: 'App needs access to your camera ',
+          buttonNeutral: 'Ask Me Later',
+          buttonNegative: 'Cancel',
+          buttonPositive: 'OK',
+        },
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        console.log('Camera permission given');
+        openCamera();
+      } else {
+        console.log('Camera permission denied');
+      }
+    } catch (err) {
+      console.warn(err);
+    }
   };
   const openGallery = () => {
     launchImageLibrary({mediaType: 'photo'}, response => {
@@ -171,7 +202,7 @@ const ImageCover = ({as, content, imageDefault, kahootID, id}: Props) => {
       <ModalImage
         modalVisible={modalVisible}
         onDismiss={onDismiss}
-        openCamera={openCamera}
+        openCamera={requestCameraPermission}
         openGallery={openGallery}
       />
     </View>
