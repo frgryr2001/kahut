@@ -77,13 +77,13 @@ export function AppTabNavigator() {
                 AppBarIconButton({
                   type: 'normal',
                   onPress: () => navigation.push('UserSettingScreen'),
-                  icon: 'person-circle-outline',
+                  icon: 'account-circle-outline',
                 }),
               headerRight: () =>
                 AppBarIconButton({
                   type: 'normal',
                   onPress: () => navigation.push('UserSettingScreen'),
-                  icon: 'notifications-outline',
+                  icon: 'bell-outline',
                 }),
               headerRightContainerStyle: {
                 paddingHorizontal: 8,

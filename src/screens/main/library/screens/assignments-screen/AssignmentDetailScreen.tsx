@@ -78,7 +78,7 @@ const AssignmentDetailScreen = ({navigation, route}: any) => {
       {topPlayers && (
         <>
           <ScrollView style={{flex: 1, gap: 16}}>
-            {topPlayers.map((player, index) => (
+            {topPlayers.map(player => (
               <Pressable
                 key={player.id}
                 onPress={() => {
@@ -102,7 +102,7 @@ const AssignmentDetailScreen = ({navigation, route}: any) => {
                     shadowColor: '#00000040',
                     elevation: 4,
                   }}>
-                  <Text
+                  {/* <Text
                     style={{
                       color: colors.text,
                       fontSize: 20,
@@ -110,7 +110,7 @@ const AssignmentDetailScreen = ({navigation, route}: any) => {
                       textAlign: 'center',
                     }}>
                     {index + 1}
-                  </Text>
+                  </Text> */}
 
                   <View
                     style={{

@@ -26,12 +26,12 @@ export default function KahootResult({
           <Tabbed.Tab
             active={activeTab === 0}
             handleSetActiveTab={handleSetActiveTab.bind(null, 0)}>
-            <Text>My answer</Text>
+            <Text>Answers</Text>
           </Tabbed.Tab>
           <Tabbed.Tab
             active={activeTab === 1}
             handleSetActiveTab={handleSetActiveTab.bind(null, 1)}>
-            <Text>Leader board</Text>
+            <Text>Leaderboard</Text>
           </Tabbed.Tab>
         </Tabbed.ActionContainer>
 
