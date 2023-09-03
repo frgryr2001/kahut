@@ -56,3 +56,14 @@ export type AuthDataEmpty = Pick<
 > & {
   data: {};
 };
+
+export type UpdateUserResponse = Pick<
+  AuthVerifyOtpResponse,
+  'code' | 'success' | 'message'
+> & {
+  data: {
+    id: number;
+    username: string;
+    image: string;
+  };
+};

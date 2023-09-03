@@ -8,6 +8,7 @@ import {
   AuthVerifyOtpResponse,
   SignUpData,
   VerifyOtpData,
+  UpdateUserResponse,
 } from '../../../types/user';
 
 export const sendOtp = createAsyncThunk(
@@ -217,6 +218,25 @@ export const resetPassword = createAsyncThunk(
       });
 
       return response.success;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  },
+);
+
+export const updateUser = createAsyncThunk(
+  '/users',
+  async (data: FormData, thunkAPI) => {
+    try {
+      const response = await httpClient.put<UpdateUserResponse>(
+        '/users',
+        data,
+        {
+          signal: thunkAPI.signal,
+        },
+      );
+      console.log('>>> Update user response:', response);
+      return response.data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.response.data);
     }
