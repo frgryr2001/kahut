@@ -1,22 +1,53 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+Đây là một dự án **Ứng dụng hệ thống trắc nghiệm tưởng tự kahoot xây dựng bằng công nghệ React Native** mới, được khởi tạo bằng [`@react-native-community/cli`](https://github.com/react-native-community/cli).
 
-# Getting Started
+# Bắt Đầu
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+> **Lưu ý**: Đảm bảo bạn đã hoàn thành các hướng dẫn [Cài đặt môi trường React Native](https://reactnative.dev/docs/environment-setup) cho đến bước "Tạo một ứng dụng mới" trước khi tiếp tục.Và đảm bảo bạn đã cài đặt [Node.js](https://nodejs.org/en/download/) phiên bản >= 16 .
 
-## Step 1: Start the Metro Server
-
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
-
-To start Metro, run the following command from the _root_ of your React Native project:
+## Bước 1: Clone dự án này
 
 ```bash
-# using npm
+git clone https://github.com/frgryr2001/kahut.git
+# Hoặc đã có src code trên máy tính của bạn thì chỉ cần unzip file src code và cd vào thư mục src code đó là được
+```
+
+## Bước 2: Cài đặt các thư viện
+
+```bash
+cd kahut
+npm install
+// or yarn install
+```
+
+## Bước 3 : Cài đặt biến môi trường cho project
+
+```bash
+touch .env
+```
+
+Sau đó, bạn cần thêm các biến môi trường sau vào file `.env`:
+
+```bash
+# API URL
+API_URL=<YOUR_API_URL>
+
+# Google OAuth Client ID
+WEB_CLIENT_ID=<YOUR_GOOGLE_OAUTH_CLIENT_ID>
+```
+
+## Bước 4: Khởi động Metro Server
+
+Trước tiên, bạn cần khởi động **Metro**, trình _bundler_ JavaScript đi kèm với React Native.
+
+Để bắt đầu Metro, chạy lệnh sau từ thư mục _gốc_ của dự án React Native của bạn:
+
+````bash
+# Sử dụng npm
 npm start
 
-# OR using Yarn
+# HOẶC sử dụng Yarn
 yarn start
-```
+
 
 ## Step 2: Start your Application
 
@@ -30,7 +61,7 @@ npm run android
 
 # OR using Yarn
 yarn android
-```
+````
 
 ### For iOS
 
@@ -42,38 +73,34 @@ npm run ios
 yarn ios
 ```
 
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
+> **Lưu ý** - Nếu bạn muốn chạy ứng dụng trên một thiết bị thật, hãy tham khảo [Running On Device](https://reactnative.dev/docs/running-on-device) hướng dẫn.
 
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
+# Các chức năng chính
 
-## Step 3: Modifying your App
-
-Now that you have successfully run the app, let's modify it.
-
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
-
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
+- Đăng nhập bằng tài khoản Google
+- Tạo phòng trắc nghiệm
+- Tham gia phòng trắc nghiệm
+- Xem kết quả trắc nghiệm
+- Xem lịch sử trắc nghiệm
+- Xem thông tin cá nhân
+- Đăng xuất
 
 # Troubleshooting
 
-If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
+## 1. `error Failed to install the app. Make sure you have the Android development environment set up: https://reactnative.dev/docs/environment-setup`
 
-# Learn More
+> **Lưu ý** - Đảm bảo bạn đã hoàn thành các hướng dẫn [Cài đặt môi trường React Native](https://reactnative.dev/docs/environment-setup) cho đến bước "Tạo một ứng dụng mới" trước khi tiếp tục.
 
-To learn more about React Native, take a look at the following resources:
+## 2. `error Failed to launch emulator. Reason: No emulators found as an output of `emulator -list-avds`.`
 
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+> **Lưu ý** - Đảm bảo bạn đã cài đặt và khởi chạy một máy ảo Android trước khi tiếp tục.
+
+## 3.Trong quá trình phát triển React-Native, có nhiều bộ nhớ đệm được sử dụng khi xây dựng ứng dụng :
+
+```bash
+# Xóa bộ nhớ đệm của Metro
+npm start -- --reset-cache
+
+# Xóa bộ nhớ đệm của Gradle
+cd android && ./gradlew clean && cd ..
+```
