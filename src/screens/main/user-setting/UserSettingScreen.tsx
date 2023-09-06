@@ -5,6 +5,7 @@ import {StackScreenProps} from '@react-navigation/stack';
 import {useSelector} from 'react-redux';
 import {RootStackParams} from '../../../navigation/AppNavigationContainer';
 import {
+  selectLoading,
   selectStatus,
   selectUser,
 } from '../../../redux/slices/authSlice/selector';
@@ -27,6 +28,7 @@ const UserSettingScreen = ({navigation}: Props) => {
   const {colors} = useTheme();
   const authStatus = useSelector(selectStatus);
   const authUser = useSelector(selectUser);
+  const isSaving = useSelector(selectLoading);
   const {getState, dispatch} = store;
   const refreshToken = getState().auth.user?.refresh_token;
   const [userState, setUserState] = useState<{
@@ -84,29 +86,27 @@ const UserSettingScreen = ({navigation}: Props) => {
     formData.append('userImage', userState.image);
     userState.file && formData.append('images', userState.file);
 
-    try {
-      // Handle dispatch here
-      await dispatch(updateUser(formData));
-
-      Snackbar.show({
-        text: 'Update successfully',
-        duration: Snackbar.LENGTH_SHORT,
-        textColor: '#fff',
-        backgroundColor: '#7C4DFF',
+    dispatch(updateUser(formData))
+      .unwrap()
+      .then(() => {
+        setIsShowModal(false);
+        setIsShowSelectImagePickerSrc(false);
+        Snackbar.show({
+          text: 'Update successfully',
+          duration: Snackbar.LENGTH_LONG,
+          textColor: '#fff',
+          backgroundColor: '#7C4DFF',
+        });
+      })
+      .catch((error: any) => {
+        Snackbar.show({
+          text: error.message,
+          duration: Snackbar.LENGTH_SHORT,
+          textColor: '#fff',
+          backgroundColor: '#ff0000',
+        });
       });
-    } catch (error: any) {
-      Snackbar.show({
-        text: error.message,
-        duration: Snackbar.LENGTH_SHORT,
-        textColor: '#fff',
-        backgroundColor: '#ff0000',
-      });
-    }
   };
-
-  // useEffect(() => {
-  //   console.log(userState);
-  // }, [userState]);
 
   return (
     <SafeAreaView
@@ -133,6 +133,7 @@ const UserSettingScreen = ({navigation}: Props) => {
             setIsShowSelectImagePickerSrc={setIsShowSelectImagePickerSrc}
             resetUserState={resetUserState}
             onSave={handleSave}
+            isSaving={isSaving}
           />
 
           {/* Select image source modal */}

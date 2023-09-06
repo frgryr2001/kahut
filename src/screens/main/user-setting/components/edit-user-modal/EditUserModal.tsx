@@ -34,6 +34,7 @@ interface Props {
   setIsShowSelectImagePickerSrc: React.Dispatch<React.SetStateAction<boolean>>;
   resetUserState: () => void;
   onSave: () => Promise<void>;
+  isSaving: boolean;
 }
 
 const EditUserModal = ({
@@ -44,6 +45,7 @@ const EditUserModal = ({
   setIsShowSelectImagePickerSrc,
   resetUserState,
   onSave,
+  isSaving = false,
 }: Props) => {
   const {colors} = useTheme();
 
@@ -57,6 +59,11 @@ const EditUserModal = ({
       isVisible={isVisible}
       animationIn="fadeInUp"
       animationOut="fadeOutDown"
+      backdropTransitionOutTiming={100}
+      style={{
+        justifyContent: 'flex-end',
+        margin: 0,
+      }}
       onBackdropPress={handleCancel}>
       <View
         style={{
@@ -148,6 +155,7 @@ const EditUserModal = ({
             gap: 16,
           }}>
           <TouchableOpacity
+            activeOpacity={0.8}
             onPress={handleCancel}
             style={{
               padding: 16,
@@ -168,6 +176,8 @@ const EditUserModal = ({
           </TouchableOpacity>
 
           <TouchableOpacity
+            activeOpacity={0.8}
+            disabled={isSaving}
             onPress={onSave}
             style={{
               padding: 16,
@@ -184,7 +194,7 @@ const EditUserModal = ({
                 fontWeight: '700',
                 textAlign: 'center',
               }}>
-              Save
+              {isSaving ? 'Saving...' : 'Save'}
             </Text>
           </TouchableOpacity>
         </View>

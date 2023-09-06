@@ -13,6 +13,7 @@ import {
   sendOtp,
   verifyOtpSignUp,
   resetPassword,
+  updateUser,
 } from './actions';
 import {ResetAccessTokenResponseData} from '../../../types/common';
 
@@ -96,6 +97,14 @@ const authSlice = createSlice({
         state.loadingScreen = false;
       })
       .addCase(resetPassword.fulfilled, () => {})
+      .addCase(updateUser.fulfilled, (state, action) => {
+        if (state.user) {
+          state.user = {
+            ...state.user,
+            ...action.payload,
+          };
+        }
+      })
       .addMatcher<PendingAction>(
         (action: AnyAction): action is PendingAction => {
           if (

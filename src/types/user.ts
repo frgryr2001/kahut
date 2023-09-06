@@ -1,7 +1,7 @@
 export interface User {
   id?: number;
-  name: string;
-  username: string;
+  name?: string;
+  username?: string;
   image: string;
   created_at?: number;
   access_token: string;

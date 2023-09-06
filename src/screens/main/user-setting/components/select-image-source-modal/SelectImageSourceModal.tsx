@@ -84,6 +84,11 @@ const SelectImageSourceModal = ({
       isVisible={isVisible}
       animationIn="fadeInUp"
       animationOut="fadeOutDown"
+      backdropTransitionOutTiming={100}
+      style={{
+        justifyContent: 'flex-end',
+        margin: 0,
+      }}
       onBackdropPress={() => setIsVisible(false)}>
       <View
         style={{

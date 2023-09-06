@@ -233,6 +233,9 @@ export const updateUser = createAsyncThunk(
         data,
         {
           signal: thunkAPI.signal,
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
         },
       );
       console.log('>>> Update user response:', response);
