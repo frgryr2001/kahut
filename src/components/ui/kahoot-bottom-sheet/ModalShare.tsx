@@ -129,6 +129,7 @@ function SearchInput({handleSearch}: {handleSearch: (text: string) => void}) {
           paddingHorizontal: 10,
         }}
         onChangeText={text => setSearch(text)}
+        placeholder="Search user..."
         value={search}
       />
       {search && (
@@ -208,7 +209,7 @@ function ChipTag({
       style={{
         flexDirection: 'row',
         flexWrap: 'wrap',
-        marginTop: 10,
+        // marginTop: 10,
       }}>
       {selectedUsers.map((user, index) => (
         <>
@@ -254,7 +255,6 @@ function ButtonAction({
       style={{
         flexDirection: 'row',
         justifyContent: 'space-around',
-        marginTop: 10,
         gap: 10,
       }}>
       <Button
@@ -265,7 +265,7 @@ function ButtonAction({
         size="medium"
         width={'50%'}
         style={{
-          backgroundColor: '#ccc',
+          backgroundColor: 'rgb(244, 242, 242)',
         }}
       />
       <Button

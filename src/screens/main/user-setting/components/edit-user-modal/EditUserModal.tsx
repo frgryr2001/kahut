@@ -60,10 +60,12 @@ const EditUserModal = ({
       animationIn="fadeInUp"
       animationOut="fadeOutDown"
       backdropTransitionOutTiming={100}
-      style={{
-        justifyContent: 'flex-end',
-        margin: 0,
-      }}
+      style={
+        {
+          // justifyContent: 'flex-end',
+          // margin: 0,
+        }
+      }
       onBackdropPress={handleCancel}>
       <View
         style={{

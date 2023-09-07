@@ -102,7 +102,7 @@ export function AppTabNavigator() {
                 AppBarIconButton({
                   type: 'normal',
                   onPress: () => navigation.push('SearchKahootScreen'),
-                  icon: 'search-outline',
+                  icon: 'magnify',
                 }),
 
               headerRightContainerStyle: {
