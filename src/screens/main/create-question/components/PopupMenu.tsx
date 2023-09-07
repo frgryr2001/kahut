@@ -98,6 +98,7 @@ export const PopupMenu = ({
                 <Text
                   style={{
                     color: colors.text,
+                    fontFamily: 'Poppins-Regular',
                   }}>
                   {option.title}
                 </Text>

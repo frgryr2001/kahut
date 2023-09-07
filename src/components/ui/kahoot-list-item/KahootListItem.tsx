@@ -95,11 +95,30 @@ const KahootListItem = ({
                 alignItems: 'center',
                 gap: 2,
               }}>
-              <Text style={{color: '#777', fontSize: 12}}>
+              <Text
+                style={{
+                  color: '#777',
+                  fontSize: 12,
+                  fontFamily: 'Poppins-Regular',
+                }}>
                 {getRevalidateTime(new Date(kahoot?.createdAt!).toISOString())}
               </Text>
-              <Text style={{color: '#777', fontSize: 20}}>&#183;</Text>
-              <Text style={{color: '#777', fontSize: 12}}>0 plays</Text>
+              <Text
+                style={{
+                  color: '#777',
+                  fontSize: 20,
+                  fontFamily: 'Poppins-Regular',
+                }}>
+                &#183;
+              </Text>
+              <Text
+                style={{
+                  color: '#777',
+                  fontSize: 12,
+                  fontFamily: 'Poppins-Regular',
+                }}>
+                0 plays
+              </Text>
             </View>
           </View>
 
@@ -114,6 +133,9 @@ const KahootListItem = ({
             <Text
               style={{
                 color: '#777',
+                fontFamily: 'Poppins-Regular',
+                fontSize: 14,
+                lineHeight: 20,
               }}>
               {kahoot?.visibleScope!.charAt(0).toUpperCase() +
                 kahoot?.visibleScope!.slice(1)}

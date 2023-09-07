@@ -22,6 +22,7 @@ export default StyleSheet.create({
   },
   itemTitle: {
     fontSize: 16,
-    fontWeight: '700',
+    fontFamily: 'Poppins-Medium',
+    lineHeight: 20,
   },
 });

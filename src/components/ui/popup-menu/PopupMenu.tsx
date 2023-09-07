@@ -1,6 +1,5 @@
 import {useTheme} from '@react-navigation/native';
 import React from 'react';
-import {View} from 'react-native';
 import {
   Animated,
   Dimensions,
@@ -10,6 +9,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
+  View,
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -87,6 +87,7 @@ export default function PopupMenu({arrInitPopupMenu, isMyKahoot}: Props) {
                   <Text
                     style={{
                       color: colors.text,
+                      fontFamily: 'Poppins-Regular',
                     }}>
                     {option.title}
                   </Text>

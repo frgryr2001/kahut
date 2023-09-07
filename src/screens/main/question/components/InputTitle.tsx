@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 10,
     height: 50,
-
+    fontFamily: 'Poppins-Regular',
     shadowColor: '#00000040',
     shadowOffset: {
       width: 0,

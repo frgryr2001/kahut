@@ -15,8 +15,8 @@ export default function KahootYourPoint({point}: {point: number}) {
       <Text
         style={{
           color: '#fff',
-          fontSize: 24,
-          fontWeight: '700',
+          fontSize: 20,
+          fontFamily: 'Poppins-Bold',
           textAlign: 'center',
         }}>
         {point}

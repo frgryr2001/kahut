@@ -1,75 +1,69 @@
 import React, {useEffect} from 'react';
-import {Platform, StyleSheet, TextInput, View} from 'react-native';
+import {StyleSheet, TextInput, View} from 'react-native';
 import Icons from 'react-native-vector-icons/Ionicons';
 import {useDebounce} from '../../../../hooks/useDebounce';
+import {useTheme} from '@react-navigation/native';
 
 interface Props {
-  onDebounce: (value: string) => void;
-  handleSearchSubmit: () => void;
+  onSearch: (value: string) => void;
 }
 
-export const SearchInput = React.memo(
-  ({onDebounce, handleSearchSubmit}: Props) => {
-    const [textValue, setTextValue] = React.useState('');
-    const value = useDebounce(textValue, 150);
+export const SearchInput = React.memo(({onSearch}: Props) => {
+  const {colors} = useTheme();
+  const [textValue, setTextValue] = React.useState('');
+  const debounceValue = useDebounce(textValue);
 
-    useEffect(() => {
-      onDebounce(value);
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [value]);
+  useEffect(() => {
+    onSearch(debounceValue);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debounceValue]);
 
-    return (
-      <>
-        <View style={styles.textBackground}>
-          <TextInput
-            placeholder="Search kahoot"
-            style={{
-              ...styles.textInput,
-              top: Platform.OS === 'ios' ? 0 : 2,
-            }}
-            autoCapitalize="none"
-            autoCorrect={false}
-            value={textValue}
-            onChangeText={setTextValue}
-            autoFocus={true}
-          />
+  return (
+    <>
+      <View style={styles.textBackground}>
+        <TextInput
+          placeholder="Search"
+          style={{
+            ...styles.textInput,
+            color: colors.text,
+          }}
+          autoCapitalize="none"
+          autoCorrect={false}
+          value={textValue}
+          onChangeText={setTextValue}
+          autoFocus={true}
+        />
+        {textValue.length > 0 && (
           <Icons
-            name="search-outline"
-            color="gray"
-            size={25}
-            onPress={() => handleSearchSubmit()}
+            name="close"
+            color="#777"
+            size={24}
+            onPress={() => setTextValue('')}
           />
-        </View>
-      </>
-    );
-  },
-);
+        )}
+      </View>
+    </>
+  );
+});
 
 const styles = StyleSheet.create({
   textBackground: {
     flex: 1,
     backgroundColor: '#F3F1F3',
-    borderRadius: 10,
-    height: 45,
-    marginTop: 10,
-    paddingVertical: Platform.OS === 'ios' ? 0 : 3,
-    paddingHorizontal: 20,
+    borderRadius: 4,
+    height: 46,
+    paddingVertical: 0,
+    paddingHorizontal: 16,
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-
+    shadowColor: '#000000',
     elevation: 4,
   },
   textInput: {
     fontSize: 16,
-    color: 'black',
     flex: 1,
+    fontFamily: 'Poppins-Regular',
+    lineHeight: 20,
   },
 });

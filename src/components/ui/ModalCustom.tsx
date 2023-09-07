@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
   titleModal: {
     fontSize: 20,
     textAlign: 'center',
-    fontWeight: 'bold',
     marginVertical: 10,
+    fontFamily: 'Poppins-Bold',
   },
 });

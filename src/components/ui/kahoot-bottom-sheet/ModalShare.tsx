@@ -83,7 +83,7 @@ export default function ModalShare({
   return (
     <ModalCustom
       modalVisible={modalShareVisible}
-      title="Share with kahoot!"
+      title="Share kahoot"
       onCloseModal={() => {
         onCloseModal();
         setSelectedUsers([]);
@@ -125,11 +125,14 @@ function SearchInput({handleSearch}: {handleSearch: (text: string) => void}) {
         style={{
           height: 45,
           borderColor: colors.border,
+          borderRadius: 4,
           borderWidth: 1,
           paddingHorizontal: 10,
+          fontFamily: 'Poppins-Regular',
         }}
         onChangeText={text => setSearch(text)}
         placeholder="Search user..."
+        autoCapitalize="none"
         value={search}
       />
       {search && (
@@ -189,6 +192,7 @@ function UserItem({
         style={{
           fontSize: 16,
           color: colors.text,
+          fontFamily: 'Poppins-Regular',
         }}>
         {user}
       </Text>
@@ -226,6 +230,7 @@ function ChipTag({
             <Text
               style={{
                 color: colors.text,
+                fontFamily: 'Poppins-Regular',
               }}>
               {user}
             </Text>

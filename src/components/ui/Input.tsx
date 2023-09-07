@@ -102,6 +102,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     borderColor: '#e0e0e0',
     borderRadius: 5,
+    fontFamily: 'Poppins-Regular',
   },
 });
 

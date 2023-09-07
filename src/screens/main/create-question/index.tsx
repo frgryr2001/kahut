@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
   inputQuestion: {
     width: '100%',
     fontSize: 16,
-    fontWeight: 'bold',
+    fontFamily: 'Poppins-Bold',
     backgroundColor: '#FFFFFF',
     color: '#000000',
     padding: 10,

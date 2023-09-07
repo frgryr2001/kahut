@@ -1,5 +1,5 @@
-import React, {useCallback, useState} from 'react';
-import {ScrollView, SafeAreaView} from 'react-native';
+import React, {useCallback, useEffect, useState} from 'react';
+import {ScrollView, SafeAreaView, ActivityIndicator, View} from 'react-native';
 import {useTheme} from '@react-navigation/native';
 import {StackScreenProps} from '@react-navigation/stack';
 import {useSelector} from 'react-redux';
@@ -20,6 +20,7 @@ import {
 } from './components';
 import styles from './UserSettingScreen.style';
 import Snackbar from 'react-native-snackbar';
+import Modal from 'react-native-modal';
 
 interface Props
   extends StackScreenProps<RootStackParams, 'UserSettingScreen'> {}
@@ -47,6 +48,16 @@ const UserSettingScreen = ({navigation}: Props) => {
   const [isShowModal, setIsShowModal] = useState(false);
   const [isShowSelectImagePickerSrc, setIsShowSelectImagePickerSrc] =
     useState(false);
+
+  useEffect(() => {
+    if (authUser) {
+      setUserState({
+        username: authUser?.username,
+        image: authUser?.image,
+        file: undefined,
+      });
+    }
+  }, [authUser]);
 
   const handleSignOut = useCallback(async () => {
     if (refreshToken) {
@@ -77,7 +88,7 @@ const UserSettingScreen = ({navigation}: Props) => {
         text: 'Please enter the username',
         duration: Snackbar.LENGTH_SHORT,
         textColor: '#fff',
-        backgroundColor: '#ff0000',
+        backgroundColor: '#c79f1a',
       });
       return;
     }
@@ -93,7 +104,7 @@ const UserSettingScreen = ({navigation}: Props) => {
         setIsShowSelectImagePickerSrc(false);
         Snackbar.show({
           text: 'Update successfully',
-          duration: Snackbar.LENGTH_LONG,
+          duration: Snackbar.LENGTH_SHORT,
           textColor: '#fff',
           backgroundColor: '#7C4DFF',
         });
@@ -109,41 +120,51 @@ const UserSettingScreen = ({navigation}: Props) => {
   };
 
   return (
-    <SafeAreaView
-      style={{
-        ...styles.container,
-        backgroundColor: colors.background,
-      }}>
-      {authStatus === 'not-authenticated' || !authUser ? (
-        <NotAuthForm navigation={navigation} />
-      ) : (
-        <ScrollView showsVerticalScrollIndicator={false}>
-          {/* User info */}
-          <UserInfo user={userState} setIsShowModal={setIsShowModal} />
+    <SafeAreaView style={{flex: 1}}>
+      <View
+        style={{
+          ...styles.container,
+          backgroundColor: colors.background,
+        }}>
+        {authStatus === 'not-authenticated' || !authUser ? (
+          <NotAuthForm navigation={navigation} />
+        ) : (
+          <ScrollView showsVerticalScrollIndicator={false}>
+            {/* User info */}
+            <UserInfo user={userState} setIsShowModal={setIsShowModal} />
 
-          {/* Sections */}
-          <Sections handleSignOut={handleSignOut} />
+            {/* Sections */}
+            <Sections handleSignOut={handleSignOut} />
 
-          {/* Edit user modal */}
-          <EditUserModal
-            isVisible={isShowModal}
-            setIsVisible={setIsShowModal}
-            userState={userState}
-            setUserState={setUserState}
-            setIsShowSelectImagePickerSrc={setIsShowSelectImagePickerSrc}
-            resetUserState={resetUserState}
-            onSave={handleSave}
-            isSaving={isSaving}
-          />
+            {/* Edit user modal */}
+            <EditUserModal
+              isVisible={isShowModal}
+              setIsVisible={setIsShowModal}
+              userState={userState}
+              setUserState={setUserState}
+              setIsShowSelectImagePickerSrc={setIsShowSelectImagePickerSrc}
+              resetUserState={resetUserState}
+              onSave={handleSave}
+            />
 
-          {/* Select image source modal */}
-          <SelectImageSourceModal
-            isVisible={isShowSelectImagePickerSrc}
-            setIsVisible={setIsShowSelectImagePickerSrc}
-            setUserState={setUserState}
-          />
-        </ScrollView>
-      )}
+            {/* Select image source modal */}
+            <SelectImageSourceModal
+              isVisible={isShowSelectImagePickerSrc}
+              setIsVisible={setIsShowSelectImagePickerSrc}
+              setUserState={setUserState}
+            />
+
+            <Modal
+              isVisible={isSaving}
+              animationIn="fadeInUp"
+              animationOut="fadeOutDown"
+              backdropTransitionOutTiming={100}
+              onBackdropPress={() => {}}>
+              <ActivityIndicator color="#ffffff80" size={40} />
+            </Modal>
+          </ScrollView>
+        )}
+      </View>
     </SafeAreaView>
   );
 };

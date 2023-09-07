@@ -141,9 +141,11 @@ export default function QuestionBox({
             marginBottom: 20,
             color: colors.text,
             opacity: 0.8,
+            fontFamily: 'Poppins-Regular',
           }}>
-          <Text style={{fontWeight: 'bold'}}>Note:</Text> You are about to start
-          a quiz with <Text style={{fontWeight: 'bold'}}>{numberQuestion}</Text>{' '}
+          <Text style={{fontFamily: 'Poppins-Bold'}}>Note:</Text> You are about
+          to start a quiz with{' '}
+          <Text style={{fontFamily: 'Poppins-Bold'}}>{numberQuestion}</Text>{' '}
           questions.{siteConfig.noteModalBeforePlay}
         </Text>
         <View

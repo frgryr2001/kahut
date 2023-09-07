@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
   },
   textTheme: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontFamily: 'Poppins-Bold',
     color: 'black',
     zIndex: 1,
     position: 'absolute',

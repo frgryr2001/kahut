@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
   },
   textInputQuestion: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontFamily: 'Poppins-Bold',
     backgroundColor: '#FFFFFF',
     color: '#000000',
     padding: 10,
@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
   },
   inputModal: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontFamily: 'Poppins-Bold',
     backgroundColor: '#FFFFFF',
     color: '#000000',
     padding: 10,

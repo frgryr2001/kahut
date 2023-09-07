@@ -30,20 +30,9 @@ const KahootSliderItem = ({
 }: Props) => {
   const {colors} = useTheme();
 
-  // const formattedName = (name: string) => {
-  //   const nameArr = name.split('-');
-  //   nameArr.pop();
-  //   return nameArr.join(' ');
-  // };
-
   return (
     <TouchableOpacity
       onPress={async () => {
-        // const initQuestionData = await getKahootDetail();
-        // navigation.navigate('QuestionScreen', {
-        //   idQuestion: initQuestionData?.idQuestion!,
-        //   isEditAPI: true,
-        // });
         onItemPress && onItemPress(kahoot.id, isMyKahoot);
       }}
       activeOpacity={0.8}

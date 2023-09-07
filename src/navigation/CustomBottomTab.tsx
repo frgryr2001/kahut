@@ -19,13 +19,15 @@ function CustomBottomTab({state, descriptors, navigation}: any) {
         if (route.name === 'Home') {
           iconName = isFocused ? 'home' : 'home-outline';
         } else if (route.name === 'Create') {
-          iconName = isFocused ? 'add-circle' : 'add-circle-outline';
+          iconName = isFocused ? 'plus-circle' : 'plus-circle-outline';
         } else if (route.name === 'Library') {
-          iconName = isFocused ? 'library' : 'library-outline';
+          iconName = isFocused
+            ? 'bookmark-box-multiple'
+            : 'bookmark-box-multiple-outline';
         } else if (route.name === 'Discover') {
           iconName = isFocused ? 'compass' : 'compass-outline';
         } else if (route.name === 'Join') {
-          iconName = isFocused ? 'grid' : 'grid-outline';
+          iconName = isFocused ? 'view-grid' : 'view-grid-outline';
         }
 
         const onPress = () => {
@@ -62,7 +64,7 @@ function CustomBottomTab({state, descriptors, navigation}: any) {
               <Text
                 style={{
                   color: isFocused ? '#673ab7' : 'black',
-                  fontWeight: isFocused ? 'bold' : '500',
+                  fontFamily: 'Poppins-Medium',
                   fontSize: 12,
                 }}>
                 {label}

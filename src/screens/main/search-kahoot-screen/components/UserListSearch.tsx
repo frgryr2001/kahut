@@ -1,22 +1,38 @@
-import {View, Text, TouchableOpacity} from 'react-native';
+import {View, Text, TouchableOpacity, Image} from 'react-native';
 import React from 'react';
-import Icon from 'react-native-vector-icons/Ionicons';
 import {useNavigation, useTheme} from '@react-navigation/native';
 import {User} from '../../../../types/search.type';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootStackParams} from '../../../../navigation/AppNavigationContainer';
 
 export default function UserListSearch({users}: {users: User[]}) {
-  return (
+  const {colors} = useTheme();
+
+  return users.length > 0 ? (
     <View
       style={{
-        gap: 10,
+        gap: 8,
+        paddingHorizontal: 8,
       }}>
-      {users?.map(user => (
-        <UserListItem key={user.id} user={user} />
-      ))}
+      <Text
+        style={{
+          color: colors.text,
+          fontSize: 16,
+          fontFamily: 'Poppins-Bold',
+        }}>
+        Users
+      </Text>
+
+      <View
+        style={{
+          gap: 16,
+        }}>
+        {users?.map(user => (
+          <UserListItem key={user.id} user={user} />
+        ))}
+      </View>
     </View>
-  );
+  ) : null;
 }
 
 function UserListItem({user}: {user: User}) {
@@ -37,11 +53,20 @@ function UserListItem({user}: {user: User}) {
         alignItems: 'center',
         gap: 10,
       }}>
-      <Icon name="person-circle-outline" size={25} color={colors.text} />
+      <Image
+        source={{uri: user.image}}
+        style={{
+          width: 40,
+          height: 40,
+          borderRadius: 999,
+          objectFit: 'cover',
+        }}
+      />
       <Text
         style={{
           color: colors.text,
           fontSize: 16,
+          fontFamily: 'Poppins-Regular',
         }}>
         {user.username}
       </Text>

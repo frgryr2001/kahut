@@ -6,7 +6,7 @@ export default function Container({children}: {children: React.ReactNode}) {
     <View
       style={{
         flex: 1,
-        paddingHorizontal: 10,
+        paddingHorizontal: 16,
       }}>
       {children}
     </View>

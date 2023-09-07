@@ -50,6 +50,7 @@ export default StyleSheet.create({
   },
   authItemTitle: {
     fontSize: 16,
-    fontWeight: '700',
+    fontFamily: 'Poppins-Medium',
+    lineHeight: 20,
   },
 });

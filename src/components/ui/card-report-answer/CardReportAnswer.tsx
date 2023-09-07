@@ -39,7 +39,7 @@ export default function CardReportAnswer({answer}: CardProps) {
           flexDirection: 'row',
           justifyContent: 'space-between',
         }}>
-        <Text style={{color: '#777', fontWeight: '700'}}>
+        <Text style={{color: '#777', fontFamily: 'Poppins-Bold'}}>
           {answer.inOrder} - {answer.type}
         </Text>
         <View
@@ -49,7 +49,9 @@ export default function CardReportAnswer({answer}: CardProps) {
             gap: 4,
           }}>
           <Icon name="checkbox-marked-circle-outline" size={20} color="#777" />
-          <Text style={{color: '#777', fontWeight: '700'}}>{answer.point}</Text>
+          <Text style={{color: '#777', fontFamily: 'Poppins-Bold'}}>
+            {answer.point}
+          </Text>
         </View>
       </View>
 
@@ -69,14 +71,14 @@ export default function CardReportAnswer({answer}: CardProps) {
             color: colors.text,
             flex: 1,
             lineHeight: 18,
-            fontWeight: '700',
+            fontFamily: 'Poppins-Bold',
           }}>
           {answer.question}
         </Text>
       </View>
 
       <View style={{gap: 8}}>
-        <Text style={{color: colors.text, fontWeight: '700'}}>
+        <Text style={{color: colors.text, fontFamily: 'Poppins-Bold'}}>
           Your answered
         </Text>
 
@@ -127,7 +129,7 @@ function YourAnswer({
         alignItems: 'center',
       }}>
       {typeAnswer === 'quiz' && (userAnswer as QuizAnswer).text && (
-        <Text style={{color: '#fff', fontWeight: '700'}}>
+        <Text style={{color: '#fff', fontFamily: 'Poppins-Bold'}}>
           {(userAnswer as QuizAnswer).text === null
             ? 'No answer'
             : (userAnswer as QuizAnswer).text}
@@ -146,7 +148,7 @@ function YourAnswer({
       )}
 
       {typeAnswer === 'trueorfalse' && (
-        <Text style={{color: '#fff', fontWeight: '700'}}>
+        <Text style={{color: '#fff', fontFamily: 'Poppins-Bold'}}>
           {(userAnswer as boolean) === null
             ? 'No answer'
             : (userAnswer as boolean)
@@ -179,7 +181,7 @@ function CorrectAnswer({
         alignItems: 'center',
       }}>
       {typeAnswer === 'quiz' && (userAnswer as QuizAnswer).text && (
-        <Text style={{color: '#fff', fontWeight: '700'}}>
+        <Text style={{color: '#fff', fontFamily: 'Poppins-Bold'}}>
           {(userAnswer as QuizAnswer).text}
         </Text>
       )}
@@ -196,7 +198,7 @@ function CorrectAnswer({
       )}
 
       {typeAnswer === 'trueorfalse' && (
-        <Text style={{color: '#fff', fontWeight: '700'}}>
+        <Text style={{color: '#fff', fontFamily: 'Poppins-Bold'}}>
           {(userAnswer as boolean) ? 'True' : 'False'}
         </Text>
       )}

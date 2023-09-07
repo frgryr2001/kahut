@@ -41,7 +41,7 @@ function Tab({
       {React.cloneElement(children, {
         style: {
           color: active ? '#20065c' : '#ffffff',
-          fontWeight: '700',
+          fontFamily: 'Poppins-Bold',
         },
       })}
     </Pressable>

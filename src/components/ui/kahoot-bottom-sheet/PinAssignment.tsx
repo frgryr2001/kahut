@@ -52,7 +52,11 @@ export default function PinAssignment({
             right: -10,
             top: -10,
           }}>
-          {copiedText ? <Text style={{color: colors.text}}>Copied</Text> : null}
+          {copiedText ? (
+            <Text style={{color: colors.text, fontFamily: 'Poppins-Regular'}}>
+              Copied
+            </Text>
+          ) : null}
         </View>
 
         <Text
@@ -72,13 +76,19 @@ export default function PinAssignment({
         }}>
         <QRCode value={assignment.pin} />
       </View>
-      <Text>Deadline</Text>
+      <Text
+        style={{
+          color: colors.text,
+          fontFamily: 'Poppins-Regular',
+        }}>
+        Deadline
+      </Text>
       <Text
         style={{
           fontSize: 14,
-          fontWeight: 'bold',
           color: colors.text,
           marginTop: 10,
+          fontFamily: 'Poppins-Bold',
         }}>
         {formattedDate(assignment.expiredAt)}
       </Text>
@@ -99,6 +109,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 10,
     marginBottom: 10,
+    fontFamily: 'Poppins-Regular',
   },
   copyText: {
     fontSize: 20,

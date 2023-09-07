@@ -75,8 +75,8 @@ const styles = StyleSheet.create({
   },
   textTime: {
     fontSize: 16,
-    fontWeight: 'bold',
     color: 'white',
     marginLeft: 5,
+    fontFamily: 'Poppins-Bold',
   },
 });

@@ -5,11 +5,10 @@ import {
   ActivityIndicator,
   View,
   Text,
-  Keyboard,
   Pressable,
+  ScrollView,
+  Dimensions,
 } from 'react-native';
-import Container from './components/Container';
-import BoxResultSearch from './components/BoxResultSearch';
 import UserListSearch from './components/UserListSearch';
 import KahootListSearch from './components/KahootListSearch';
 import {search} from '../../../services/search/search.service';
@@ -20,11 +19,11 @@ import {StackScreenProps} from '@react-navigation/stack';
 import {BottomSheetModal, BottomSheetModalProvider} from '@gorhom/bottom-sheet';
 import {KahootBottomSheet} from '../../../components/ui';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
+
 interface Props
   extends StackScreenProps<RootStackParams, 'SearchKahootScreen'> {}
 export default function SearchKahootScreen({navigation}: Props) {
   const {colors} = useTheme();
-  const [searchText, setSearchText] = React.useState('');
   const [searchResult, setSearchResult] = React.useState<SearchData>();
   const [isSearching, setIsSearching] = React.useState(false);
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
@@ -32,6 +31,7 @@ export default function SearchKahootScreen({navigation}: Props) {
     kahootID: number;
     isMyKahoot: boolean;
   }>();
+  const HEIGHT = Dimensions.get('window').height;
 
   // open bottom sheet
   const handlePresentModalPress = React.useCallback((kahootID: number) => {
@@ -39,53 +39,21 @@ export default function SearchKahootScreen({navigation}: Props) {
     bottomSheetModalRef.current?.present();
   }, []);
 
-  const onSearch = useCallback((value: string) => {
-    setSearchText(value);
-  }, []);
-
-  const handleSearchSubmit = useCallback(async () => {
+  const handleSearch = useCallback(async (value: string) => {
     try {
-      setIsSearching(true);
-      Keyboard.dismiss();
-      const res = await search(searchText);
-      if (res.code === 200) {
-        setIsSearching(false);
-        setSearchResult(res.data);
+      if (!value.trim()) {
+        setSearchResult(undefined);
+        return;
       }
+
+      setIsSearching(true);
+      const res = await search(value);
+      setIsSearching(false);
+      setSearchResult(res.data);
     } catch (error) {
       setIsSearching(false);
-
-      console.log(error);
     }
-  }, [searchText]);
-
-  let content = null;
-
-  if (
-    searchResult?.users?.length === 0 &&
-    searchResult?.kahoots?.length === 0
-  ) {
-    content = (
-      <View
-        style={{
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}>
-        <Text style={{color: colors.text}}>No result found</Text>
-      </View>
-    );
-  } else {
-    content = (
-      <>
-        <UserListSearch users={searchResult?.users!} />
-        {/* kahoot result search */}
-        <KahootListSearch
-          kahoots={searchResult?.kahoots!}
-          handlePresentModalPress={handlePresentModalPress}
-        />
-      </>
-    );
-  }
+  }, []);
 
   return (
     <GestureHandlerRootView
@@ -93,39 +61,39 @@ export default function SearchKahootScreen({navigation}: Props) {
         flex: 1,
       }}>
       <BottomSheetModalProvider>
-        <SafeAreaView
-          style={{
-            flex: 1,
-          }}>
-          <Container>
+        <SafeAreaView style={{flex: 1}}>
+          <View style={{paddingVertical: 0, paddingHorizontal: 8}}>
+            {/* Header */}
             <View
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',
-
                 gap: 10,
+                paddingHorizontal: 8,
+                paddingTop: 16,
               }}>
-              <SearchInput
-                onDebounce={onSearch}
-                handleSearchSubmit={handleSearchSubmit}
-              />
+              <SearchInput onSearch={handleSearch} />
               <Pressable onPress={() => navigation.goBack()}>
                 <Text
                   style={{
                     color: colors.text,
-                    fontWeight: 'bold',
-                    fontSize: 16,
+                    fontFamily: 'Poppins-Bold',
+                    fontSize: 14,
                   }}>
                   Cancel
                 </Text>
               </Pressable>
             </View>
-            <BoxResultSearch>
+
+            {/* Search result */}
+            <ScrollView
+              showsVerticalScrollIndicator={false}
+              style={{marginVertical: 16, height: HEIGHT - 46 - 32}}>
               {/* user result search */}
               {isSearching ? (
                 <View
                   style={{
-                    flex: 1,
+                    // flex: 1,
                     justifyContent: 'center',
                     alignItems: 'center',
                   }}>
@@ -136,10 +104,57 @@ export default function SearchKahootScreen({navigation}: Props) {
                   />
                 </View>
               ) : (
-                <>{content}</>
+                <>
+                  {!searchResult && (
+                    <View
+                      style={{
+                        justifyContent: 'center',
+                        paddingHorizontal: 8,
+                      }}>
+                      <Text
+                        style={{
+                          color: colors.text,
+                          fontFamily: 'Poppins-Regular',
+                        }}>
+                        Please enter the search keyword!
+                      </Text>
+                    </View>
+                  )}
+
+                  {searchResult &&
+                    searchResult.users.length === 0 &&
+                    searchResult.kahoots.length === 0 && (
+                      <View
+                        style={{
+                          justifyContent: 'center',
+                          paddingHorizontal: 8,
+                        }}>
+                        <Text
+                          style={{
+                            color: colors.text,
+                            fontFamily: 'Poppins-Regular',
+                          }}>
+                          No result found!
+                        </Text>
+                      </View>
+                    )}
+
+                  {searchResult &&
+                    (searchResult.users.length > 0 ||
+                      searchResult.kahoots.length > 0) && (
+                      <View style={{gap: 16}}>
+                        <UserListSearch users={searchResult.users} />
+                        <KahootListSearch
+                          kahoots={searchResult.kahoots}
+                          handlePresentModalPress={handlePresentModalPress}
+                        />
+                      </View>
+                    )}
+                </>
               )}
-            </BoxResultSearch>
-          </Container>
+            </ScrollView>
+          </View>
+
           <KahootBottomSheet
             ref={bottomSheetModalRef}
             kahootDetailConfig={kahootDetailConfig}

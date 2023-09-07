@@ -23,7 +23,7 @@ export default StyleSheet.create({
   },
   username: {
     fontSize: 18,
-    fontWeight: '700',
+    fontFamily: 'Poppins-Bold',
   },
   statisticContainer: {
     flexDirection: 'row',
@@ -34,11 +34,12 @@ export default StyleSheet.create({
   },
   statisticValue: {
     fontSize: 18,
-    fontWeight: '700',
+    fontFamily: 'Poppins-Bold',
   },
   statisticSection: {
     fontSize: 14,
     color: '#777',
+    fontFamily: 'Poppins-Regular',
   },
   loading: {
     height: 150,
