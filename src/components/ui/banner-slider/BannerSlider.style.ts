@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
   itemTitle: {
     height: 40,
     textAlignVertical: 'center',
-    fontWeight: '700',
+    fontFamily: 'Poppins-Medium',
   },
   itemImage: {
     width: '100%',

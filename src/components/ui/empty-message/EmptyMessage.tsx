@@ -14,7 +14,13 @@ const EmptyMessage = ({messages}: Props) => {
         gap: 16,
       }}>
       {messages.map(message => (
-        <Text key={message} style={{color: '#777', textAlign: 'center'}}>
+        <Text
+          key={message}
+          style={{
+            color: '#777',
+            textAlign: 'center',
+            fontFamily: 'Poppins-Regular',
+          }}>
           {message}
         </Text>
       ))}

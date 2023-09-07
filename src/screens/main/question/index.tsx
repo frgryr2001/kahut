@@ -362,7 +362,7 @@ const styles = StyleSheet.create({
   },
   title: {
     marginTop: 10,
-    fontWeight: 'bold',
+    fontFamily: 'Poppins-Bold',
     color: 'black',
     fontSize: 16,
   },

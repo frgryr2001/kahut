@@ -45,9 +45,9 @@ export const ModalPoint = ({
             style={{
               fontSize: 20,
               textAlign: 'center',
-              fontWeight: 'bold',
               color: colors.text,
               marginTop: 10,
+              fontFamily: 'Poppins-Bold',
             }}>
             Change Point
           </Text>
@@ -57,6 +57,7 @@ export const ModalPoint = ({
               textAlign: 'center',
               color: colors.text,
               marginTop: 10,
+              fontFamily: 'Poppins-Regular',
             }}>
             Choose the point you want to change to
           </Text>

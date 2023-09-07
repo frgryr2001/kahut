@@ -5,14 +5,15 @@ export default StyleSheet.create({
     gap: 16,
   },
   notAuthTitle: {
-    fontWeight: '800',
     fontSize: 18,
     textAlign: 'center',
+    fontFamily: 'Poppins-Bold',
   },
   notAuthDesc: {
     fontSize: 16,
     color: '#777',
     textAlign: 'center',
+    fontFamily: 'Poppins-Regular',
   },
   notAuthButtonGroup: {
     flexDirection: 'row',
@@ -26,8 +27,7 @@ export default StyleSheet.create({
     alignItems: 'center',
   },
   notAuthButtonText: {
-    fontSize: 16,
     color: '#fff',
-    fontWeight: '700',
+    fontFamily: 'Poppins-Bold',
   },
 });

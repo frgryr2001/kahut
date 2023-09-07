@@ -403,7 +403,7 @@ const styles = StyleSheet.create({
     textAlign: 'right',
     marginTop: 10,
     fontSize: 16,
-    fontWeight: 'bold',
+    fontFamily: 'Poppins-Bold',
   },
   signUpBtn: {
     flexDirection: 'row',

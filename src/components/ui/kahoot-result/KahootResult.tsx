@@ -26,12 +26,26 @@ export default function KahootResult({
           <Tabbed.Tab
             active={activeTab === 0}
             handleSetActiveTab={handleSetActiveTab.bind(null, 0)}>
-            <Text>Answers</Text>
+            <Text
+              style={{
+                fontFamily: 'Poppins-Regular',
+                color: '#fff',
+                fontSize: 16,
+              }}>
+              Answers
+            </Text>
           </Tabbed.Tab>
           <Tabbed.Tab
             active={activeTab === 1}
             handleSetActiveTab={handleSetActiveTab.bind(null, 1)}>
-            <Text>Leaderboard</Text>
+            <Text
+              style={{
+                fontFamily: 'Poppins-Regular',
+                color: '#fff',
+                fontSize: 16,
+              }}>
+              Leaderboard
+            </Text>
           </Tabbed.Tab>
         </Tabbed.ActionContainer>
 

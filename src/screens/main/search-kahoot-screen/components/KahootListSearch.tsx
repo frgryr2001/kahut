@@ -12,29 +12,27 @@ export default function KahootListSearch({
   handlePresentModalPress: (kahootID: number) => void;
 }) {
   const {colors} = useTheme();
-  return (
-    <View
-      style={{
-        flex: 1,
-        marginTop: 10,
-      }}>
-      {kahoots?.length > 0 && (
-        <Text
-          style={{
-            color: colors.text,
-            fontSize: 16,
-            fontFamily: 'Poppins-Bold',
-          }}>
-          Kahoots
-        </Text>
-      )}
-      {kahoots?.map(kahoot => (
-        <KahootListItem
-          key={kahoot.id}
-          kahoot={kahoot}
-          handleKahootListItemPress={() => handlePresentModalPress(kahoot.id)}
-        />
-      ))}
+  return kahoots.length > 0 ? (
+    <View>
+      <Text
+        style={{
+          color: colors.text,
+          fontSize: 16,
+          fontFamily: 'Poppins-Bold',
+          paddingHorizontal: 8,
+        }}>
+        Kahoots
+      </Text>
+
+      <View>
+        {kahoots?.map(kahoot => (
+          <KahootListItem
+            key={kahoot.id}
+            kahoot={kahoot}
+            handleKahootListItemPress={() => handlePresentModalPress(kahoot.id)}
+          />
+        ))}
+      </View>
     </View>
-  );
+  ) : null;
 }

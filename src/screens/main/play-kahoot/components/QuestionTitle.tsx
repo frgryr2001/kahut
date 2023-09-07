@@ -19,7 +19,7 @@ export default function QuestionTitle({title}: {title: string}) {
 }
 const styles = StyleSheet.create({
   question: {
-    fontWeight: 'bold',
+    fontFamily: 'Poppins-Bold',
     fontSize: 20,
     marginTop: 20,
     textAlign: 'center',

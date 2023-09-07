@@ -101,8 +101,9 @@ export default function ModalGameMode({
                     <Text
                       style={{
                         fontSize: 14,
+                        fontFamily: 'Poppins-Regular',
                       }}>
-                      Deadline on :{' '}
+                      Deadline on:{' '}
                     </Text>
                     <Text
                       style={[
@@ -175,6 +176,6 @@ const styles = StyleSheet.create({
   },
   dateText: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontFamily: 'Poppins-Bold',
   },
 });

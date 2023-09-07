@@ -1,6 +1,6 @@
 import React from 'react';
 import Modal from 'react-native-modal';
-import {View, Text, Pressable} from 'react-native';
+import {View, Text, Pressable, PermissionsAndroid} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useTheme} from '@react-navigation/native';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
@@ -30,8 +30,31 @@ const SelectImageSourceModal = ({
 }: Props) => {
   const {colors} = useTheme();
 
+  const requestCameraPermission = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.CAMERA,
+        {
+          title: 'App Camera Permission',
+          message: 'App needs access to your camera ',
+          buttonNeutral: 'Ask Me Later',
+          buttonNegative: 'Cancel',
+          buttonPositive: 'OK',
+        },
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        console.log('Camera permission given');
+        openCamera();
+      } else {
+        console.log('Camera permission denied');
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+  };
+
   const openCamera = () => {
-    launchCamera({mediaType: 'photo'}, response => {
+    launchCamera({mediaType: 'photo', saveToPhotos: true}, response => {
       if (
         response.didCancel ||
         !response ||
@@ -98,7 +121,7 @@ const SelectImageSourceModal = ({
           overflow: 'hidden',
         }}>
         <Pressable
-          onPress={openCamera}
+          onPress={requestCameraPermission}
           style={{
             flexDirection: 'row',
             alignItems: 'center',
@@ -107,7 +130,15 @@ const SelectImageSourceModal = ({
             backgroundColor: '#fff',
           }}>
           <Icon name="camera-outline" size={24} color={colors.text} />
-          <Text style={{color: colors.text, fontSize: 16}}>Camera</Text>
+          <Text
+            style={{
+              color: colors.text,
+              fontSize: 16,
+              fontFamily: 'Poppins-Regular',
+              lineHeight: 20,
+            }}>
+            Camera
+          </Text>
         </Pressable>
         <Pressable
           onPress={openGallery}
@@ -119,7 +150,15 @@ const SelectImageSourceModal = ({
             backgroundColor: '#fff',
           }}>
           <Icon name="image-outline" size={24} color={colors.text} />
-          <Text style={{color: colors.text, fontSize: 16}}>Gallery</Text>
+          <Text
+            style={{
+              color: colors.text,
+              fontSize: 16,
+              fontFamily: 'Poppins-Regular',
+              lineHeight: 20,
+            }}>
+            Gallery
+          </Text>
         </Pressable>
       </View>
     </Modal>

@@ -12,6 +12,8 @@ import {getIcon} from '../../../helpers/getIcon';
 import {Button} from '../Button';
 import PopupMenu from '../popup-menu/PopupMenu';
 
+const DefaultImage = require('../../../assets/images/default.png');
+
 const width = Dimensions.get('window').width;
 interface Props {
   children: JSX.Element | JSX.Element[];
@@ -30,29 +32,15 @@ function Container({children}: Props) {
   return <View style={[styles.container]}>{children}</View>;
 }
 function ImageCoverKahoot({image}: {image: string}) {
-  const {colors} = useTheme();
   return (
-    <>
-      {image ? (
-        <Image
-          source={{uri: image}}
-          style={{
-            width: '100%',
-            height: 220,
-            objectFit: 'contain',
-            backgroundColor: colors.background,
-          }}
-        />
-      ) : (
-        <View
-          style={{
-            width: '100%',
-            height: 220,
-            backgroundColor: colors.background,
-          }}
-        />
-      )}
-    </>
+    <Image
+      source={image ? {uri: image} : DefaultImage}
+      style={{
+        width: '100%',
+        height: 220,
+        objectFit: 'cover',
+      }}
+    />
   );
 }
 function Title({title}: {title?: string}) {
@@ -97,10 +85,11 @@ function BoxVisibleQuantityItem({
         alignItems: 'center',
         gap: 5,
       }}>
-      {getIcon(nameIcon, 25, color)}
+      {getIcon(nameIcon, 24, color)}
       <Text
         style={{
           color: colors.text,
+          fontFamily: 'Poppins-Regular',
         }}>
         {count}
       </Text>
@@ -235,7 +224,7 @@ function ButtonActions({
         },
       ]}
       onPress={onPress}>
-      {getIcon(nameIcon, 25, color)}
+      {getIcon(nameIcon, 24, color)}
     </Pressable>
   );
 }

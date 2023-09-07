@@ -239,8 +239,8 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 16,
-    fontWeight: 'bold',
     marginBottom: 10,
+    fontFamily: 'Poppins-Bold',
   },
   inputContainer: {
     flexDirection: 'row',
@@ -255,6 +255,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 20,
     marginBottom: 30,
+    fontFamily: 'Poppins-Regular',
   },
   inputFilled: {
     backgroundColor: 'lightgray',
@@ -268,7 +269,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'white',
     fontSize: 16,
-    fontWeight: 'bold',
+    fontFamily: 'Poppins-Bold',
   },
   timerContainer: {
     flexDirection: 'row',
@@ -277,7 +278,7 @@ const styles = StyleSheet.create({
   },
   timerText: {
     fontSize: 16,
-    fontFamily: 'Popins-Regular',
+    fontFamily: 'Poppins-Regular',
     marginBottom: 10,
   },
   resendButton: {
@@ -286,6 +287,6 @@ const styles = StyleSheet.create({
   resendButtonText: {
     color: '#7C4DFF',
     fontSize: 16,
-    fontWeight: 'bold',
+    fontFamily: 'Poppins-Bold',
   },
 });

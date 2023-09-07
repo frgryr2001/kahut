@@ -12,7 +12,7 @@ export default StyleSheet.create({
     borderRadius: 999,
   },
   userInfoUsername: {
-    fontWeight: '700',
+    fontFamily: 'Poppins-Medium',
     fontSize: 16,
     flex: 1,
   },

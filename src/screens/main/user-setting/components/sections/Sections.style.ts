@@ -3,7 +3,7 @@ import {StyleSheet} from 'react-native';
 export default StyleSheet.create({
   sectionName: {
     fontSize: 16,
-    fontWeight: '700',
+    fontFamily: 'Poppins-Medium',
   },
   sectionItemsContainer: {
     borderRadius: 4,

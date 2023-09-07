@@ -17,13 +17,13 @@ export default function KahootLeaderBoard({
   return (
     <View>
       <View style={styles.containerTitle}>
-        {getIcon('ribbon-outline', 40, '#fff')}
+        {getIcon('seal-variant', 40, '#fff')}
         <Text style={styles.textTitle}>Top 5 high scores</Text>
       </View>
 
       <View
         style={{
-          marginTop: 10,
+          marginTop: 16,
           gap: 10,
         }}>
         {top5LeaderBoard?.map((item, index) => (
@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
   textTitle: {
     color: '#fff',
     fontSize: 20,
-    fontWeight: '700',
     textAlign: 'center',
+    fontFamily: 'Poppins-Bold',
   },
 });

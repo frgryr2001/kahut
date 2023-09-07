@@ -20,11 +20,11 @@ export default StyleSheet.create({
     bottom: 4,
     color: '#fff',
     fontSize: 12,
-    fontWeight: '600',
     backgroundColor: '#00000080',
     paddingHorizontal: 8,
     paddingVertical: 4,
     borderRadius: 2,
+    fontFamily: 'Poppins-Bold',
   },
   bottomContainer: {
     padding: 8,
@@ -40,14 +40,14 @@ export default StyleSheet.create({
   draft: {
     color: '#fff',
     fontSize: 12,
-    fontWeight: '600',
     paddingHorizontal: 8,
     paddingVertical: 2,
     borderRadius: 2,
+    fontFamily: 'Poppins-Bold',
   },
   title: {
-    fontSize: 16,
-    fontWeight: '600',
+    fontSize: 14,
+    fontFamily: 'Poppins-Medium',
   },
   userInfoContainer: {
     flexDirection: 'row',
@@ -64,6 +64,6 @@ export default StyleSheet.create({
     flex: 1,
     color: '#777',
     fontSize: 12,
-    fontWeight: '600',
+    fontFamily: 'Poppins-Medium',
   },
 });

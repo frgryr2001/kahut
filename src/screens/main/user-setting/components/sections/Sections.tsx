@@ -153,6 +153,7 @@ const Sections = ({handleSignOut}: Props) => {
                     style={{
                       color: colors.text,
                       fontSize: 16,
+                      fontFamily: 'Poppins-Regular',
                     }}>
                     {sectionItem.name}
                   </Text>

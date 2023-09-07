@@ -34,7 +34,7 @@ interface Props {
   setIsShowSelectImagePickerSrc: React.Dispatch<React.SetStateAction<boolean>>;
   resetUserState: () => void;
   onSave: () => Promise<void>;
-  isSaving: boolean;
+  isSaving?: boolean;
 }
 
 const EditUserModal = ({
@@ -60,10 +60,6 @@ const EditUserModal = ({
       animationIn="fadeInUp"
       animationOut="fadeOutDown"
       backdropTransitionOutTiming={100}
-      style={{
-        justifyContent: 'flex-end',
-        margin: 0,
-      }}
       onBackdropPress={handleCancel}>
       <View
         style={{
@@ -78,7 +74,12 @@ const EditUserModal = ({
             alignItems: 'center',
             gap: 16,
           }}>
-          <Text style={{color: colors.text, fontSize: 16, fontWeight: '700'}}>
+          <Text
+            style={{
+              color: colors.text,
+              fontSize: 16,
+              fontFamily: 'Poppins-Bold',
+            }}>
             Complete your profile
           </Text>
 
@@ -110,7 +111,7 @@ const EditUserModal = ({
                 borderRadius: 4,
               }}>
               <Icon name="image-outline" size={24} color="#777" />
-              <Text style={{color: '#777', fontWeight: '700'}}>
+              <Text style={{color: '#777', fontFamily: 'Poppins-Bold'}}>
                 Tap to add image
               </Text>
             </Pressable>
@@ -122,7 +123,7 @@ const EditUserModal = ({
             alignItems: 'flex-start',
             gap: 8,
           }}>
-          <Text style={{color: colors.text, fontWeight: '700'}}>
+          <Text style={{color: colors.text, fontFamily: 'Poppins-Bold'}}>
             Update your username
           </Text>
           <TextInput
@@ -143,6 +144,7 @@ const EditUserModal = ({
               width: '100%',
               paddingHorizontal: 16,
               paddingVertical: 8,
+              fontFamily: 'Poppins-Regular',
             }}
           />
         </View>
@@ -168,7 +170,7 @@ const EditUserModal = ({
             <Text
               style={{
                 color: colors.text,
-                fontWeight: '700',
+                fontFamily: 'Poppins-Bold',
                 textAlign: 'center',
               }}>
               Cancel
@@ -191,7 +193,7 @@ const EditUserModal = ({
             <Text
               style={{
                 color: '#fff',
-                fontWeight: '700',
+                fontFamily: 'Poppins-Bold',
                 textAlign: 'center',
               }}>
               {isSaving ? 'Saving...' : 'Save'}

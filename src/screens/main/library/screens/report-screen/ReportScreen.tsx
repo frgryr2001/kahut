@@ -91,14 +91,20 @@ export default function ReportScreen({navigation}: any) {
                                   : '#0a3e91'
                               }
                             />
-                            <Text style={{color: '#777', fontSize: 14}}>
+                            <Text
+                              style={{
+                                color: '#777',
+                                fontSize: 14,
+                                fontFamily: 'Poppins-Regular',
+                                lineHeight: 20,
+                              }}>
                               {formattedDate(play.createdAt)}
                             </Text>
                           </View>
                           <Text
                             style={{
                               color: colors.text,
-                              fontWeight: '700',
+                              fontFamily: 'Poppins-Medium',
                               fontSize: 16,
                             }}>
                             {play.kahootTitle}
@@ -118,7 +124,8 @@ export default function ReportScreen({navigation}: any) {
                             <Text
                               style={{
                                 color: colors.text,
-                                fontWeight: '700',
+                                fontFamily: 'Poppins-Medium',
+                                lineHeight: 20,
                                 fontSize: 14,
                               }}>
                               {play.numberOfPlayer}

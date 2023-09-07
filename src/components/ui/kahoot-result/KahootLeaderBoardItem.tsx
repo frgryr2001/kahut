@@ -11,14 +11,6 @@ export default function KahootLeaderBoardItem({
   const {colors} = useTheme();
   return (
     <View style={styles.container}>
-      {/* <Text
-        style={[
-          styles.text,
-          {color: colors.text, fontWeight: '600', fontSize: 20},
-        ]}>
-        {index + 1}
-      </Text> */}
-
       <View
         style={{
           flexDirection: 'row',
@@ -75,5 +67,6 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 16,
+    fontFamily: 'Poppins-Regular',
   },
 });

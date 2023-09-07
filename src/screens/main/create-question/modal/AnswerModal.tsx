@@ -155,7 +155,12 @@ const AnswerModal = ({
         </Pressable>
       </View>
       <View style={styles.containerAnswer}>
-        <Text>Answer</Text>
+        <Text
+          style={{
+            fontFamily: 'Poppins-Regular',
+          }}>
+          Answer
+        </Text>
         <CustomSwitch
           isOn={isSwitchOn}
           handleOnPressSwitch={handleOnPressSwitch}
@@ -169,9 +174,8 @@ const AnswerModal = ({
 const styles = StyleSheet.create({
   textInputQuestion: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontFamily: 'Poppins-Bold',
     backgroundColor: '#FFFFFF',
-
     padding: 10,
     height: 80,
     borderRadius: 8,

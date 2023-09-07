@@ -162,8 +162,7 @@ const styles = StyleSheet.create({
   },
   input: {
     fontSize: 16,
-    fontWeight: 'bold',
-
+    fontFamily: 'Poppins-Bold',
     textAlign: 'center',
     flex: 1,
   },

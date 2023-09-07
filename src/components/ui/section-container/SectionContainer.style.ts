@@ -13,11 +13,12 @@ const styles = StyleSheet.create({
   heading: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 12,
+    gap: 8,
   },
   text: {
     fontSize: 18,
-    fontWeight: '700',
+    fontFamily: 'Poppins-Medium',
+    lineHeight: 24,
   },
 });
 

@@ -21,7 +21,7 @@ export default StyleSheet.create({
     bottom: 4,
     color: '#fff',
     fontSize: 12,
-    fontWeight: '600',
+    fontFamily: 'Poppins-Bold',
     backgroundColor: '#00000080',
     paddingHorizontal: 8,
     paddingVertical: 4,
@@ -36,17 +36,17 @@ export default StyleSheet.create({
   draft: {
     color: '#fff',
     fontSize: 12,
-    fontWeight: '600',
     paddingHorizontal: 8,
     paddingVertical: 2,
     borderRadius: 2,
     position: 'absolute',
     left: 4,
     top: 4,
+    fontFamily: 'Poppins-Bold',
   },
   title: {
     fontSize: 16,
-    fontWeight: '600',
+    fontFamily: 'Poppins-Medium',
   },
   visibleScopeContainer: {
     flexDirection: 'row',

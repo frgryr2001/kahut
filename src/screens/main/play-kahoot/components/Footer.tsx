@@ -63,6 +63,7 @@ export default function Footer({
             <Text
               style={{
                 color: colors.text,
+                fontFamily: 'Poppins-Regular',
               }}>
               {remainingTime}
             </Text>

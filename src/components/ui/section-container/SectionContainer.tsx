@@ -25,7 +25,14 @@ const SectionContainer = ({children, title, icon, onPressSeeAll}: Props) => {
 
         {onPressSeeAll && (
           <TouchableOpacity onPress={onPressSeeAll}>
-            <Text style={{color: colors.text, fontSize: 18}}>See all</Text>
+            <Text
+              style={{
+                color: colors.text,
+                fontSize: 16,
+                fontFamily: 'Poppins-Medium',
+              }}>
+              See all
+            </Text>
           </TouchableOpacity>
         )}
       </View>

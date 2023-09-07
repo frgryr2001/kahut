@@ -38,11 +38,13 @@ export default function PinCode({
           borderWidth: 1,
           color: colors.text,
           marginTop: 10,
-          fontSize: textPin ? 20 : 16,
-
+          fontSize: 20,
           backgroundColor: 'white',
           textAlign: 'center',
-          borderRadius: 3,
+          justifyContent: 'center',
+          alignItems: 'center',
+          borderRadius: 4,
+          fontFamily: 'Poppins-Regular',
         }}
         placeholder="Enter PIN"
         placeholderTextColor={'#777'}
@@ -67,6 +69,7 @@ export default function PinCode({
         style={{
           marginTop: 20,
           backgroundColor: textPin.length < 8 ? '#ccc' : '#536DFE',
+          fontFamily: 'Poppins-Bold',
         }}
         isActive
         disabled={textPin.length < 8}
