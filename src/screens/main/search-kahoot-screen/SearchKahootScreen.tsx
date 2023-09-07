@@ -78,7 +78,7 @@ export default function SearchKahootScreen({navigation}: Props) {
                   style={{
                     color: colors.text,
                     fontFamily: 'Poppins-Bold',
-                    fontSize: 16,
+                    fontSize: 14,
                   }}>
                   Cancel
                 </Text>

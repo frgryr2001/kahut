@@ -64,7 +64,7 @@ function CustomBottomTab({state, descriptors, navigation}: any) {
               <Text
                 style={{
                   color: isFocused ? '#673ab7' : 'black',
-                  fontWeight: isFocused ? 'bold' : '500',
+                  fontFamily: 'Poppins-Medium',
                   fontSize: 12,
                 }}>
                 {label}

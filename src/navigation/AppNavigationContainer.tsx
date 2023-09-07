@@ -97,6 +97,9 @@ export const AppNavigationContainer = () => {
         screenOptions={{
           animation: 'slide_from_right',
           headerShown: false,
+          headerTitleStyle: {
+            fontFamily: 'Poppins-Medium',
+          },
         }}>
         <Stack.Screen
           name="LoginScreen"

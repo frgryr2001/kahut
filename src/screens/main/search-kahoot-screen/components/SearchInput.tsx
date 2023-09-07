@@ -64,5 +64,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     flex: 1,
     fontFamily: 'Poppins-Regular',
+    lineHeight: 20,
   },
 });

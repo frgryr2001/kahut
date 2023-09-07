@@ -63,6 +63,9 @@ export function AppTabNavigator() {
           tabBar={tabBar}
           screenOptions={{
             headerTitleAlign: 'center',
+            headerTitleStyle: {
+              fontFamily: 'Poppins-Medium',
+            },
           }}>
           <Tab.Screen
             name="Home"

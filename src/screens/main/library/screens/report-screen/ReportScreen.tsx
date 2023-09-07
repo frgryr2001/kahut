@@ -26,7 +26,6 @@ export default function ReportScreen({navigation}: any) {
   useEffect(() => {
     const getPlaysListData = async () => {
       const response = await getPlaysList();
-      console.log(response);
       setPlaysList(response);
     };
     getPlaysListData();

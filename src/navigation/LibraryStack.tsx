@@ -34,6 +34,9 @@ function LibraryStack() {
       screenOptions={{
         headerTitleAlign: 'center',
         animation: 'slide_from_right',
+        headerTitleStyle: {
+          fontFamily: 'Poppins-Medium',
+        },
       }}>
       <Stack.Screen
         name="LibraryScreen"
