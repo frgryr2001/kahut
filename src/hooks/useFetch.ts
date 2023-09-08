@@ -4,7 +4,7 @@ import {RequestResponse} from '../types/common';
 
 export const useFetch = <T>(
   url: string,
-  options: {
+  options?: {
     onSuccess?: (data: T) => void;
   },
 ) => {
@@ -12,11 +12,11 @@ export const useFetch = <T>(
   const [error, setError] = useState<any>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const saveOnSuccess = useRef(options.onSuccess);
+  const saveOnSuccess = useRef(options?.onSuccess);
 
   useLayoutEffect(() => {
-    saveOnSuccess.current = options.onSuccess;
-  }, [options.onSuccess]);
+    saveOnSuccess.current = options?.onSuccess;
+  }, [options?.onSuccess]);
 
   useEffect(() => {
     if (url) {
@@ -29,11 +29,10 @@ export const useFetch = <T>(
           }
           setData(res.data);
           setIsLoading(false);
-          // eslint-disable-next-line no-catch-shadow
-        } catch (error) {
-          console.log('USE FETCH ERROR', error);
-
-          setError(error);
+        } catch (err) {
+          setIsLoading(false);
+          setData(undefined);
+          setError(err);
         }
       };
       fetchData();

@@ -38,7 +38,7 @@ export default function PinCode({
           borderWidth: 1,
           color: colors.text,
           marginTop: 10,
-          fontSize: 20,
+          fontSize: 16,
           backgroundColor: 'white',
           textAlign: 'center',
           justifyContent: 'center',

@@ -4,12 +4,17 @@ import {View, TextInput, Text, Pressable} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useTheme} from '@react-navigation/native';
 import {Button} from '../Button';
-import {getUsersList} from '../../../services/user/user.service';
 import {createShare} from '../../../services/share/share.service';
 import {useDebounce} from '../../../hooks/useDebounce';
-import {useSelector} from 'react-redux';
-import {selectUser} from '../../../redux/slices/authSlice/selector';
 import Snackbar from 'react-native-snackbar';
+import {useFetch} from '../../../hooks/useFetch';
+
+type IDataSearch = {
+  id: number;
+  username: string;
+  name: string;
+  image: string;
+};
 
 export default function ModalShare({
   modalShareVisible,
@@ -20,46 +25,26 @@ export default function ModalShare({
   onCloseModal: () => void;
   kahootId: number;
 }) {
-  const userAuth = useSelector(selectUser);
-  const [users, setUsers] = useState<string[]>([]);
   const [searchDebounce, setSearchDebounce] = useState<string>('');
   const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  useEffect(() => {
-    const getUsers = async () => {
-      const data = await getUsersList();
-      const userNameList = data.map(user => user.username);
-      setUsers(userNameList);
-    };
-    getUsers();
-  }, []);
+
+  const {data: filteredUsers, isLoading: isSearching} = useFetch<IDataSearch[]>(
+    `users/filter?k=${searchDebounce}`,
+  );
 
   const handleSearch = useCallback((text: string) => {
     setSearchDebounce(text);
   }, []);
-
-  const filteredUsers = users.filter(name => {
-    if (searchDebounce === '') {
-      return false;
-    }
-    if (userAuth) {
-      if (name === userAuth.username) {
-        return false;
-      }
-    }
-    return name.toLowerCase().includes(searchDebounce.toLowerCase());
-  });
 
   const addUserShare = (username: string) => {
     if (selectedUsers.includes(username)) {
       return;
     }
     setSelectedUsers(prev => [...prev, username]);
-    setUsers(prev => prev.filter(user => user !== username));
   };
   const removeUserShare = (username: string) => {
     setSelectedUsers(prev => prev.filter(user => user !== username));
-    setUsers(prev => [...prev, username]);
   };
 
   const handleShare = async () => {
@@ -69,7 +54,6 @@ export default function ModalShare({
     setLoading(true);
     const res = await createShare(kahootId, selectedUsers);
     if (res.code === 200) {
-      setUsers(prev => [...prev, ...selectedUsers]);
       setSelectedUsers([]);
       setLoading(false);
       Snackbar.show({
@@ -78,6 +62,10 @@ export default function ModalShare({
         duration: Snackbar.LENGTH_SHORT,
       });
     }
+  };
+
+  const isSelectedUsers = (username: string) => {
+    return selectedUsers.includes(username);
   };
 
   return (
@@ -93,11 +81,17 @@ export default function ModalShare({
         selectedUsers={selectedUsers}
         removeUserShare={removeUserShare}
       />
-      <ListUser users={filteredUsers} addUserShare={addUserShare} />
+      <ListUser
+        users={filteredUsers!}
+        addUserShare={addUserShare}
+        isSearching={isSearching && searchDebounce !== ''}
+        isSelectedUsers={isSelectedUsers}
+      />
       <ButtonAction
         onCloseModal={() => {
           onCloseModal();
           setSelectedUsers([]);
+          setSearchDebounce('');
         }}
         onShareKahoot={handleShare}
         loading={loading}
@@ -155,9 +149,13 @@ function SearchInput({handleSearch}: {handleSearch: (text: string) => void}) {
 function ListUser({
   users,
   addUserShare,
+  isSearching,
+  isSelectedUsers,
 }: {
-  users: string[];
+  users: IDataSearch[];
   addUserShare: (username: string) => void;
+  isSearching: boolean;
+  isSelectedUsers: (username: string) => boolean;
 }) {
   return (
     <View
@@ -165,9 +163,47 @@ function ListUser({
         marginTop: 10,
         gap: 10,
       }}>
-      {users.map(user => (
-        <UserItem key={user} user={user} onAddUserShare={addUserShare} />
-      ))}
+      {isSearching ? (
+        <Text
+          style={{
+            fontSize: 16,
+            fontFamily: 'Poppins-Regular',
+            textAlign: 'center',
+          }}>
+          Searching...
+        </Text>
+      ) : (
+        <>
+          {users === undefined ? (
+            <></>
+          ) : (
+            <Text
+              style={{
+                fontSize: 16,
+                fontFamily: 'Poppins-Regular',
+              }}>
+              <Text
+                style={{
+                  fontWeight: 'bold',
+                  color: 'black',
+                }}>
+                {users.length}
+              </Text>{' '}
+              results
+            </Text>
+          )}
+          {(users ?? []).map(user => {
+            return (
+              <UserItem
+                key={user.id}
+                user={user}
+                onAddUserShare={addUserShare}
+                isSelectedUsers={isSelectedUsers(user.username)}
+              />
+            );
+          })}
+        </>
+      )}
     </View>
   );
 }
@@ -175,14 +211,16 @@ function ListUser({
 function UserItem({
   user,
   onAddUserShare,
+  isSelectedUsers,
 }: {
-  user: string;
+  user: IDataSearch;
   onAddUserShare: (username: string) => void;
+  isSelectedUsers: boolean;
 }) {
   const {colors} = useTheme();
   return (
     <Pressable
-      onPress={() => onAddUserShare(user)}
+      onPress={() => onAddUserShare(user.username)}
       style={{
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -194,9 +232,14 @@ function UserItem({
           color: colors.text,
           fontFamily: 'Poppins-Regular',
         }}>
-        {user}
+        {user.username}
       </Text>
-      <Icon name="add-outline" size={25} color="black" />
+
+      {isSelectedUsers ? (
+        <Icon name="checkmark-outline" size={25} color="green" />
+      ) : (
+        <Icon name="add-outline" size={25} color="black" />
+      )}
     </Pressable>
   );
 }
@@ -208,40 +251,38 @@ function ChipTag({
   removeUserShare: (username: string) => void;
 }) {
   const {colors} = useTheme();
+
   return (
     <View
       style={{
         flexDirection: 'row',
         flexWrap: 'wrap',
-        // marginTop: 10,
       }}>
-      {selectedUsers.map((user, index) => (
-        <>
-          <Pressable
-            key={index}
+      {selectedUsers.map(user => (
+        <Pressable
+          key={user}
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            backgroundColor: '#ccc',
+            padding: 5,
+            borderRadius: 3,
+            margin: 5,
+          }}>
+          <Text
             style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              backgroundColor: '#ccc',
-              padding: 5,
-              borderRadius: 3,
-              margin: 5,
+              color: colors.text,
+              fontFamily: 'Poppins-Regular',
             }}>
-            <Text
-              style={{
-                color: colors.text,
-                fontFamily: 'Poppins-Regular',
-              }}>
-              {user}
-            </Text>
-            <Icon
-              name="close-outline"
-              size={25}
-              color="black"
-              onPress={() => removeUserShare(user)}
-            />
-          </Pressable>
-        </>
+            {user}
+          </Text>
+          <Icon
+            name="close-outline"
+            size={25}
+            color="black"
+            onPress={() => removeUserShare(user)}
+          />
+        </Pressable>
       ))}
     </View>
   );
@@ -270,7 +311,7 @@ function ButtonAction({
         size="medium"
         width={'50%'}
         style={{
-          backgroundColor: 'rgb(244, 242, 242)',
+          shadowColor: '#fff',
         }}
       />
       <Button

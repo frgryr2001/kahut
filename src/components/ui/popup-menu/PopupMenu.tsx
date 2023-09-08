@@ -40,9 +40,9 @@ export default function PopupMenu({arrInitPopupMenu, isMyKahoot}: Props) {
     }).start(() => to === 0 && setVisible(false));
   }
   return (
-    <>
+    <View>
       <TouchableOpacity
-        style={styles.iconOption}
+        style={[styles.iconOption, {backgroundColor: colors.background}]}
         activeOpacity={0.7}
         onPress={() => resizePopupTransition(1)}>
         <Icon name="ellipsis-vertical" size={25} color={'black'} />
@@ -97,7 +97,7 @@ export default function PopupMenu({arrInitPopupMenu, isMyKahoot}: Props) {
           </Animated.View>
         </SafeAreaView>
       </Modal>
-    </>
+    </View>
   );
 }
 const styles = StyleSheet.create({
@@ -106,6 +106,16 @@ const styles = StyleSheet.create({
     height: 45,
     justifyContent: 'center',
     alignItems: 'center',
+    borderRadius: 3,
+    shadowColor: '#00000040',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 2,
   },
   popup: {
     width: width / 3,

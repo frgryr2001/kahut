@@ -25,7 +25,12 @@ export const ModalCustom = ({
       }}
       onRequestClose={onCloseModal}>
       <Pressable style={styles.backdrop} onPress={onCloseModal} />
-      <View>
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
         <View style={styles.box}>
           <Text
             style={[
@@ -51,8 +56,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 3,
     width: '90%',
-    alignSelf: 'center',
-    marginTop: 170,
+
     paddingHorizontal: 20,
     paddingVertical: 10,
   },
