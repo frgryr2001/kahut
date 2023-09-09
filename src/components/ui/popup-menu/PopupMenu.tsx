@@ -106,15 +106,14 @@ const styles = StyleSheet.create({
     height: 45,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 3,
-    shadowColor: '#00000040',
+    borderRadius: 4,
+    shadowColor: '#00000080',
     shadowOffset: {
       width: 0,
       height: 2,
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-
     elevation: 2,
   },
   popup: {

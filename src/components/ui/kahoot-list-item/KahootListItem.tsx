@@ -89,6 +89,7 @@ const KahootListItem = ({
               ellipsizeMode="tail">
               {kahoot?.title}
             </Text>
+
             <View
               style={{
                 flexDirection: 'row',
@@ -103,22 +104,28 @@ const KahootListItem = ({
                 }}>
                 {getRevalidateTime(new Date(kahoot?.createdAt!).toISOString())}
               </Text>
-              <Text
-                style={{
-                  color: '#777',
-                  fontSize: 20,
-                  fontFamily: 'Poppins-Regular',
-                }}>
-                &#183;
-              </Text>
-              <Text
-                style={{
-                  color: '#777',
-                  fontSize: 12,
-                  fontFamily: 'Poppins-Regular',
-                }}>
-                {kahoot.numberOfPlayer} plays
-              </Text>
+
+              {!isDraft && (
+                <>
+                  <Text
+                    style={{
+                      color: '#777',
+                      fontSize: 20,
+                      fontFamily: 'Poppins-Regular',
+                    }}>
+                    &#183;
+                  </Text>
+
+                  <Text
+                    style={{
+                      color: '#777',
+                      fontSize: 12,
+                      fontFamily: 'Poppins-Regular',
+                    }}>
+                    {kahoot.numberOfPlayer} plays
+                  </Text>
+                </>
+              )}
             </View>
           </View>
 

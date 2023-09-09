@@ -107,7 +107,7 @@ class HttpClient {
   private handleRequestError(err: AxiosError): Error {
     if (err.response) {
       // Request was made and server responded with a status code
-      //   console.error('Request failed with status:', err.response.data);
+      console.error('Request failed with status:', JSON.stringify(err));
     } else if (err.request) {
       // Request was made but no response was received
       console.error('No response received');

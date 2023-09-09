@@ -50,6 +50,7 @@ const KahootBottomSheet = React.forwardRef(
         isMounted.current = true;
         return;
       }
+
       const getKahootDetailById = async () => {
         if (!kahootDetailConfig?.kahootID) {
           return;
@@ -57,6 +58,9 @@ const KahootBottomSheet = React.forwardRef(
         const response = await getKahootDetail(
           kahootDetailConfig?.kahootID as number,
         );
+
+        console.log('Kahoot detail:', response);
+
         response.isMyKahoot = kahootDetailConfig?.isMyKahoot as boolean;
 
         const checkFavorite = response.usersFavorite.some(
@@ -66,9 +70,7 @@ const KahootBottomSheet = React.forwardRef(
         setKahoot(response);
         setIsFavorite(checkFavorite);
       };
-      getKahootDetailById().catch(error =>
-        console.log(JSON.stringify(error, null, 2)),
-      );
+      getKahootDetailById();
     }, [
       kahootDetailConfig?.kahootID,
       kahootDetailConfig?.isMyKahoot,
@@ -114,19 +116,23 @@ const KahootBottomSheet = React.forwardRef(
       }
     };
 
-    //   detele kahoot
-    const deleteKahoot = async (kahootId: number) => {
-      setLoading(true);
+    //   Delete kahoot
+    const deleteKahoot = async () => {
+      console.log(kahoot);
+      if (kahoot && kahoot.id) {
+        setLoading(true);
 
-      const response = await deleteKahootById(kahootId);
-      if (response.code === 200) {
-        //   Update state on Homesceen
-        setLoading(false);
+        const response = await deleteKahootById(kahoot.id);
+        if (response.code === 200) {
+          //   Update state on Home screen
+          setLoading(false);
 
-        updateStateWhenDeleteKahoot && updateStateWhenDeleteKahoot(kahootId);
-        //   Do something
+          updateStateWhenDeleteKahoot && updateStateWhenDeleteKahoot(kahoot.id);
+          //   Do something
+        }
       }
     };
+
     const handleFavorite = async () => {
       if (!user) {
         // navigation login
@@ -135,21 +141,13 @@ const KahootBottomSheet = React.forwardRef(
       }
       setIsFavorite(!isFavorite);
       if (!isFavorite && user) {
-        const res = await postUserFavoriteKahoot(
-          kahoot?.id as number,
-          user.id as number,
-        );
-        if (res.code === 200) {
-          console.log('success');
-        }
+        await postUserFavoriteKahoot(kahoot?.id as number, user.id as number);
       }
       if (isFavorite && user) {
-        const res = await deleteUserFavoriteKahoot(kahoot?.id || 0);
-        if (res.code === 200) {
-          console.log('delete');
-        }
+        await deleteUserFavoriteKahoot(kahoot?.id || 0);
       }
     };
+
     const handleEditKahoot = () => {
       const initQuestionData: Question = {
         idQuestion: kahoot?.id,
@@ -174,6 +172,7 @@ const KahootBottomSheet = React.forwardRef(
         isEditAPI: true,
       });
     };
+
     const handleStartGame = () => {
       setModalVisible(false);
 
@@ -245,15 +244,21 @@ const KahootBottomSheet = React.forwardRef(
                       isMyKahoot={kahootDetailConfig?.isMyKahoot}
                       visibleEdit={kahoot?.isMyKahoot}
                       onPressEdit={handleEditKahoot}
-                      onPressDelete={deleteKahoot.bind(
-                        this,
-                        kahoot?.id as number,
-                      )}
+                      onPressDelete={deleteKahoot}
+                      // onPressDelete={() => {
+                      //   deleteKahoot(kahoot?.id as number);
+                      // }}
                       handleFavorite={handleFavorite}
                       handleNavigateToUserDetail={handleNavigateToUserDetail}
                       openModalShare={openModalShare}
                     />
+
                     <BottomSheet.ButtonPlay
+                      isPublic={
+                        kahoot && kahoot.visibleScope === 'public'
+                          ? true
+                          : false
+                      }
                       onPress={() => openModalChooseGameMode()}
                     />
                   </BottomSheet.Container>

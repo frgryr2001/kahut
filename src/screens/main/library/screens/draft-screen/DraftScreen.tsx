@@ -7,6 +7,7 @@ import {selectQuestions} from '../../../../../redux/slices/questionSlice/selecto
 const DraftScreen = ({navigation}: any) => {
   const kahoots = useSelector(selectQuestions);
   const filterKahootByIsDraft = kahoots?.filter((item: any) => item?.isDraft);
+  console.log(kahoots);
   const handleEditWithDraftKaHoot = (
     isDraft: boolean,
     kahootIdDraft: string,

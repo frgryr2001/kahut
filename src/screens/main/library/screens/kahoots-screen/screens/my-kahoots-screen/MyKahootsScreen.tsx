@@ -28,6 +28,7 @@ const MyKahootsScreen = () => {
     if (authStatus === 'authenticated') {
       getOwnKahootsList()
         .then(response => {
+          console.log('My kahoots screen:', response.kahoots);
           setOwnKahootsList(response.kahoots);
           setIsFetchingOwnKahootsList(false);
         })

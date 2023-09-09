@@ -150,12 +150,13 @@ function BoxUserAction({
       {
         title: 'Share',
         icon: 'share-social-outline',
-        onPress: () => openModalShare && openModalShare(),
+        onPress: openModalShare,
       },
       {
         title: 'Delete',
         icon: 'trash-outline',
-        onPress: () => onPressDelete && onPressDelete(),
+        // onPress: () => onPressDelete && onPressDelete(),
+        onPress: onPressDelete,
       },
     ];
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -203,6 +204,7 @@ function BoxUserAction({
     </View>
   );
 }
+
 function ButtonActions({
   nameIcon,
   onPress,
@@ -227,8 +229,14 @@ function ButtonActions({
     </Pressable>
   );
 }
-function ButtonPlay({onPress}: {onPress: () => void}) {
-  return (
+function ButtonPlay({
+  onPress,
+  isPublic,
+}: {
+  onPress: () => void;
+  isPublic: boolean;
+}) {
+  return isPublic ? (
     <Button
       title="Play"
       onPress={onPress}
@@ -246,7 +254,7 @@ function ButtonPlay({onPress}: {onPress: () => void}) {
         elevation: 3,
       }}
     />
-  );
+  ) : null;
 }
 
 const styles = StyleSheet.create({
@@ -263,7 +271,7 @@ const styles = StyleSheet.create({
   },
   nameUser: {
     padding: 10,
-    shadowColor: '#00000040',
+    shadowColor: '#00000080',
     shadowOffset: {
       width: 0,
       height: 2,
@@ -271,6 +279,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 2,
+    borderRadius: 4,
   },
   btnActionContainer: {
     flexDirection: 'row',
@@ -284,15 +293,14 @@ const styles = StyleSheet.create({
     width: 45,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 3,
-    shadowColor: '#00000040',
+    borderRadius: 4,
+    shadowColor: '#00000080',
     shadowOffset: {
       width: 0,
       height: 2,
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-
     elevation: 2,
   },
   boxUserAction: {
