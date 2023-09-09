@@ -30,7 +30,9 @@ export default function ModalShare({
   const [loading, setLoading] = useState<boolean>(false);
 
   const {data: filteredUsers, isLoading: isSearching} = useFetch<IDataSearch[]>(
-    `users/filter?k=${searchDebounce}`,
+    'users/filter',
+    '?k=',
+    searchDebounce,
   );
 
   const handleSearch = useCallback((text: string) => {

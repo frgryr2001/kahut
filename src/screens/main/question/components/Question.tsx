@@ -27,6 +27,8 @@ const Question = ({
   };
   const check = validateQuestionInList!(index);
 
+  console.log('check', check);
+
   return (
     <TouchableOpacity activeOpacity={0.9} onPress={handleClickQuestion}>
       <View style={styles.questionContainer}>

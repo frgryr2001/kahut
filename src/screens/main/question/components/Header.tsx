@@ -18,6 +18,7 @@ import {useSelector} from 'react-redux';
 import {selectLoading} from '../../../../redux/slices/questionSlice/selector';
 import {selectStatus} from '../../../../redux/slices/authSlice/selector';
 import httpClient from '../../../../services/utils/httpClient';
+import Snackbar from 'react-native-snackbar';
 
 interface HeaderProps {
   completed: boolean;
@@ -149,15 +150,15 @@ const Header = ({
           }
           return question;
         });
-        console.log(
-          'test',
-          JSON.stringify({
-            ...kahoot,
-            id: kahoot?.idQuestion,
-            theme: kahoot?.theme.toLocaleLowerCase(),
-            questions: convertDataValid,
-          }),
-        );
+        // console.log(
+        //   'test',
+        //   JSON.stringify({
+        //     ...kahoot,
+        //     id: kahoot?.idQuestion,
+        //     theme: kahoot?.theme.toLocaleLowerCase(),
+        //     questions: convertDataValid,
+        //   }),
+        // );
 
         formData.append(
           'kahoot',
@@ -209,7 +210,11 @@ const Header = ({
       dispatch(createKahoot(kahoot!))
         .unwrap()
         .then(() => {
-          navigation.goBack();
+          navigation.navigate('LibraryMyKahootsScreen');
+          Snackbar.show({
+            text: 'Create kahoot successfully',
+            duration: Snackbar.LENGTH_SHORT,
+          });
         })
         .then(() => {
           dispatch(

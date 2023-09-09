@@ -11,6 +11,8 @@ import {useTheme} from '@react-navigation/native';
 import {getIcon} from '../../../helpers/getIcon';
 import {Button} from '../Button';
 import PopupMenu from '../popup-menu/PopupMenu';
+import {useSelector} from 'react-redux';
+import {selectUser} from '../../../redux/slices/authSlice/selector';
 
 const DefaultImage = require('../../../assets/images/default.png');
 
@@ -124,27 +126,21 @@ function BoxUserAction({
   handleNavigateToUserDetail,
   isMyKahoot = false,
   openModalShare,
+  isPublic = true,
 }: {
   visibleEdit?: boolean;
   username?: string;
   isFavorite?: boolean;
   onPressEdit?: () => void;
-  onPressDelete?: () => void;
+  onPressDelete: () => void;
   handleFavorite?: () => void;
   handleNavigateToUserDetail?: () => void;
   isMyKahoot?: boolean;
-  openModalShare?: () => void;
+  openModalShare: () => void;
+  isPublic: boolean;
 }) {
   const {colors} = useTheme();
-
-  // const formattedName = () => {
-  //   const name = (username as string) ?? '';
-  //   const nameArr = name.split('-');
-
-  //   nameArr.pop();
-  //   return nameArr.join(' ');
-  // };
-
+  const authUser = useSelector(selectUser);
   const itemPopup = useMemo(() => {
     return [
       {
@@ -155,7 +151,6 @@ function BoxUserAction({
       {
         title: 'Delete',
         icon: 'trash-outline',
-        // onPress: () => onPressDelete && onPressDelete(),
         onPress: onPressDelete,
       },
     ];
@@ -187,19 +182,25 @@ function BoxUserAction({
 
       <View style={styles.btnActionContainer}>
         {/* user action */}
-        <ButtonActions
-          nameIcon={isFavorite ? 'star' : 'star-outline'}
-          onPress={() => handleFavorite!()}
-          color={isFavorite ? '#FFC107' : '#000'}
-        />
-        {visibleEdit && (
-          <ButtonActions
-            nameIcon="pencil-outline"
-            onPress={() => onPressEdit!()}
-          />
-        )}
+        {authUser && (
+          <>
+            <ButtonActions
+              nameIcon={isFavorite ? 'star' : 'star-outline'}
+              onPress={() => handleFavorite!()}
+              color={isFavorite ? '#FFC107' : '#000'}
+            />
+            {visibleEdit && (
+              <ButtonActions
+                nameIcon="pencil-outline"
+                onPress={() => onPressEdit!()}
+              />
+            )}
 
-        <PopupMenu arrInitPopupMenu={itemPopup} isMyKahoot={isMyKahoot} />
+            {(isMyKahoot || isPublic) && (
+              <PopupMenu arrInitPopupMenu={itemPopup} isMyKahoot={isMyKahoot} />
+            )}
+          </>
+        )}
       </View>
     </View>
   );

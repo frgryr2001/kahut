@@ -2,7 +2,7 @@ import React, {useMemo, useCallback, useState} from 'react';
 import {View, StyleSheet, ScrollView} from 'react-native';
 import {BottomSheetBackdrop, BottomSheetModal} from '@gorhom/bottom-sheet';
 import BottomSheet from './BottomSheet';
-import {useIsFocused, useNavigation} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootStackParams} from '../../../navigation/AppNavigationContainer';
 import {initQuestion} from '../../../redux/slices/questionSlice/reducer';
@@ -35,7 +35,7 @@ const KahootBottomSheet = React.forwardRef(
     const {updateStateWhenDeleteKahoot, kahootDetailConfig} = props;
     const dispatch = useAppDispatch();
     const user = useSelector(selectUser);
-    const isFocused = useIsFocused();
+
     const [loading, setLoading] = useState<boolean>(false);
     const [modalVisible, setModalVisible] = useState<boolean>(false);
     const [modalShareVisible, setModalShareVisible] = useState<boolean>(false);
@@ -43,41 +43,37 @@ const KahootBottomSheet = React.forwardRef(
     const snapPoints = useMemo(() => ['75%'], []);
     const [kahoot, setKahoot] = useState<KahootDetailData>();
     const [isFavorite, setIsFavorite] = useState<boolean>(false);
-    const isMounted = React.useRef(false);
 
-    React.useEffect(() => {
-      if (!isMounted.current) {
-        isMounted.current = true;
-        return;
-      }
+    useFocusEffect(
+      useCallback(() => {
+        const getKahootDetailById = async () => {
+          if (!kahootDetailConfig?.kahootID) {
+            return;
+          }
+          const response = await getKahootDetail(
+            kahootDetailConfig?.kahootID as number,
+          );
 
-      const getKahootDetailById = async () => {
-        if (!kahootDetailConfig?.kahootID) {
-          return;
-        }
-        const response = await getKahootDetail(
-          kahootDetailConfig?.kahootID as number,
-        );
+          //   console.log('Kahoot detail:', response);
 
-        console.log('Kahoot detail:', response);
+          response.isMyKahoot = kahootDetailConfig?.isMyKahoot as boolean;
 
-        response.isMyKahoot = kahootDetailConfig?.isMyKahoot as boolean;
+          const checkFavorite = response.usersFavorite.some(
+            userFavorite => userFavorite.userId === user?.id,
+          );
 
-        const checkFavorite = response.usersFavorite.some(
-          userFavorite => userFavorite.userId === user?.id,
-        );
-
-        setKahoot(response);
-        setIsFavorite(checkFavorite);
-      };
-      getKahootDetailById();
-    }, [
-      kahootDetailConfig?.kahootID,
-      kahootDetailConfig?.isMyKahoot,
-      isFavorite,
-      isFocused,
-      user,
-    ]);
+          setKahoot(response);
+          setIsFavorite(checkFavorite);
+        };
+        getKahootDetailById();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+      }, [
+        kahootDetailConfig?.kahootID,
+        kahootDetailConfig?.isMyKahoot,
+        isFavorite,
+        user,
+      ]),
+    );
 
     const renderBackdrop = useCallback(
       (props: any) => (
@@ -117,21 +113,21 @@ const KahootBottomSheet = React.forwardRef(
     };
 
     //   Delete kahoot
-    const deleteKahoot = async () => {
-      console.log(kahoot);
-      if (kahoot && kahoot.id) {
+    const deleteKahoot = useCallback(async () => {
+      if (kahootDetailConfig?.kahootID) {
         setLoading(true);
 
-        const response = await deleteKahootById(kahoot.id);
+        const response = await deleteKahootById(kahootDetailConfig?.kahootID!);
         if (response.code === 200) {
           //   Update state on Home screen
           setLoading(false);
 
-          updateStateWhenDeleteKahoot && updateStateWhenDeleteKahoot(kahoot.id);
+          updateStateWhenDeleteKahoot &&
+            updateStateWhenDeleteKahoot(kahootDetailConfig?.kahootID);
           //   Do something
         }
       }
-    };
+    }, [kahootDetailConfig, updateStateWhenDeleteKahoot]);
 
     const handleFavorite = async () => {
       if (!user) {
@@ -204,13 +200,15 @@ const KahootBottomSheet = React.forwardRef(
                   kahootId={kahoot?.id as number}
                   key={uuidv4()}
                 />
-                <ModalShare
-                  modalShareVisible={modalShareVisible}
-                  onCloseModal={() => {
-                    setModalShareVisible(false);
-                  }}
-                  kahootId={kahoot?.id as number}
-                />
+                {modalShareVisible && (
+                  <ModalShare
+                    modalShareVisible={modalShareVisible}
+                    onCloseModal={() => {
+                      setModalShareVisible(false);
+                    }}
+                    kahootId={kahoot?.id as number}
+                  />
+                )}
                 <BottomSheet>
                   <BottomSheet.ImageCoverKahoot
                     image={kahoot?.coverImage ?? ''}
@@ -245,20 +243,14 @@ const KahootBottomSheet = React.forwardRef(
                       visibleEdit={kahoot?.isMyKahoot}
                       onPressEdit={handleEditKahoot}
                       onPressDelete={deleteKahoot}
-                      // onPressDelete={() => {
-                      //   deleteKahoot(kahoot?.id as number);
-                      // }}
                       handleFavorite={handleFavorite}
                       handleNavigateToUserDetail={handleNavigateToUserDetail}
                       openModalShare={openModalShare}
+                      isPublic={!!(kahoot && kahoot.visibleScope === 'public')}
                     />
 
                     <BottomSheet.ButtonPlay
-                      isPublic={
-                        kahoot && kahoot.visibleScope === 'public'
-                          ? true
-                          : false
-                      }
+                      isPublic={!!(kahoot && kahoot.visibleScope === 'public')}
                       onPress={() => openModalChooseGameMode()}
                     />
                   </BottomSheet.Container>

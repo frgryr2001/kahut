@@ -20,8 +20,7 @@ interface Props {
 
 const HomeScreen = ({navigation}: Props) => {
   const [publicKahootsList, setPublicKahootsList] = useState<KahootSummary[]>();
-  // const [isOver, setIsOver] = useState<boolean>(false);
-  // const [ownKahootsList, setOwnKahootsList] = useState<KahootSummary[]>([]);
+
   const [isFetchingPublicKahootsList, setIsFetchingPublicKahootsList] =
     useState<boolean>(true);
   const [refreshing, setRefreshing] = React.useState(false);
@@ -52,41 +51,11 @@ const HomeScreen = ({navigation}: Props) => {
     }, 2000);
   }, []);
 
-  // const loadMore = () => {
-  //   if (isOver) {
-  //     return;
-  //   }
-
-  //   page.current++;
-  //   getOwnKahootsList()
-  //     .then(response => {
-  //       setTimeout(() => {
-  //         setOwnKahootsList(prev => [...prev, ...response.kahoots]);
-  //       }, 1000);
-  //       setIsOver(response.is_over);
-  //     })
-  //     .catch(error => console.error(error));
-  // };
-
   // open bottom sheet
   const handlePresentModalPress = useCallback((kahootID: number) => {
     setKahootDetailConfig({kahootID, isMyKahoot: false});
     bottomSheetModalRef.current?.present();
   }, []);
-
-  // const updateStateWhenDeleteKahoot = (kahootId: number) => {
-  //   const newOwnKahootsList = ownKahootsList.filter(
-  //     kahoot => kahoot.id !== kahootId,
-  //   );
-  //   const newKahootsList = publicKahootsList?.filter(
-  //     kahoot => kahoot.id !== kahootId,
-  //   );
-  //   const newIsOver = newOwnKahootsList.length <= 5;
-  //   setIsOver(newIsOver);
-  //   setPublicKahootsList(newKahootsList);
-  //   setOwnKahootsList(newOwnKahootsList);
-  //   bottomSheetModalRef.current?.close();
-  // };
 
   return (
     <SafeAreaView>

@@ -18,13 +18,14 @@ const ListQuestion = ({questions, navigation, idQuestion}: Props) => {
     if (questions[index]?.question === '') {
       return false;
     }
-    console.log(questions[index]?.answers);
 
     const check = questions[index]?.answers?.some(
-      item => item.isCorrect && item.text,
+      item => item.text && item.isCorrect,
     );
 
-    if (!check && questions[index]?.answer !== null) {
+    // console.log('check', check);
+
+    if (questions[index]?.answer !== null) {
       return true;
     }
     if (!check) {

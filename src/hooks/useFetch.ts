@@ -4,6 +4,8 @@ import {RequestResponse} from '../types/common';
 
 export const useFetch = <T>(
   url: string,
+  queryKey?: string,
+  query?: string,
   options?: {
     onSuccess?: (data: T) => void;
   },
@@ -20,10 +22,15 @@ export const useFetch = <T>(
 
   useEffect(() => {
     if (url) {
+      if (query === undefined || query === '') {
+        return;
+      }
       const fetchData = async () => {
         setIsLoading(true);
         try {
-          const res = await httpClient.get<RequestResponse<T>>(url);
+          const res = await httpClient.get<RequestResponse<T>>(
+            `${url}${queryKey}${query}`,
+          );
           if (saveOnSuccess.current) {
             saveOnSuccess.current(res.data);
           }
@@ -37,6 +44,6 @@ export const useFetch = <T>(
       };
       fetchData();
     }
-  }, [url, options]);
+  }, [url, options, query, queryKey]);
   return {data, error, isLoading};
 };
