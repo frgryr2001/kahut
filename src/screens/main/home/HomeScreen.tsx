@@ -1,20 +1,15 @@
 import React, {useState, useRef, useCallback} from 'react';
 import {SafeAreaView, ScrollView, View, RefreshControl} from 'react-native';
-import {useSelector} from 'react-redux';
 import {
   BannerSlider,
   SectionContainer,
-  KahootSlider,
   KahootBottomSheet,
   EmptyMessage,
+  KahootListItem,
+  KahootListItemSkeleton,
 } from '../../../components/ui/';
-import {HomeSkeleton} from './components';
-import {selectStatus} from '../../../redux/slices/authSlice/selector';
 import {KahootSummary} from '../../../types/kahoot.type';
-import {
-  getPublicKahootsList,
-  getOwnKahootsList,
-} from '../../../services/kahoot/kahoot.service';
+import {getPublicKahootsList} from '../../../services/kahoot/kahoot.service';
 import styles from './HomeScreen.style';
 import {BottomSheetModal} from '@gorhom/bottom-sheet';
 import {useFocusEffect} from '@react-navigation/native';
@@ -24,16 +19,12 @@ interface Props {
 }
 
 const HomeScreen = ({navigation}: Props) => {
-  const authStatus = useSelector(selectStatus);
   const [publicKahootsList, setPublicKahootsList] = useState<KahootSummary[]>();
-  const [isOver, setIsOver] = useState<boolean>(false);
-  const [ownKahootsList, setOwnKahootsList] = useState<KahootSummary[]>([]);
+  // const [isOver, setIsOver] = useState<boolean>(false);
+  // const [ownKahootsList, setOwnKahootsList] = useState<KahootSummary[]>([]);
   const [isFetchingPublicKahootsList, setIsFetchingPublicKahootsList] =
     useState<boolean>(true);
-  const [isFetchingOwnKahootsList, setIsFetchingOwnKahootsList] =
-    useState<boolean>(true);
   const [refreshing, setRefreshing] = React.useState(false);
-  const page = useRef<number>(1);
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const [kahootDetailConfig, setKahootDetailConfig] = useState<{
     kahootID: number;
@@ -53,21 +44,6 @@ const HomeScreen = ({navigation}: Props) => {
     }, [refreshing]),
   );
 
-  useFocusEffect(
-    useCallback(() => {
-      if (authStatus === 'authenticated') {
-        getOwnKahootsList()
-          .then(response => {
-            setOwnKahootsList(response.kahoots);
-            setIsOver(response.is_over);
-            setIsFetchingOwnKahootsList(false);
-          })
-          .catch(error => console.error(error));
-      }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [authStatus, refreshing]),
-  );
-
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     const timerId: NodeJS.Timeout = setTimeout(() => {
@@ -76,44 +52,41 @@ const HomeScreen = ({navigation}: Props) => {
     }, 2000);
   }, []);
 
-  const loadMore = () => {
-    if (isOver) {
-      return;
-    }
+  // const loadMore = () => {
+  //   if (isOver) {
+  //     return;
+  //   }
 
-    page.current++;
-    getOwnKahootsList()
-      .then(response => {
-        setTimeout(() => {
-          setOwnKahootsList(prev => [...prev, ...response.kahoots]);
-        }, 1000);
-        setIsOver(response.is_over);
-      })
-      .catch(error => console.error(error));
-  };
+  //   page.current++;
+  //   getOwnKahootsList()
+  //     .then(response => {
+  //       setTimeout(() => {
+  //         setOwnKahootsList(prev => [...prev, ...response.kahoots]);
+  //       }, 1000);
+  //       setIsOver(response.is_over);
+  //     })
+  //     .catch(error => console.error(error));
+  // };
 
   // open bottom sheet
-  const handlePresentModalPress = useCallback(
-    (kahootID: number, isMyKahoot: boolean) => {
-      setKahootDetailConfig({kahootID, isMyKahoot});
-      bottomSheetModalRef.current?.present();
-    },
-    [],
-  );
+  const handlePresentModalPress = useCallback((kahootID: number) => {
+    setKahootDetailConfig({kahootID, isMyKahoot: false});
+    bottomSheetModalRef.current?.present();
+  }, []);
 
-  const updateStateWhenDeleteKahoot = (kahootId: number) => {
-    const newOwnKahootsList = ownKahootsList.filter(
-      kahoot => kahoot.id !== kahootId,
-    );
-    const newKahootsList = publicKahootsList?.filter(
-      kahoot => kahoot.id !== kahootId,
-    );
-    const newIsOver = newOwnKahootsList.length <= 5;
-    setIsOver(newIsOver);
-    setPublicKahootsList(newKahootsList);
-    setOwnKahootsList(newOwnKahootsList);
-    bottomSheetModalRef.current?.close();
-  };
+  // const updateStateWhenDeleteKahoot = (kahootId: number) => {
+  //   const newOwnKahootsList = ownKahootsList.filter(
+  //     kahoot => kahoot.id !== kahootId,
+  //   );
+  //   const newKahootsList = publicKahootsList?.filter(
+  //     kahoot => kahoot.id !== kahootId,
+  //   );
+  //   const newIsOver = newOwnKahootsList.length <= 5;
+  //   setIsOver(newIsOver);
+  //   setPublicKahootsList(newKahootsList);
+  //   setOwnKahootsList(newOwnKahootsList);
+  //   bottomSheetModalRef.current?.close();
+  // };
 
   return (
     <SafeAreaView>
@@ -133,40 +106,36 @@ const HomeScreen = ({navigation}: Props) => {
           <SectionContainer
             title="Public kahoots"
             icon="earth-outline"
-            onPressSeeAll={() => navigation.navigate('Discover')}>
-            {isFetchingPublicKahootsList && <HomeSkeleton />}
-            {publicKahootsList && (
-              <KahootSlider
-                kahootsList={publicKahootsList}
-                onItemPress={handlePresentModalPress}
-              />
-            )}
-          </SectionContainer>
+            onPressSeeAll={null}>
+            <View style={{padding: 8}}>
+              {isFetchingPublicKahootsList && (
+                <>
+                  <KahootListItemSkeleton />
+                  <KahootListItemSkeleton />
+                  <KahootListItemSkeleton />
+                </>
+              )}
 
-          {authStatus === 'authenticated' && (
-            <SectionContainer
-              title="My kahoots"
-              icon="person-outline"
-              onPressSeeAll={() => navigation.navigate('Library')}>
-              {isFetchingOwnKahootsList && <HomeSkeleton />}
-              {ownKahootsList && ownKahootsList.length === 0 && (
+              {publicKahootsList && publicKahootsList.length === 0 && (
                 <EmptyMessage messages={['Looks empty here...']} />
               )}
-              {ownKahootsList && (
-                <KahootSlider
-                  kahootsList={ownKahootsList}
-                  loadMore={loadMore}
-                  onItemPress={handlePresentModalPress}
-                  isMyKahoot
-                />
-              )}
-            </SectionContainer>
-          )}
+
+              {publicKahootsList &&
+                publicKahootsList.length > 0 &&
+                publicKahootsList.map(kahoot => (
+                  <KahootListItem
+                    key={kahoot.id}
+                    kahoot={kahoot}
+                    handleKahootListItemPress={handlePresentModalPress}
+                  />
+                ))}
+            </View>
+          </SectionContainer>
         </View>
 
         <KahootBottomSheet
           ref={bottomSheetModalRef}
-          updateStateWhenDeleteKahoot={updateStateWhenDeleteKahoot}
+          // updateStateWhenDeleteKahoot={updateStateWhenDeleteKahoot}
           kahootDetailConfig={kahootDetailConfig}
         />
       </ScrollView>

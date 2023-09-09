@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, ScrollView, SafeAreaView} from 'react-native';
 import {useSelector} from 'react-redux';
-import {KahootListItem} from '../../../../../components/ui';
+import {EmptyMessage, KahootListItem} from '../../../../../components/ui';
 import {selectQuestions} from '../../../../../redux/slices/questionSlice/selector';
 
 const DraftScreen = ({navigation}: any) => {
@@ -28,7 +28,12 @@ const DraftScreen = ({navigation}: any) => {
           style={{
             gap: 8,
           }}>
+          {filterKahootByIsDraft && filterKahootByIsDraft.length === 0 && (
+            <EmptyMessage messages={['Looks empty here...']} />
+          )}
+
           {filterKahootByIsDraft &&
+            filterKahootByIsDraft.length > 0 &&
             filterKahootByIsDraft.map(kahoot => {
               return (
                 <KahootListItem

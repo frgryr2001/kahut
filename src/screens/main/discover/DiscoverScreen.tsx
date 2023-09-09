@@ -75,6 +75,7 @@ const DiscoverScreen = ({navigation}: Props) => {
               <SectionContainer
                 key={user.id}
                 title={user.username}
+                image={user.image}
                 onPressSeeAll={() =>
                   navigation.navigate('UserDetailScreen', {
                     id: user.id,

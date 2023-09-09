@@ -1,3 +1,4 @@
+import {useTheme} from '@react-navigation/native';
 import React from 'react';
 import {
   StyleSheet,
@@ -25,6 +26,8 @@ const ModalImage = ({
   openCamera,
   openGallery,
 }: ModalImageProps) => {
+  const {colors} = useTheme();
+
   return (
     <SafeAreaView style={styles.fill}>
       <Modal
@@ -45,18 +48,30 @@ const ModalImage = ({
           {/* camera */}
           <Pressable onPress={openCamera}>
             <View style={styles.pickIcon}>
-              <Icon name="camera-outline" size={50} color="black" />
+              <Icon name="camera-outline" size={50} color={colors.text} />
               <View>
-                <Text style={styles.titlePickIcon}>Camera</Text>
+                <Text
+                  style={{
+                    color: colors.text,
+                    ...styles.titlePickIcon,
+                  }}>
+                  Camera
+                </Text>
               </View>
             </View>
           </Pressable>
           {/* gallery */}
           <Pressable onPress={openGallery}>
             <View style={styles.pickIcon}>
-              <Icon name="image-outline" size={50} color="black" />
+              <Icon name="image-outline" size={50} color={colors.text} />
               <View>
-                <Text style={styles.titlePickIcon}>Gallery</Text>
+                <Text
+                  style={{
+                    color: colors.text,
+                    ...styles.titlePickIcon,
+                  }}>
+                  Gallery
+                </Text>
               </View>
             </View>
           </Pressable>

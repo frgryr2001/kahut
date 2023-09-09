@@ -76,7 +76,8 @@ export const Answer = ({
             width: '100%',
             height: '100%',
           }}
-          resizeMode="contain"
+          resizeMode="cover"
+          borderRadius={4}
         />
       ) : (
         <TextInput
@@ -147,10 +148,10 @@ export const Answer = ({
 
 const styles = StyleSheet.create({
   textInput: {
-    padding: 10,
+    padding: 8,
     width: '49%',
     height: 100,
-    borderRadius: 3,
+    borderRadius: 4,
     shadowColor: '#00000040',
     shadowOffset: {
       width: 0,

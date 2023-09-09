@@ -3,6 +3,7 @@ import {KahootSummary} from './kahoot.type';
 interface UserSummary {
   id: number;
   username: string;
+  image: string;
   kahoots: KahootSummary[];
 }
 

@@ -84,11 +84,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  title: {color: 'black', fontSize: 28, fontFamily: 'Poppins-Bold'},
+  title: {
+    color: 'black',
+    fontSize: 28,
+    fontFamily: 'Poppins-Bold',
+    textAlign: 'center',
+  },
   subTitle: {
     color: '#BDBDBD',
     fontSize: 16,
     fontFamily: 'Poppins-Regular',
     marginBottom: 20,
+    marginHorizontal: 8,
   },
 });

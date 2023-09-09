@@ -172,7 +172,7 @@ export const SettingQuestionScreen = ({navigation, route}: Props) => {
 const styles = StyleSheet.create({
   labelInput: {
     fontSize: 16,
-    fontFamily: 'Poppins-Bold',
+    fontFamily: 'Poppins-Medium',
     color: 'black',
   },
   input: {
@@ -196,7 +196,7 @@ const styles = StyleSheet.create({
   labelVisible: {
     marginVertical: 10,
     fontSize: 16,
-    fontFamily: 'Poppins-Bold',
+    fontFamily: 'Poppins-Medium',
     color: 'black',
   },
   centeredView: {

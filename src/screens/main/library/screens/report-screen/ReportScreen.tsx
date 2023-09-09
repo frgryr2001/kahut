@@ -1,10 +1,11 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {
   View,
   Text,
   Pressable,
   ActivityIndicator,
   SafeAreaView,
+  RefreshControl,
 } from 'react-native';
 import {useSelector} from 'react-redux';
 import {useTheme} from '@react-navigation/native';
@@ -22,17 +23,33 @@ export default function ReportScreen({navigation}: any) {
   const {colors} = useTheme();
   const authStatus = useSelector(selectStatus);
   const [playsList, setPlaysList] = useState<PlaySummary[]>();
+  const [refreshing, setRefreshing] = useState<boolean>(false);
 
   useEffect(() => {
-    const getPlaysListData = async () => {
-      const response = await getPlaysList();
-      setPlaysList(response);
-    };
-    getPlaysListData();
+    if (authStatus === 'authenticated') {
+      getPlaysListData();
+    }
+  }, [authStatus, refreshing]);
+
+  const getPlaysListData = async () => {
+    const response = await getPlaysList();
+    setPlaysList(response);
+  };
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
   }, []);
+
   return (
     <SafeAreaView>
-      <ScrollView>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }>
         <View style={styles.container}>
           {authStatus === 'authenticated' &&
             (playsList ? (

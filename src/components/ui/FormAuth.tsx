@@ -17,6 +17,7 @@ import {useSelector} from 'react-redux';
 import {selectLoading} from '../../redux/slices/authSlice/selector';
 import {useAppDispatch} from '../../redux/store';
 import {signIn} from '../../redux/slices/authSlice/actions';
+import {useTheme} from '@react-navigation/native';
 
 interface FormAuthProps {
   formType: 'login' | 'register' | 'forgot' | 'otp';
@@ -38,6 +39,8 @@ function SocialSignIn({
   signInSocialGoogle,
   reset,
 }: SocialSignInProps) {
+  const {colors} = useTheme();
+
   return (
     <View
       style={{
@@ -61,8 +64,9 @@ function SocialSignIn({
             <Text
               style={{
                 ...styles.textTitle,
+                color: colors.text,
               }}>
-              Or login with
+              Or sign in with
             </Text>
             <View style={{flex: 1, height: 1, backgroundColor: '#BDBDBD'}} />
           </View>
@@ -207,177 +211,171 @@ export const FormAuth = ({
 
   return (
     <View style={styles.container}>
-      <View
-        style={{
-          marginHorizontal: 10,
-        }}>
-        {/* Sign up  */}
-        {formType === 'register' && (
+      {/* Sign up  */}
+      {formType === 'register' && (
+        <Input
+          rules={{
+            required: 'Username is required',
+            minLength: {
+              value: 6,
+              message: 'Username should be at least 6 characters long',
+            },
+            maxLength: {
+              value: 24,
+              message: 'Username should be max 24 characters long',
+            },
+          }}
+          control={control}
+          keyboardType="default"
+          placeholder="Enter your username ..."
+          label="Username"
+          name="username"
+        />
+      )}
+      <Input
+        rules={{
+          required: 'Email is required',
+          pattern: {value: EMAIL_REGEX, message: 'Email is invalid'},
+        }}
+        control={control}
+        placeholder="Enter your email ..."
+        label="Email"
+        name="email"
+        selectTextOnFocus
+      />
+
+      {/* Sign up and Sign in */}
+      {isFormSignInOrUp && (
+        <View>
           <Input
             rules={{
-              required: 'Username is required',
+              required: 'Password is required',
               minLength: {
                 value: 6,
-                message: 'Username should be at least 6 characters long',
+                message: 'Password should be at least 6 characters long',
               },
-              maxLength: {
-                value: 24,
-                message: 'Username should be max 24 characters long',
-              },
+              trapSpacesForRequiredFields: true,
             }}
             control={control}
             keyboardType="default"
-            placeholder="Enter your username ..."
-            label="Username"
-            name="username"
+            placeholder="Enter your password ..."
+            label="Password"
+            secureTextEntry={!isShowPassword.password}
+            autoCorrect={false}
+            name="password"
           />
-        )}
-        <Input
-          rules={{
-            required: 'Email is required',
-            pattern: {value: EMAIL_REGEX, message: 'Email is invalid'},
-          }}
-          control={control}
-          placeholder="Enter your email ..."
-          label="Email"
-          name="email"
-          selectTextOnFocus
-        />
-
-        {/* Sign up and Sign in */}
-        {isFormSignInOrUp && (
-          <View>
-            <Input
-              rules={{
-                required: 'Password is required',
-                minLength: {
-                  value: 6,
-                  message: 'Password should be at least 6 characters long',
-                },
-                trapSpacesForRequiredFields: true,
-              }}
-              control={control}
-              keyboardType="default"
-              placeholder="Enter your password ..."
-              label="Password"
-              secureTextEntry={!isShowPassword.password}
-              autoCorrect={false}
-              name="password"
-            />
-            {/* Icon show password */}
-            <TouchableOpacity
-              onPress={() => handleShowPassword('password')}
-              style={{
-                position: 'absolute',
-                right: 15,
-                top: 27.5,
-              }}>
-              <Icon
-                name={
-                  isShowPassword.password ? 'eye-outline' : 'eye-off-outline'
-                }
-                size={24}
-                color="black"
-              />
-            </TouchableOpacity>
-          </View>
-        )}
-
-        {/* Sign up  */}
-        {formType === 'register' && (
-          <View>
-            <Input
-              rules={{
-                required: 'Confirm password is required',
-                minLength: {
-                  value: 6,
-                  message: 'Password should be at least 6 characters long',
-                },
-                trapSpacesForRequiredFields: true,
-              }}
-              control={control}
-              name="confirmPassword"
-              keyboardType="default"
-              placeholder="Enter your confirm password ..."
-              label="Confirm password"
-              secureTextEntry={!isShowPassword.confirmPassword}
-              autoCorrect={false}
-            />
-            {/* Icon show password */}
-            <TouchableOpacity
-              onPress={() => handleShowPassword('confirmPassword')}
-              style={{
-                position: 'absolute',
-                right: 15,
-                top: 27.5,
-              }}>
-              <Icon
-                name={
-                  isShowPassword.confirmPassword
-                    ? 'eye-outline'
-                    : 'eye-off-outline'
-                }
-                size={24}
-                color="black"
-              />
-            </TouchableOpacity>
-          </View>
-        )}
-
-        {/* Sign in */}
-        {formType === 'login' && (
+          {/* Icon show password */}
           <TouchableOpacity
+            onPress={() => handleShowPassword('password')}
             style={{
-              marginBottom: 10,
-            }}
-            activeOpacity={0.7}
-            onPress={() => gotoForm('ForgotPasswordScreen', () => reset())}>
-            <Text
-              style={[
-                styles.textTitle,
-                {
-                  color: '#7C4DFF',
-                },
-              ]}>
-              Forgot password?
-            </Text>
+              position: 'absolute',
+              right: 15,
+              top: 27.5,
+            }}>
+            <Icon
+              name={isShowPassword.password ? 'eye-outline' : 'eye-off-outline'}
+              size={24}
+              color="black"
+            />
           </TouchableOpacity>
-        )}
+        </View>
+      )}
 
-        {/* Button Submit */}
+      {/* Sign up  */}
+      {formType === 'register' && (
+        <View>
+          <Input
+            rules={{
+              required: 'Confirm password is required',
+              minLength: {
+                value: 6,
+                message: 'Password should be at least 6 characters long',
+              },
+              trapSpacesForRequiredFields: true,
+            }}
+            control={control}
+            name="confirmPassword"
+            keyboardType="default"
+            placeholder="Enter your confirm password ..."
+            label="Confirm password"
+            secureTextEntry={!isShowPassword.confirmPassword}
+            autoCorrect={false}
+          />
+          {/* Icon show password */}
+          <TouchableOpacity
+            onPress={() => handleShowPassword('confirmPassword')}
+            style={{
+              position: 'absolute',
+              right: 15,
+              top: 27.5,
+            }}>
+            <Icon
+              name={
+                isShowPassword.confirmPassword
+                  ? 'eye-outline'
+                  : 'eye-off-outline'
+              }
+              size={24}
+              color="black"
+            />
+          </TouchableOpacity>
+        </View>
+      )}
+
+      {/* Sign in */}
+      {formType === 'login' && (
         <TouchableOpacity
-          style={[
-            styles.buttonLogin,
-            {
-              backgroundColor: activeBtn ? '#7C4DFF' : '#BDBDBD',
-            },
-          ]}
-          disabled={loading}
-          activeOpacity={0.9}
-          onPress={handleSubmit(onSubmit)}>
-          {loading ? (
-            <ActivityIndicator size="small" color="#fff" />
-          ) : (
-            <Text style={styles.buttonTextLogin}>{textBtn}</Text>
-          )}
+          style={{
+            marginBottom: 10,
+          }}
+          activeOpacity={0.7}
+          onPress={() => gotoForm('ForgotPasswordScreen', () => reset())}>
+          <Text
+            style={[
+              styles.textTitle,
+              {
+                color: '#7C4DFF',
+              },
+            ]}>
+            Forgot password?
+          </Text>
         </TouchableOpacity>
+      )}
 
-        {/* Social SignIn */}
-        <SocialSignIn
-          //   isFormSignInOrUp={isFormSignInOrUp}
-          reset={reset}
-          formType={formType}
-          gotoForm={gotoForm}
-          signInSocialGoogle={signInSocialGoogle}
-        />
-      </View>
+      {/* Button Submit */}
+      <TouchableOpacity
+        style={[
+          styles.buttonLogin,
+          {
+            backgroundColor: activeBtn ? '#7C4DFF' : '#BDBDBD',
+          },
+        ]}
+        disabled={loading}
+        activeOpacity={0.9}
+        onPress={handleSubmit(onSubmit)}>
+        {loading ? (
+          <ActivityIndicator size="small" color="#fff" />
+        ) : (
+          <Text style={styles.buttonTextLogin}>{textBtn}</Text>
+        )}
+      </TouchableOpacity>
+
+      {/* Social SignIn */}
+      <SocialSignIn
+        //   isFormSignInOrUp={isFormSignInOrUp}
+        reset={reset}
+        formType={formType}
+        gotoForm={gotoForm}
+        signInSocialGoogle={signInSocialGoogle}
+      />
     </View>
   );
 };
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingVertical: 20,
+    // paddingVertical: 20,
+    padding: 16,
   },
   titleLogin: {
     fontFamily: 'Poppins-Bold',
@@ -387,7 +385,7 @@ const styles = StyleSheet.create({
   buttonLogin: {
     width: '100%',
     height: 50,
-    borderRadius: 5,
+    borderRadius: 4,
     backgroundColor: '#BDBDBD',
     justifyContent: 'center',
     alignItems: 'center',
@@ -403,7 +401,7 @@ const styles = StyleSheet.create({
     textAlign: 'right',
     marginTop: 10,
     fontSize: 16,
-    fontFamily: 'Poppins-Bold',
+    fontFamily: 'Poppins-Medium',
   },
   signUpBtn: {
     flexDirection: 'row',

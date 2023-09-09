@@ -16,6 +16,7 @@ import {
   updateFieldQuestion,
   updateImagesKahoot,
 } from '../../../../redux/slices/questionSlice/reducer';
+import {useTheme} from '@react-navigation/native';
 
 const color = ['#870817', '#123D87', '#6B1782', '#3F400C'];
 
@@ -30,6 +31,7 @@ const AnswerModal = ({
   isSwitchOn,
   handleOnPressSwitch,
 }: any) => {
+  const {colors} = useTheme();
   const dispatch = useAppDispatch();
   const openGallery = () => {
     launchImageLibrary({mediaType: 'photo'}, response => {
@@ -82,6 +84,7 @@ const AnswerModal = ({
       }),
     );
   };
+
   return (
     <>
       <View
@@ -90,17 +93,18 @@ const AnswerModal = ({
           alignItems: 'center',
           justifyContent: 'center',
           gap: 10,
+          paddingHorizontal: 32,
         }}>
         {answers[indexQuestion]?.image ? (
           <View
             style={{
               backgroundColor: color[indexQuestion],
-              width: '60%',
+              flex: 1,
               height: 100,
               justifyContent: 'center',
               alignItems: 'center',
-              paddingVertical: 10,
-              borderRadius: 5,
+              padding: 8,
+              borderRadius: 4,
             }}>
             <ImageBackground
               source={{
@@ -110,7 +114,8 @@ const AnswerModal = ({
                   ? answers[indexQuestion]?.image
                   : `file:///data/user/0/com.kahut/cache/${answers[indexQuestion]?.image}`,
               }}
-              resizeMode="contain"
+              resizeMode="cover"
+              borderRadius={4}
               style={[
                 {
                   width: '100%',
@@ -133,7 +138,7 @@ const AnswerModal = ({
             style={[
               styles.textInputQuestion,
               {
-                width: '60%',
+                flex: 1,
                 backgroundColor: color[indexQuestion],
                 color: 'white',
               },
@@ -154,18 +159,22 @@ const AnswerModal = ({
           <Icon name="image-outline" size={30} color={'black'} />
         </Pressable>
       </View>
-      <View style={styles.containerAnswer}>
-        <Text
-          style={{
-            fontFamily: 'Poppins-Regular',
-          }}>
-          Answer
-        </Text>
-        <CustomSwitch
-          isOn={isSwitchOn}
-          handleOnPressSwitch={handleOnPressSwitch}
-          color={color[indexQuestion]}
-        />
+
+      <View style={{paddingHorizontal: 32, width: '100%'}}>
+        <View style={styles.containerAnswer}>
+          <Text
+            style={{
+              fontFamily: 'Poppins-Medium',
+              color: colors.text,
+            }}>
+            Correct answer
+          </Text>
+          <CustomSwitch
+            isOn={isSwitchOn}
+            handleOnPressSwitch={handleOnPressSwitch}
+            color={color[indexQuestion]}
+          />
+        </View>
       </View>
     </>
   );
@@ -193,7 +202,7 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'flex-end',
+    justifyContent: 'space-between',
     padding: 15,
     backgroundColor: 'white',
     borderRadius: 8,

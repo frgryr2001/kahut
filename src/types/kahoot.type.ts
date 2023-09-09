@@ -5,6 +5,7 @@ export interface KahootSummary {
   userImage: string;
   username: string;
   numberOfQuestion: number;
+  numberOfPlayer: number;
   createdAt?: number;
   visibleScope?: string;
   isDraft?: boolean;

@@ -77,7 +77,7 @@ function LibraryStack() {
         name="LibraryDraftScreen"
         component={libraryStackScreens.DraftScreen}
         options={{
-          headerTitle: 'Draft',
+          headerTitle: 'Drafts',
         }}
       />
       <Stack.Screen

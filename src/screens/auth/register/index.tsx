@@ -70,7 +70,7 @@ export const RegisterScreen = ({navigation}: Props) => {
               flex: 1,
             }}>
             <LinearGradientBG
-              title="Register"
+              title="Sign up"
               isBtnBack
               goBack={() => navigation.goBack()}
               bgImage="register"

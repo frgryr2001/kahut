@@ -74,7 +74,7 @@ const Question = ({
 const styles = StyleSheet.create({
   questionContainer: {
     flexDirection: 'row',
-    // alignItems: 'flex-start',
+    alignItems: 'center',
     backgroundColor: 'white',
     height: 80,
     borderRadius: 3,

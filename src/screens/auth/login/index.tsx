@@ -93,7 +93,7 @@ export const LoginScreen = ({navigation}: Props) => {
                 flex: 1,
               }}>
               <LinearGradientBG
-                title="Sign in to your Account"
+                title="Sign in"
                 bgImage="login"
                 isBtnBack
                 goBack={() => navigation.goBack()}
@@ -101,7 +101,7 @@ export const LoginScreen = ({navigation}: Props) => {
               <FormAuth
                 formType="login"
                 gotoForm={gotoScreen}
-                textBtn="Login"
+                textBtn="Sign in"
                 activeBtn
                 signInSocialGoogle={signInSocialGoogle}
               />

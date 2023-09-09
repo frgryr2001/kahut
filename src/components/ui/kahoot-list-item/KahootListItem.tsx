@@ -117,7 +117,7 @@ const KahootListItem = ({
                   fontSize: 12,
                   fontFamily: 'Poppins-Regular',
                 }}>
-                0 plays
+                {kahoot.numberOfPlayer} plays
               </Text>
             </View>
           </View>

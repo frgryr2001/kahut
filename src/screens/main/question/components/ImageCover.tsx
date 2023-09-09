@@ -158,7 +158,7 @@ const ImageCover = ({as, content, imageDefault, kahootID, id}: Props) => {
                     ? imageDefault
                     : `file:///data/user/0/com.kahut/cache/${imageDefault}`,
                 }}
-                resizeMode="contain"
+                resizeMode="cover"
                 style={styles.image}
               />
             ) : null}

@@ -178,9 +178,8 @@ function BoxUserAction({
           style={{
             color: colors.text,
             fontFamily: 'Poppins-Regular',
-            maxWidth: 150,
+            width: '100%',
           }}>
-          {/* {formattedName()} */}
           {username}
         </Text>
       </Pressable>
@@ -271,7 +270,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-
     elevation: 2,
   },
   btnActionContainer: {
@@ -280,7 +278,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-end',
     backgroundColor: 'white',
-    width: 150,
   },
   btnAction: {
     height: 45,
@@ -302,6 +299,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingVertical: 20,
+    gap: 10,
   },
 });
 BottomSheet.ImageCoverKahoot = ImageCoverKahoot;
