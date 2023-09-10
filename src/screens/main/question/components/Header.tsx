@@ -18,7 +18,6 @@ import {useSelector} from 'react-redux';
 import {selectLoading} from '../../../../redux/slices/questionSlice/selector';
 import {selectStatus} from '../../../../redux/slices/authSlice/selector';
 import httpClient from '../../../../services/utils/httpClient';
-import Snackbar from 'react-native-snackbar';
 
 interface HeaderProps {
   completed: boolean;
@@ -40,7 +39,11 @@ function MessageCheckListQuestion({
   checkCorrect: () => boolean;
 }) {
   return (
-    <>
+    <View
+      style={{
+        marginBottom: 10,
+        marginHorizontal: 10,
+      }}>
       <View style={styles.checkContent}>
         {kahoot?.title !== '' ? (
           <Icon name="checkmark-circle" size={20} color={'green'} />
@@ -68,10 +71,10 @@ function MessageCheckListQuestion({
           <Icon name="alert-circle" size={20} color={'red'} />
         )}
         <Text style={[styles.textCheck, {color: colors.text}]}>
-          Complete the question and answers
+          Complete the question and must have at least one correct answer
         </Text>
       </View>
-    </>
+    </View>
   );
 }
 
@@ -96,11 +99,12 @@ const Header = ({
     setModalVisible(false);
   };
   const checkCorrect = (): boolean => {
-    const check = kahoot?.questions.some(question => {
+    const check = kahoot?.questions.every(question => {
       if (
         question.type === 'trueorfalse' &&
         question.question !== '' &&
         kahoot?.title !== '' &&
+        question.question !== '' &&
         status === 'authenticated'
       ) {
         return true;
@@ -118,7 +122,7 @@ const Header = ({
       return false;
     });
 
-    return check!;
+    return check! && kahoot?.questions.length! > 0;
   };
   const onSave = async () => {
     setIsCancel(false);
@@ -210,11 +214,8 @@ const Header = ({
       dispatch(createKahoot(kahoot!))
         .unwrap()
         .then(() => {
-          navigation.navigate('LibraryMyKahootsScreen');
-          Snackbar.show({
-            text: 'Create kahoot successfully',
-            duration: Snackbar.LENGTH_SHORT,
-          });
+          navigation.navigate('Library');
+          Alert.alert('Success', 'Create question successfully');
         })
         .then(() => {
           dispatch(
@@ -489,7 +490,7 @@ const styles = StyleSheet.create({
   },
   textCheck: {
     fontSize: 16,
-    textAlign: 'center',
+
     fontFamily: 'Poppins-Regular',
   },
   titleModal: {
