@@ -12,8 +12,6 @@ interface Props {
 
 const ListQuestion = ({questions, navigation, idQuestion}: Props) => {
   const validateQuestionInList = (index: number) => {
-    console.log('Index in List question', questions[index]);
-
     if (questions[index]?.answers?.length === 0) {
       return false;
     }
@@ -24,8 +22,6 @@ const ListQuestion = ({questions, navigation, idQuestion}: Props) => {
     const check = questions[index]?.answers?.some(
       item => item.text && item.isCorrect,
     );
-
-    // console.log('check', check);
 
     if (questions[index]?.answer !== undefined) {
       return true;

@@ -104,29 +104,31 @@ const Header = ({
         question.type === 'trueorfalse' &&
         question.question !== '' &&
         kahoot?.title !== '' &&
-        question.question !== '' &&
-        status === 'authenticated'
+        question.question !== ''
       ) {
         return true;
       }
       if (
         question.type === 'quiz' &&
         question.question !== '' &&
-        kahoot?.title !== '' &&
-        status === 'authenticated'
+        kahoot?.title !== ''
       ) {
-        return question.answers.some(answer => {
+        const leastAnsnerCorrect = question.answers.some(answer => {
           return answer.isCorrect && answer.text !== '';
         });
+        return leastAnsnerCorrect;
       }
-      return false;
     });
 
-    return check! && kahoot?.questions.length! > 0;
+    if (kahoot?.questions.length === 0) {
+      return false;
+    }
+
+    return check!;
   };
   const onSave = async () => {
     setIsCancel(false);
-    if (!checkCorrect()) {
+    if (!checkCorrect() || status === 'not-authenticated') {
       setModalVisible(true);
       return;
     }
