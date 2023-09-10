@@ -116,7 +116,7 @@ const Header = ({
         status === 'authenticated'
       ) {
         return question.answers.some(answer => {
-          return answer.isCorrect;
+          return answer.isCorrect && answer.text !== '';
         });
       }
       return false;
